@@ -1,0 +1,85 @@
+2025/03/11 07:14:39-error-	 -type:2,number:0,external error number:0,message:error
+2025/03/11 07:14:39-error in 20.20.20.110 connection. Connection Id:70957289
+2025/03/11 07:14:39-tuxipReadFloat-	 -Could not ReadLgxData to plc
+variable:fc1ToPcF[0] no:51
+2025/03/11 07:14:39-error-	 -type:2,number:0,external error number:0,message:error
+2025/03/11 07:14:39-error in 20.20.20.30 connection. Connection Id:70958159
+2025/03/11 07:14:39-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:ConveyorData[0] no:76
+2025/03/12 12:20:48-error in 20.20.20.30 connection. Connection Id:121949022
+2025/03/12 12:20:48-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/12 12:20:48-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/12 12:20:48-error in 20.20.20.30 connection. Connection Id:121949022
+2025/03/12 12:20:48-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:ConveyorData[0] no:76
+2025/03/19 15:38:07-_ReadLgxData-	 -Address:pcCom[0] number:20
+2025/03/19 15:38:07-error in 20.20.20.110 connection. Connection Id:153805102
+2025/03/19 15:38:07-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:pcCom[0] no:20
+2025/03/19 15:38:14-Communications error-	 -user selected to quit the application
+2025/03/19 15:38:30-_ReadLgxData-	 -Address:pcCom[0] number:17
+2025/03/19 15:38:30-error in 20.20.20.110 connection. Connection Id:153827291
+2025/03/19 15:38:30-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:pcCom[0] no:17
+2025/03/19 15:39:07-_ReadLgxData-	 -Address:pcCom[0] number:17
+2025/03/19 15:39:07-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:07-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:pcCom[0] no:17
+2025/03/19 15:39:22-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:22-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:39:22-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:39:22-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:22-tuxipReadFloat-	 -Could not ReadLgxData to plc
+variable:fc1ToPcF[0] no:51
+2025/03/19 15:39:30-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:30-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:39:30-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:39:30-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:30-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:pcCom[0] no:17
+2025/03/19 15:39:45-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:45-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:39:45-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:39:45-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:45-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:packetLength[0] no:76
+2025/03/19 15:39:56-_ReadLgxData-	 -Address:pcCom[0] number:17
+2025/03/19 15:39:56-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:39:56-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:pcCom[0] no:17
+2025/03/19 15:40:11-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:40:11-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:40:11-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:40:11-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:40:11-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:packetId[0] no:76
+2025/03/19 15:40:26-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:40:26-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:40:26-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:40:26-error in 20.20.20.110 connection. Connection Id:153904761
+2025/03/19 15:40:26-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:fc1ToPcI[4] no:1
+2025/03/19 15:44:06-error in 20.20.20.30 connection. Connection Id:154054614
+2025/03/19 15:44:06-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/19 15:44:06-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/19 15:44:06-error in 20.20.20.30 connection. Connection Id:154054614
+2025/03/19 15:44:06-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:ConveyorData[0] no:76
+2025/03/28 13:21:01-error-	 -type:2,number:0,external error number:0,message:error
+2025/03/28 13:21:01-error in 20.20.20.110 connection. Connection Id:132003314
+2025/03/28 13:21:01-tuxipReadFloat-	 -Could not ReadLgxData to plc
+variable:fc1ToPcF[0] no:51

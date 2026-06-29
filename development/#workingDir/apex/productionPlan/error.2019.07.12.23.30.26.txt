@@ -1,0 +1,1 @@
+2019-07-12 23:30:26	-database error-	 -query: 'select maxNoOfProfilesToLoad from users where login=''' returned no results

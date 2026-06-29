@@ -1,0 +1,1 @@
+2025/02/26 09:56:57-error-	 -Cannot open Driver={SQL Server};Server=127.0.0.1,1433;Database=wareHouseData;Uid=sa;Pwd=123; database. Error:[Microsoft][ODBC SQL Server Driver][SQL Server]Cannot open database "wareHouseData" requested by the login. The login failed. QODBC3: Unable to connect

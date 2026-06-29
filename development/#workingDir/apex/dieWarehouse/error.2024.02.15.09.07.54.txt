@@ -1,0 +1,1 @@
+2024/02/15 09:07:54-error-	 -Cannot execQuery:select distinct SchedDt from assimakisDieWarehouse order by SchedDt/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'assimakisDieWarehouse'. QODBC3: Unable to execute statement

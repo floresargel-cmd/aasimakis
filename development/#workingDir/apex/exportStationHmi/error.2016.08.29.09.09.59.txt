@@ -1,0 +1,1 @@
+2016/08/29 09:09:59-error-	 -Cannot execQuery:update DestackerStations set basketnum=0 where stationid=2/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'DestackerStations'. QODBC3: Unable to execute statement

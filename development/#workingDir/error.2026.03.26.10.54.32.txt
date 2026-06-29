@@ -1,0 +1,1 @@
+2026-03-26 10:54:32	-Error in database-	 -Error opening epics odbc. Error:[Microsoft][ODBC Driver Manager] The specified DSN contains an architecture mismatch between the Driver and Application QODBC3: Unable to connect

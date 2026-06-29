@@ -1,0 +1,1 @@
+2025/03/15 08:23:37-error-	 -Cannot open apexEpicsOdbc database. Error:[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified QODBC3: Unable to connect

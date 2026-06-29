@@ -1,0 +1,1 @@
+2018/07/29 20:01:35-error-	 -Cannot execQuery:USE strapingData/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Database 'strapingData' does not exist. Make sure that the name is entered correctly. QODBC3: Unable to execute statement

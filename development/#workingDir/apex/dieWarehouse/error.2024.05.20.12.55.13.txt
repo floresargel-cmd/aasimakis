@@ -1,0 +1,1 @@
+2024/05/20 12:55:13-error-	 -Cannot execQuery:select SchedDt from assimakisDieWarehouse where DieNum=1705 AND CopyNum=06 and ( SchedDt between GETDATE() and DATEADD(day,1,GETDATE()) ) order by SchedDt/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Conversion failed when converting date and/or time from character string. QODBC3: Unable to execute statement

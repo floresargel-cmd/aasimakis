@@ -1,0 +1,3 @@
+2025/07/16 16:24:02-Internal error-	 -transferCassette
+fromId=3031 fromCassette=406 fromPacket=0
+toId=3032 toCassette=-774 toPacket=0
