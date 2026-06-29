@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\a.cpp" />
+    <ClCompile Include="..\ac.cpp" />
+    <ClCompile Include="..\cm.cpp" />
+    <ClCompile Include="..\co.cpp" />
+    <ClCompile Include="..\fl.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\mem.cpp" />
+    <ClCompile Include="..\mo.cpp" />
+    <ClCompile Include="..\mw.cpp" />
+    <ClCompile Include="..\ph.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\tf.cpp" />
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\cm.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\co.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\fl.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mo.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mw.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ph.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ps.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\tf.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\a.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ac.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\a.h" />
+    <ClInclude Include="..\ac.h" />
+    <ClInclude Include="..\aG.h" />
+    <ClInclude Include="..\cm.h" />
+    <ClInclude Include="..\co.h" />
+    <ClInclude Include="..\fl.h" />
+    <ClInclude Include="..\mem.h" />
+    <ClInclude Include="..\mo.h" />
+    <ClInclude Include="..\mw.h" />
+    <ClInclude Include="..\ph.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\tf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="moc">
+      <UniqueIdentifier>{5a1376a0-f691-48b3-a462-ab7834ce4480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icons">
+      <UniqueIdentifier>{8a645961-e0e0-43d1-83dd-740218994120}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icons</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icons</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

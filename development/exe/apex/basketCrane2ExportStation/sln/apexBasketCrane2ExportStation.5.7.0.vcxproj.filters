@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="icon">
+      <UniqueIdentifier>{c58d90be-7057-40c9-8096-2148d20c683a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{631a2479-28fb-4e6d-8e1b-fb743d620df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sbWarehouse">
+      <UniqueIdentifier>{a5d52e90-c3a1-4867-a47b-49fd3af862da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sbWarehouse\moc">
+      <UniqueIdentifier>{485e971e-6b68-4213-91ba-2905672c99d7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane2ExportStation\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\basketCrane.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane2ExportStation\mocFiles.5.1.1\basketCrane.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\sbWarehouse.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane2ExportStation\mocFiles.5.1.1\sbWarehouse.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Gs.cpp" />
+    <ClCompile Include="..\..\sbWarehouse\bSelect.cpp">
+      <Filter>sbWarehouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sbWarehouse\expWdg.cpp">
+      <Filter>sbWarehouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sbWarehouse\Gsw.cpp">
+      <Filter>sbWarehouse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\bSelect.h.cpp">
+      <Filter>sbWarehouse\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\expWdg.h.cpp">
+      <Filter>sbWarehouse\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch.cpp" />
+    <ClCompile Include="..\..\G.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\basketCrane.h" />
+    <ClInclude Include="..\sbWarehouse.h" />
+    <ClInclude Include="..\..\Gs.h" />
+    <ClInclude Include="..\..\sbWarehouse\bSelect.h">
+      <Filter>sbWarehouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sbWarehouse\expWdg.h">
+      <Filter>sbWarehouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sbWarehouse\Gsw.h">
+      <Filter>sbWarehouse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch.h" />
+    <ClInclude Include="..\..\G.h" />
+  </ItemGroup>
+</Project>

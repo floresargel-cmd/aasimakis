@@ -1,0 +1,11 @@
+23|0|Command  23.0:Command SRCrane->40.Basket is moving//from SRCrane to conveyor 40.
+23|1|Command  23.1:Command 40->41.Basket is moving from//conveyor 40 to conveyor 41.
+23|2|Command  23.2:Command SRCrane->44.Basket is moving//from SRCrane to conveyor 44.
+23|3|Command  23.3:Command 44->45.Basket is moving from//conveyor 44 to conveyor 45.
+24|0|Command  24.0:Command 42->43.Basket is moving from//conveyor 42 to conveyor 43.
+24|1|Command  24.1:Command 43->4RCrane.Basket is moving//from conveyor 43 to SRCrane.
+24|2|Command  24.2:Command 41->42.Basket is moving from//conveyor 41 to conveyor 42.
+24|3|Command  24.3:Command 45->42.Basket is moving from//conveyor 45 to conveyor 42.
+24|4|Command  24.4:Command 41->45.Basket is moving from//conveyor 41 to conveyor 45.
+24|5|Command  24.5:Command 45->41.Basket is moving from//conveyor 45 to conveyor 41.
+

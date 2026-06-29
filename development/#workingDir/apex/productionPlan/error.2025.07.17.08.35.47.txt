@@ -1,0 +1,1 @@
+2025-07-17 08:35:47	-Error in database-	 -Error opening basketCrane odbc. Error:[Microsoft][ODBC SQL Server Driver][SQL Server]Login failed for user 'sa'. QODBC3: Unable to connect

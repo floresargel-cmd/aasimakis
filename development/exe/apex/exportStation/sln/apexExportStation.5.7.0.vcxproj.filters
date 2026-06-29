@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\basList.cpp" />
+    <ClCompile Include="..\cont.cpp" />
+    <ClCompile Include="..\exp.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\selBas.cpp" />
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\basList.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\cont.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\exp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStation\mocFiles.5.1.1\selBas.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\basList.h" />
+    <ClInclude Include="..\cont.h" />
+    <ClInclude Include="..\eG.h" />
+    <ClInclude Include="..\exp.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\selBas.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="external">
+      <UniqueIdentifier>{bdd4e0d9-c61a-4dff-aa91-163ca4e1c4ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{c137e397-2116-4698-aa9f-9bd1c5e359b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{16c76a1c-0784-4de5-a44d-840af5eded85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{aa7b0989-4e55-483d-a140-2f219bfd4de7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+</Project>

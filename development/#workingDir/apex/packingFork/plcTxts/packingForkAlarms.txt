@@ -1,0 +1,72 @@
+﻿16|0|Alarm  0.0: Stop cycle button pressed on Fork Crane OP (Input CB3.827)
+16|1|Alarm  0.1: 24V DC alarm (Input CB3.424)
+16|2|Alarm  0.2: Outputs disabled from first scan.
+16|3|Alarm  0.3: Thermal overload switch CB3.Q3 tripped or Inverter CB3.U3 fault (Horizontal - X & Vertical - Z Axes)
+16|4|Alarm  0.4: Thermal overload switch CB3.Q4 tripped or Inverter CB3.U4 fault (Horizontal - X & Vertical - X Axes)
+16|5|Alarm  0.5: Vertical - Z Axis Encoder Fault (ENC3)
+16|6|Alarm  0.6: Horizontal - X Axis Encoder Fault (ENC4)
+16|7|Alarm  0.7: Side - Y Axis Encoder Fault (ENC5)
+16|8|Alarm  0.8: Rotation - R Axis Encoder Fault (ENC6)
+16|9|Alarm  0.9: Vertical - Z maximum speed limit surpassed
+16|10|Alarm 0.10: Vertical - Z Load Slip
+16|11|Alarm 0.11: PLC card(s) or Point I/O card(s) fault
+16|12|Alarm 0.12: Stop cycle button pressed on Strapping 2 Machine OP (Input CB3.1631)
+16|13|Alarm 0.13: Stop cycle button pressed on OP between Rollers (Input CB3.517)
+16|14|Alarm 0.14: Wrong motion direction at vertical - Z axis
+16|15|Alarm 0.15: Wrong motion direction at horizontal - X axis
+16|16|Alarm 0.16: Thermal overload switch(es) CB3.Q300,Q300F,Q301,Q301F,Q400,Q401 tripped (Input CB3.427)
+16|17|Alarm 0.17: Overspeed at horizontal - X axis
+16|18|Alarm 0.18: Underspeed at horizontal - X axis
+16|19|Alarm 0.19: 
+16|20|Alarm 0.20:
+16|21|Alarm 0.21: Overspeed at Vertical - Z axis
+16|22|Alarm 0.22: Underspeed at Vertical - Z axis
+16|23|Alarm 0.23: Wrong motion direction at side - Y axis
+16|24|Alarm 0.24: Wrong motion direction at rotation - R axis
+16|25|Alarm 0.25: Overspeed at side - Y axis
+16|26|Alarm 0.26: Underspeed at side - Y axis
+16|27|Alarm 0.27: Overspeed at rotation - R axis
+16|28|Alarm 0.28: Underspeed at rotation - R axis
+16|29|Alarm 0.29: Target out of limits
+16|30|Alarm 0.30: Actual Position Value out of limits
+16|31|Alarm 0.31: Stop from conditions
+17|0|Alarm  1.0: Mission overtime
+17|1|Alarm  1.1: Overcurrent at vertical - Z axis
+25|0|Safety Alarm 1.0:Emergency Stop pressed on CB3 (Input CB3.A100)
+25|1|Safety Alarm 1.1:Emergency Stop pressed on Fork Crane OP (Input CB3.A106)
+25|2|Safety Alarm 1.2:Emergency Stop pressed on Strap OP (Input CB3.A107)
+25|3|Safety Alarm 1.3:Door 4 open (Input CB3.A303)
+25|4|Safety Alarm 1.4:Door 5 Open (Input CB3.A304)
+25|5|Safety Alarm 1.5:Door 6 Open (Input CB3.A305)
+25|6|Safety Alarm 1.6:Laser Scanner at In/Out Station was interupted (Input CB3.A1401)
+25|7|Safety Alarm 1.7:Light Curtain at new Gate was interrupted (Input CB3.A1402)
+25|8|Safety Alarm 1.8:
+25|9|Safety Alarm 1.9:
+25|10|Safety Alarm 1.10:
+25|11|Safety Alarm 1.11:
+25|12|Safety Alarm 1.12:
+25|13|Safety Alarm 1.13:
+25|14|Safety Alarm 1.14:
+25|15|Safety Alarm 1.15:
+25|16|Safety Alarm 1.16:
+25|17|Safety Alarm 1.17:
+25|18|Safety Alarm 1.18:
+25|19|Safety Alarm 1.19:
+25|20|Safety Alarm 1.20:
+25|21|Safety Alarm 1.21:
+25|22|Safety Alarm 1.22:
+25|23|Safety Alarm 1.23:
+25|24|Safety Alarm 1.24:
+25|25|Safety Alarm 1.25:
+25|26|Safety Alarm 1.26:
+25|27|Safety Alarm 1.27:
+25|28|Safety Alarm 1.28:
+25|29|Safety Alarm 1.29:
+25|30|Safety Alarm 1.30:
+25|31|Safety Alarm 1.31:
+
+
+
+
+
+

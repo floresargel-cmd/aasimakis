@@ -1,0 +1,72 @@
+30|0|Alarm 0.0:24V DC alarm (Input CB3.304)
+30|1|Alarm 0.1:Thermal overload switch(es) tripped//Q24,Q25,Q26,Q27F, Q230,Q231 (Input CB3.431)
+30|2|Alarm 0.2:Door of Wrapping not closed//(Input CB3.1623)
+30|3|Alarm 0.3:Stop Cycle Button on pressed//(Input CB3.1613)
+30|4|Alarm 0.4:Stretch film ended or cut
+30|5|Alarm 0.5:Wrapping Head Horizontal//Adjustment Overspeed
+30|6|Alarm 0.6:Wrapping Head Horizontal//Adjustment Underspeed
+30|7|Alarm 0.7:Wrapping Head Vertical//Adjustment Overspeed
+30|8|Alarm 0.8:Wrapping Head Vertical//Adjustment Underspeed
+30|9|Alarm 0.9:Command for//Strapping Head to move up//but no feedback from magnetic switch.//Check Valve (Output CB3.).//Check magnetic switch (Input CB3.).
+30|10|Alarm 0.10:Command for//Strapping Head to move down//but no feedback from magnetic switch.//Check Valve (Output CB3.).//Check magnetic switch (Input CB3.1604).
+30|11|Alarm 0.11:Command for//Wood Holder to close//but no feedback from magnetic switch.//Check Valve (Output CB3.1408).//Check magnetic switch (Input CB3.1600).
+30|12|Alarm 0.12:Command for//Wood Holder to open//but no feedback from magnetic switch.//Check Valve (Output CB3.1409).//Check magnetic switch (Input CB3.1600).
+30|13|Alarm 0.13:Command for//Wood Mechanism to go outside//of strapping but no feedback//from magnetic switch.//Check Valve (Output CB3.1403).//Check magnetic switch (Input CB3.1601).
+30|14|Alarm 0.14:Command for//Wood Mechanism to go inside//strapping but no feedback//from magnetic switch.//Check Valve (Output CB3.1404).//Check magnetic switch (Input CB3.1602).
+30|15|Alarm 0.15:Command for//Small cover (30mm) to open//but no feedback from magnetic switch.//Check Valve (Output CB3.1410).//Check magnetic switch (Input CB3.1605).                                                                                      
+30|16|Alarm 0.16:Command for//Small cover (30mm) to close//but no feedback from magnetic switch.//Check Valve (Output CB3.1411).//Check magnetic switch (Input CB3.1608).
+30|17|Alarm 0.17:Command for//Big cover (60mm) to open//but no feedback from magnetic switch.//Check Valve (Output CB3.1413).//Check magnetic switch (Input CB3.1606).
+30|18|Alarm 0.18:Command for//Big cover (60mm) to close//but no feedback from magnetic switch.//Check Valve (Output CB3.1412).//Check magnetic switch (Input CB3.1607).
+30|19|Alarm 0.19:Command for//Film Pincer to go inside//but no feedback from magnetic switch.//Check Valve (Output CB3.1311).//Check magnetic switch (Input CB3.1626).
+30|20|Alarm 0.20:Command for//Film Pincer to go outside// but no feedback from magnetic switch.//Check Valve (Output CB3.1312).//Check magnetic switch (Input CB3.1625).
+30|21|Alarm 0.21:Command for//Film Pincer to go left// but no feedback from magnetic switch.//Check Valve (Output CB3.1400).//Check magnetic switch (Input CB3.1627).
+30|22|Alarm 0.22:Command for//Film Pincer to go right//but no feedback from magnetic switch.//Check Valve (Output CB3.1401).//Check magnetic switch (Input CB3.1628).
+30|23|Alarm 0.23:Command for//Film Pincer to open//but no feedback from magnetic switch.//Check Valve (Output CB3.1313).//Check magnetic switch (Input CB3.1629).
+30|24|Alarm 0.24:Command for//Film Pincer to close//but no feedback from magnetic switch.//Check Valve (Output CB3.1314).//Check magnetic switch (Input CB3.1630).
+30|25|Alarm 0.25:PLC card(s) or Point I/O card(s) fault
+30|26|Alarm 0.26:Thermal overload switch//CB3.Q23 tripped or Inverter CB3.U23 fault//(Input Rollers)
+30|27|Alarm 0.27:Thermal overload switch//CB3.Q27 tripped or Inverter CB3.U27 fault//(Wrapping Head)
+30|28|Alarm 0.28:Thermal overload switch//CB3.Q28 tripped or Inverter CB3.U28 fault//(Output Conveyor)
+30|29|Alarm 0.29:
+30|30|Alarm 0.30:
+30|31|Alarm 0.31:
+31|0|Safety Alarm 0.0:Emergency Stop pressed on CB3//(Input CB3.A100)
+31|1|Safety Alarm 0.1:Emergency Stop pressed//on Strapping OP (Input CB3.A106)
+31|2|Safety Alarm 0.2:Door 4 open//(Input CB3.A303)
+31|3|Safety Alarm 0.3:Door 5 open//(Input CB3.A304)
+31|4|Safety Alarm 0.4:
+31|5|Safety Alarm 0.5:
+31|6|Safety Alarm 0.6:
+31|7|Safety Alarm 0.7:
+31|8|Safety Alarm 0.8:
+31|9|Safety Alarm 0.9:
+31|10|Safety Alarm 0.10:
+31|11|Safety Alarm 0.11:
+31|12|Safety Alarm 0.12:
+31|13|Safety Alarm 0.13:
+31|14|Safety Alarm 0.14:
+31|15|Safety Alarm 0.15:
+31|16|Safety Alarm 0.16:
+31|17|Safety Alarm 0.17:
+31|18|Safety Alarm 0.18:
+31|19|Safety Alarm 0.19:
+31|20|Safety Alarm 0.20:
+31|21|Safety Alarm 0.21:
+31|22|Safety Alarm 0.22:
+31|23|Safety Alarm 0.23:
+31|24|Safety Alarm 0.24:
+31|25|Safety Alarm 0.25:
+31|26|Safety Alarm 0.26:
+31|27|Safety Alarm 0.27:
+31|28|Safety Alarm 0.28:
+31|29|Safety Alarm 0.29:
+31|30|Safety Alarm 0.30:
+31|31|Safety Alarm 0.31:
+
+
+
+
+
+
+
+

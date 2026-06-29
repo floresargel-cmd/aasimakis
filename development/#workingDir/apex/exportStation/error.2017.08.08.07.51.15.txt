@@ -1,0 +1,1 @@
+2017-08-08 07:51:15	-Error in database-	 -[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified QODBC3: Unable to connect

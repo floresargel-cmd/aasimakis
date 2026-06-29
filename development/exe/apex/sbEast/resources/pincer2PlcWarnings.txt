@@ -1,0 +1,63 @@
+13|0|Warning 0:Auxilliary circuit 24 V DC,120 V AC. % 		
+13|1|Warning 1:Stop cycle pressed from operator or alarm.%   					
+13|2|Warning 2:Alarm active.% 				
+13|3|Warning 3:Crane can not move fwd-bwd.Not in vertical position.%á
+13|4|Warning 4:Crane can not move fwd-bwd.Not in reset up position.%
+13|5|Warning 5:Crane can not move fwd-bwd.Crane safetypin not locked.Magnetic switch(pin locked) is not 1.% 
+13|6|Warning 6:
+13|7|Warning 7:Crane can not move bwd.Proximity switch horizontal reset is 1.%
+13|8|Warning 8:Crane can not move up-down.%
+13|9|Warning 9:Crane carriage can not move up.Proximity switch vertical reset is 0.%
+13|10|Warning 10:Crane carriage can not move vertical.Crane safety pin not unlocked.Magnetic switch(pin unlocked) is not 1.% 
+13|11|Warning 11:Crane carriage can not move down because it is not on correct horizontal position.%
+13|12|Warning 12:Crane carriage can not move vertical.No permistion from position.%
+13|13|Warning 13:Crane can not move down.No interlock signal from position.No permission from position.%
+13|14|Warning 14:Crane not in load position hz (target + position).% 
+13|15|Warning 15:Crane not in unload position (target+position).%
+13|16|Warning 16:
+13|17|Warning 17:
+13|18|Warning 18:
+13|19|Warning 19:
+13|20|Warning 20:
+13|21|Warning 21:
+13|22|Warning 22:
+13|23|Warning 23:
+13|24|Warning 24:
+13|25|Warning 25:
+13|26|Warning 26:Stop cycle pressed.
+13|27|Warning 27:Step time excess.
+13|28|Warning 28:
+13|29|Warning 29:
+13|30|Warning 30:
+13|31|Warning 31:14|0|Warning 1.0 :
+14|1|Warning 1.1 :
+14|2|Warning 1.2 :
+14|3|Warning 1.3 :Crane not on mission.%
+14|4|Warning 1.4 :Crane in motion.%
+14|5|Warning 1.5 :PV hooks not up.%
+14|6|Warning 1.6 :MG hooks not up.%
+14|7|Warning 1.7 :PS basket on hooks.
+14|8|Warning 1.8 :Crane can not move fwd-bwd.
+14|9|Warning 1.9 :
+14|10|Warning 1.10 :Crane not in load position hz (target + position).%
+14|11|Warning 1.11 :Crane not in target position hz.%
+14|12|Warning 1.12 :Crane not in load   position hz.%
+14|13|Warning 1.13 :Crane not in load position hz,vt.%
+14|14|Warning 1.14 :Crane not in target position vt.%
+14|15|Warning 15:Crane not in load position vt.%
+14|16|Warning 1.16:PV hooks not down.%
+14|17|Warning 1.17 :MG hooks not down.%
+14|18|Warning 1.18 :PS hooks no basket.%
+14|19|Warning 1.19 :
+14|20|Warning 1.20 :
+14|21|Warning 1.21 :
+14|22|Warning 1.22 :
+14|23|Warning 1.23 :
+14|24|Warning 1.24 :
+14|25|Warning 1.25 :
+14|26|Warning 1.26 :
+14|27|Warning 1.27 :
+14|28|Warning 1.28 :Crane not in unload position (target+position).%
+14|29|Warning 1.29 :Crane not in unload position hz.%
+14|30|Warning 1.30 :Crane not in unload position vt,hz (target+position).
+14|31|Warning 1.31 :Crane not in unload position vt.%

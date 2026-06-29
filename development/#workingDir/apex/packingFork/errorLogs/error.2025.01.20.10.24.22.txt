@@ -1,0 +1,1 @@
+2025/01/20 10:24:22-error-	 -Cannot execQuery:delete from packingForkPlcMessages where tId not in(select top 10000 tId from c3plcMessages order by tId desc)/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'c3plcMessages'. QODBC3: Unable to execute statement

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apexAgingOven.5.7.0", "apexAgingOven.5.7.0.vcxproj", "{01BE2376-B62A-4EF2-A1AA-D800909DE94C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|win32 = Debug|win32
+		Release|win32 = Release|win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Debug|win32.ActiveCfg = Debug|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Debug|win32.Build.0 = Debug|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Release|win32.ActiveCfg = Release|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Release|win32.Build.0 = Release|win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DA3C3BBF-9254-4190-9407-6B0A6F74C86E}
+	EndGlobalSection
+EndGlobal

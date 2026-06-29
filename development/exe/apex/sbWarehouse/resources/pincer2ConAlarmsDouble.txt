@@ -1,0 +1,77 @@
+﻿14|0|Alarm  1.0:CB2.24 Volt DC alarm.
+14|1|Alarm  1.1:CB2.Stop cycle button pressed on OP.
+14|2|Alarm  1.2:CB2.Thermal overload Q5.Alarm from inverter U11.//Inverter fault or ethernet communication problem.
+14|3|Alarm  1.3:CB2.
+14|4|Alarm  1.4:CB2.Thermal overload  Q10,Q11,0111,Q12,Q13,Q14
+14|5|Alarm  1.5:CB2.
+14|6|Alarm  1.6:CB2.Overtime for active command.Possible problem.
+14|7|Alarm  1.7:CB2.
+14|8|Alarm  1.8:CB2.
+14|9|Alarm  1.9:CB2.Conveyor RC18 cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+14|10|Alarm 1.10:CB2.Conveyor RC18 cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+14|11|Alarm 1.11:CB2.Conveyor RC17 cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+14|12|Alarm 1.12:CB2.Conveyor RC17 cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+14|13|Alarm 1.13:CB2.
+14|14|Alarm 1.14:CB2.
+14|15|Alarm 1.15:CB2.Conveyor 16 safety stop cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+14|16|Alarm 1.16:CB2.Conveyor 16 safety stop cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+14|17|Alarm 1.17:CB2.
+14|18|Alarm 1.18:CB2.
+14|19|Alarm 1.19:CB2.
+14|20|Alarm 1.20:CB2.
+14|21|Alarm 1.21:CB2.
+14|22|Alarm 1.22:CB2.
+14|23|Alarm 1.23:CB2.
+14|24|Alarm 1.24:CB2.
+14|25|Alarm 1.25:CB2.
+14|26|Alarm 1.26:CB2.
+14|27|Alarm 1.27:CB2.
+14|28|Alarm 1.28:CB2.
+14|29|Alarm 1.29:CB2.
+14|30|Alarm 1.30:CB2.
+14|31|Alarm 1.31:CB2.
+15|0|Alarm  2.0:CB2.24 Volt DC alarm.
+15|1|Alarm  2.1:CB2.Stop cycle button pressed on OP.
+15|2|Alarm  2.2:CB2.
+15|3|Alarm  2.3:CB2.
+15|4|Alarm  2.4:CB2.Thermal overload  Q18,Q19.
+15|5|Alarm  2.5:CB2.
+15|6|Alarm  2.6:CB2.Overtime for active command.Possible problem.
+15|7|Alarm  2.7:CB2.
+15|8|Alarm  2.8:CB2.
+15|9|Alarm  2.9:CB2.
+15|10|Alarm 2.10:CB2.
+15|11|Alarm 2.11:CB2.
+15|12|Alarm 2.12:CB2.
+15|13|Alarm 2.13:CB2.
+15|14|Alarm 2.14:CB2.
+15|15|Alarm 2.15:CB2.
+15|16|Alarm 2.16:CB2.
+15|17|Alarm 2.17:CB2.
+15|18|Alarm 2.18:CB2.
+15|19|Alarm 2.19:CB2.
+15|20|Alarm 2.20:CB2.
+15|21|Alarm 2.21:CB2.
+15|22|Alarm 2.22:CB2.
+15|23|Alarm 2.23:CB2.
+15|24|Alarm 2.24:CB2.
+15|25|Alarm 2.25:CB2.
+15|26|Alarm 2.26:CB2.
+15|27|Alarm 2.27:CB2.
+15|28|Alarm 2.28:CB2.
+15|29|Alarm 2.29:CB2.
+15|30|Alarm 2.30:CB2.
+15|31|Alarm 2.31:CB2.
+
+
+
+
+
+
+
+
+
+
+
+
+

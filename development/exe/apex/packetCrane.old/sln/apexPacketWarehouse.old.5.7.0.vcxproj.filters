@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="icon">
+      <UniqueIdentifier>{1a4933ec-c18a-4bdb-87f2-0b6bfb7da6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{43e7bbdb-b30f-45e6-856e-188fe3f96add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qtResourceFiles">
+      <UniqueIdentifier>{b183320c-8a94-474d-a141-b8e2ade75d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{89010415-41a7-4a33-bfdd-5268704a10d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\moc">
+      <UniqueIdentifier>{8b9f5c80-ef3f-494f-8485-c7ab2aa550b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>qtResourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ap.cpp" />
+    <ClCompile Include="..\cellCont.cpp" />
+    <ClCompile Include="..\cm.cpp" />
+    <ClCompile Include="..\convDlg.cpp" />
+    <ClCompile Include="..\convP.cpp" />
+    <ClCompile Include="..\cP.cpp" />
+    <ClCompile Include="..\cr.cpp" />
+    <ClCompile Include="..\craneM.cpp" />
+    <ClCompile Include="..\craneP.cpp" />
+    <ClCompile Include="..\exp.cpp" />
+    <ClCompile Include="..\forkM.cpp" />
+    <ClCompile Include="..\fP.cpp" />
+    <ClCompile Include="..\fr.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\man.cpp" />
+    <ClCompile Include="..\manCasSel.cpp" />
+    <ClCompile Include="..\manCellDlg.cpp" />
+    <ClCompile Include="..\manCellLabel.cpp" />
+    <ClCompile Include="..\manGrOfCells.cpp" />
+    <ClCompile Include="..\mem.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\nP.cpp" />
+    <ClCompile Include="..\oP.cpp" />
+    <ClCompile Include="..\oW.cpp" />
+    <ClCompile Include="..\p.cpp" />
+    <ClCompile Include="..\plc.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\uglyfont.cpp" />
+    <ClCompile Include="..\mMissions.cpp" />
+    <ClCompile Include="..\mMissionsP.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\fP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\fr.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\man.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCasSel.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCellDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCellLabel.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manGrOfCells.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mMissions.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mMissionsP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\nP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\oP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\oW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\p.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\plc.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\ps.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\ap.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cellCont.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cm.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\convDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\convP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cr.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\craneM.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\exp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\forkM.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+    <None Include="..\resources\recources.rcc">
+      <Filter>qtResourceFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ap.h" />
+    <ClInclude Include="..\cellCont.h" />
+    <ClInclude Include="..\cm.h" />
+    <ClInclude Include="..\convDlg.h" />
+    <ClInclude Include="..\convP.h" />
+    <ClInclude Include="..\cP.h" />
+    <ClInclude Include="..\cr.h" />
+    <ClInclude Include="..\craneM.h" />
+    <ClInclude Include="..\craneP.h" />
+    <ClInclude Include="..\exp.h" />
+    <ClInclude Include="..\forkM.h" />
+    <ClInclude Include="..\fP.h" />
+    <ClInclude Include="..\fr.h" />
+    <ClInclude Include="..\man.h" />
+    <ClInclude Include="..\manCasSel.h" />
+    <ClInclude Include="..\manCellDlg.h" />
+    <ClInclude Include="..\manCellLabel.h" />
+    <ClInclude Include="..\manGrOfCells.h" />
+    <ClInclude Include="..\mem.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\nP.h" />
+    <ClInclude Include="..\oP.h" />
+    <ClInclude Include="..\oW.h" />
+    <ClInclude Include="..\p.h" />
+    <ClInclude Include="..\pcG.h" />
+    <ClInclude Include="..\plc.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\uglyfont.h" />
+    <ClInclude Include="..\mMissions.h" />
+    <ClInclude Include="..\mMissionsP.h" />
+    <ClInclude Include="..\pass.h" />
+  </ItemGroup>
+</Project>

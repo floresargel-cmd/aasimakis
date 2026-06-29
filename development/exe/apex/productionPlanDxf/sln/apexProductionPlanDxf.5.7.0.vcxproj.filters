@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bs.cpp" />
+    <ClCompile Include="..\dxf.cpp" />
+    <ClCompile Include="..\dxfData.cpp" />
+    <ClCompile Include="..\dxfDataClasses.cpp" />
+    <ClCompile Include="..\dxfGV.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\pl.cpp" />
+    <ClCompile Include="..\pp.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\dxfGV.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\pl.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\pp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\bs.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlanDxf\mocFiles.5.1.1\dxf.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{2298acb6-eb22-4dc0-857f-0af7822f0dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{e4082c21-4b49-4487-a707-60078764e0b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{3d3eb5b1-41e1-4fdf-ba7f-671210d2239f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bs.h" />
+    <ClInclude Include="..\dxf.h" />
+    <ClInclude Include="..\dxfData.h" />
+    <ClInclude Include="..\dxfDataClasses.h" />
+    <ClInclude Include="..\dxfGV.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\pdG.h" />
+    <ClInclude Include="..\pl.h" />
+    <ClInclude Include="..\pp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,33 @@
+11|0|Alarm 0.0:CB2:Forks-pincers are not open.Check valve. Check magnetic switch.
+11|1|Alarm 0.1:CB2:Forks-pincers are not closed.Check valve.Check magnetic switch.
+11|2|Alarm 0.2:CB2:Pneumatic lock is not unlocked.Check valve. Check magnetic switch.
+11|3|Alarm 0.3:CB2:Pneumatic lock is not locked.Check valve.Check magnetic switch.
+11|4|Alarm 0.4:CB2:Mission overtime.
+11|5|Alarm 0.5:CB2:Step overtime.
+11|6|Alarm 0.6:CB2:Pincer2 carriage slips down.Overspeed detected
+11|7|Alarm 0.7:CB2:Pincer2 vertical underspeed.
+11|8|Alarm 0.8:CB2:Pincer2 vertical overspeed.%
+11|9|Alarm 0.9:CB2:Pincer2 horizontal underspeed.
+11|10|Alarm 0.10:CB2:Pincer2 horizontal overspeed.
+11|11|Alarm 0.11:CB2:
+11|12|Alarm 0.12:CB2:
+11|13|Alarm 0.13:CB2:24V DC ,110V AC not ready. Aux circuit not ready.
+11|14|Alarm 0.14:CB2:Thermal overload switch Q16,Q161,Q162 tripped.%
+11|15|Alarm 0.15:CB2:Photocells activated before target.Check PLC-memories and S.B.//SB detection photocell must be active only very close to the target.
+11|16|Alarm 0.16:CB2:Crane carriage vertical underspeed or wrong motion direction.
+11|17|Alarm 0.17:CB2:Horizontal target position out of limits.
+11|18|Alarm 0.18:CB2:Vertical target position out of limits.
+11|19|Alarm 0.19:CB2:
+11|20|Alarm 0.20:CB2:Overcurrent on vertical motion.Possible mechanical jam.
+11|21|Alarm 0.21:CB2:Overcurrent on vertical motion.Possible mechanical jam.
+11|22|Alarm 0.22:CB2:Proximity sensor activated > 20mm.You must reset vertical axis in manual mode.
+11|23|Alarm 0.23:CB2:Proximity sensor activated < 3700mm.You must reset horizontal axis in manual mode.
+11|24|Alarm 0.24:CB2:PLC restart.1769-AENT ethernet communication fault// or 1734-VHSCE24 fault.Reset vertical.Reset horizontal.
+11|25|Alarm 0.25:CB2:
+11|26|Alarm 0.26:CB2:
+11|27|Alarm 0.27:CB2:PLC 1734-AENT (20.20.20.90) module fault.
+11|28|Alarm 0.28:CB2:Thermal overload switch Q16 tripped or inverter U16 fault //or ethernet communication problem.
+11|29|Alarm 0.29:CB2:
+11|30|Alarm 0.30:CB2:
+11|31|Alarm 0.31:CB2: S.B. max length photocell activated.
+

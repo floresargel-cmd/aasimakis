@@ -1,0 +1,25 @@
+.vs/
+bin/
+obj/
+Debug/
+Release/
+
+development/#builds/
+development/**/bin/
+development/**/obj/
+development/**/Debug/
+development/**/Release/
+
+*.ilk
+*.sdf
+*.pdb
+*.obj
+*.cache
+*.log
+*.user
+*.suo
+
+# Large binary dependencies
+*.lib
+*.dll
+*.exe

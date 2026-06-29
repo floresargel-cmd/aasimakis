@@ -1,0 +1,10 @@
+3|0|Command  3.0:Command SRCrane->30.Basket is moving from SRCrane to conveyor 30.
+3|1|Command  3.1:Command 30->31.Basket is moving from conveyor 30 to conveyor 31.
+3|2|Command  3.2:Command SRCrane->34.Basket is moving from SRCrane to conveyor 34.
+3|3|Command  3.3:Command 34->35.Basket is moving from conveyor 34 to conveyor 35.
+4|0|Command  4.0:Command 32->33.Basket is moving from conveyor 32 to conveyor 33.
+4|1|Command  4.1:Command 33->SRCrane.Basket is moving from conveyor 33 to SRCrane.
+4|2|Command  4.2:Command 31->32.Basket is moving from conveyor 31 to conveyor 32.
+4|3|Command  4.3:Command 35->32.Basket is moving from conveyor 35 to conveyor 32.
+11|0|Pneumatic valve  BK700 active.Mechanical stop down.
+11|1|Pneumatic valve  BK700 not active .Mechanical stop up.

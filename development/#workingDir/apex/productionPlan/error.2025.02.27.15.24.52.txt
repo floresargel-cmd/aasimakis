@@ -1,0 +1,1 @@
+2025-02-27 15:24:52	-database error-	 -query: 'select maxNoOfProfilesToLoad from users where login='admin'' returned no results

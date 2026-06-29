@@ -1,0 +1,1 @@
+2025/03/04 12:22:43-error-	 -Cannot open  database. Error:Can't connect to MySQL server on '192.168.105.129' (10060) QMYSQL: Unable to connect

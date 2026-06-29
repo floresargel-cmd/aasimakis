@@ -1,0 +1,1 @@
+2025-02-27 15:29:21	-database error-	 -query: 'select needsUpdate from users where login='admin'' returned no results

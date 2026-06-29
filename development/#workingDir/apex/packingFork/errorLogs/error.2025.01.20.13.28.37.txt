@@ -1,0 +1,1 @@
+2025/01/20 13:28:37-error-	 -Cannot execQuery:insert into packingForkLog (type,description,time) values('info','programm ended','2025/01/20 13:28:36')/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'packingForkLog'. QODBC3: Unable to execute statement

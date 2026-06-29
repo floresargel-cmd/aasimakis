@@ -1,0 +1,1 @@
+2026-04-08 13:53:47	-Error in database-	 -Failed to initialize legacy database bootstrapper.

@@ -1,0 +1,69 @@
+18|0|Warning 0.0://24V DC not ok
+18|1|Warning 0.1://
+18|2|Warning 0.2://Alarm active. 
+18|3|Warning 0.3://Crane can not move fwd-bwd (horizontally - X) 
+18|4|Warning 0.4://PS reset up not 1. Crane can not move horizontally (X) or sideways (Y) 
+18|5|Warning 0.5://Crane can not move sideways (Y) 
+18|6|Warning 0.6://Crane at PS reset side - Y axis  
+18|7|Warning 0.7://Crane at PS reset horizontal - X axis. 
+18|8|Warning 0.8://Crane can not move up - down (vertically -  Z)
+18|9|Warning 0.9://Crane at PS reset vetical - Z.
+18|10|Warning 0.10://Crane can not rotate (R axis)
+18|11|Warning 0.11://Not in horizontal (X) - side (Y) -  rotation (R) position for moving down.
+18|12|Warning 0.12://PS reset up not 1. Crane can not rotate. 
+18|13|Warning 0.13://No permission from position.
+18|14|Warning 0.14://Crane not in load position hz (X) or side (Y) or rotation (R)
+18|15|Warning 0.15://Crane not in unload position hz (X) or side (Y) or rotation (R)
+18|16|Warning 0.16://Crane at PS rotation (R) 0 degrees.
+18|17|Warning 0.17://Crane at PS rotation (R) 90 degrees.
+18|18|Warning 0.18://Crane not in horizontal (X) or vertical (Z) or rotation (R) position to move sideways (Y) to load position
+18|19|Warning 0.19://Crane not in side (Y) or vertical (Z) or rotation (R) position to move horizontally (X) to load position
+18|20|Warning 0.20://Crane not in 0 degrees rotation (R) position
+18|21|Warning 0.21://Crane not in safe area to travel
+18|22|Warning 0.22://Crane not in safe area to rotate
+18|23|Warning 0.23://Crane not in 90 degrees rotation (R) position
+18|24|Warning 0.24://Crane not in correct horiozntal (X) and side (Y) position to move in the area of the gate
+18|25|Warning 0.25:// 
+18|26|Warning 0.26://Stop Cycle  
+18|27|Warning 0.27://Step timer
+18|28|Warning 0.28://Crane not in horizontal (X) or vertical (Z) or rotation (R) position to move sideways to unload position
+18|29|Warning 0.29://Crane not in side (Y) or vertical (Z) or rotation (R) position to move horizontally to unload position
+18|30|Warning 0.30:  
+18|31|Warning 0.31:  
+19|0|Warning 1.0:  
+19|1|Warning 1.1: 
+19|2|Warning 1.2:  
+19|3|Warning 1.3://Crane not on mission.
+19|4|Warning 1.4://Crane in motion.
+19|5|Warning 1.5:  
+19|6|Warning 1.6:  
+19|7|Warning 1.7:  
+19|8|Warning 1.8:  
+19|9|Warning 1.9:  
+19|10|Warning 1.10:  
+19|11|Warning 1.11://Crane not in target position hz(X)//or side (Y) or rotation (R) 
+19|12|Warning 1.12://Crane not in load position hz (X)//or side (Y) or rotation (R)
+19|13|Warning 1.13://Crane not in load position hz(X)//,side(Y),rotation(R),vt(Z)
+19|14|Warning 1.14://Crane not in target position vt (Z)
+19|15|Warning 1.15://Crane not in load position vt (Z)
+19|16|Warning 1.16://Crane not in load horizontal (X) position
+19|17|Warning 1.17://Crane not in unload position//hz (X) or side (Y) or rotation (R) 
+19|18|Warning 1.18://Crane not in unload position//hz(X),side(Y),rotation(R),vt(Z)
+19|19|Warning 1.19://Crane not in unload position vt(Z)
+19|20|Warning 1.20://Crane not in unload horizontal//(X) position
+19|21|Warning 1.21:  
+19|22|Warning 1.22:  
+19|23|Warning 1.23:  
+19|24|Warning 1.24:  
+19|25|Warning 1.25:Wrapping machine infeed conveyor not ready 
+19|26|Warning 1.26:Wrapping machine exit conveyor not ready 
+19|27|Warning 1.27:Old strapping machine infeed conveyor not ready  
+19|28|Warning 1.28:Old strapping machine exit conveyor not ready  
+19|29|Warning 1.29:In/Out station not ready for the Fork-Crane  
+19|30|Warning 1.30:Gate conveyor is not ready  
+19|31|Warning 1.31:  
+
+
+
+
+

@@ -1,0 +1,13 @@
+2025/03/06 11:45:52-error in 20.20.20.20 connection. Connection Id:83754127
+2025/03/06 11:45:52-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2025/03/06 11:45:52-error-	 -type:0,number:-41,external error number:0,message:error
+2025/03/06 11:45:52-error in 20.20.20.20 connection. Connection Id:83754127
+2025/03/06 11:45:52-tuxipReadFloat-	 -Could not ReadLgxData to plc
+variable:F163[0] no:20
+2025/03/06 11:46:232025/03/06 11:46:23-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2025/03/06 11:46:23-error-	 -type:0,number:-6,external error number:0,message:error
+2025/03/06 11:46:232025/03/06 11:46:23-error-	 -Could not open plc communication session

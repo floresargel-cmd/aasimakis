@@ -1,0 +1,64 @@
+46|0|Warning 0.0:Auxilliary circuit 24 V DC.	
+46|1|Warning 0.1:Stop cycle pressed from operator or alarm.				
+46|2|Warning 0.2:Alarm active.				
+46|3|Warning 0.3:Crane can not move horizontally (x). 
+46|4|Warning 0.4:Crane can not move horizontally (x). Not in reset (z) up position.
+46|5|Warning 0.5:
+46|6|Warning 0.6:
+46|7|Warning 0.7:Crane can not move bwd horizontally (x).Proximity switch horizontal (x) reset is on.
+46|8|Warning 0.8:Crane can not move up-down (z).
+46|9|Warning 0.9:Crane carriage can not move up (z).Proximity switch vertical (z) reset is on.
+46|10|Warning 0.10:
+46|11|Warning 0.11:Crane carriage can not move down because it is not on correct horizontal (x) position.
+46|12|Warning 0.12:
+46|13|Warning 0.13:Crane can not move down.No interlock signal from position. No permission from position.
+46|14|Warning 0.14:Crane not in load position horizontally (x) (target + position).
+46|15|Warning 0.15:Crane not in unload position horizontally (x) (target+position).
+46|16|Warning 0.16:
+46|17|Warning 0.17:
+46|18|Warning 0.18:
+46|19|Warning 0.19:
+46|20|Warning 0.20:
+46|21|Warning 0.21:
+46|22|Warning 0.22:Position 1231 is not ready from Alarm
+46|23|Warning 0.23:Position 1231 is locked
+46|24|Warning 0.24:Position 1521 is locked
+46|25|Warning 0.25:Position 1531 is locked
+46|26|Warning 0.26:Stop cycle pressed.
+46|27|Warning 0.27:Step time excess.
+46|28|Warning 0.28:
+46|29|Warning 0.29:
+46|30|Warning 0.30:
+46|31|Warning 0.31:
+47|0|Warning 1.0 :
+47|1|Warning 1.1:
+47|2|Warning 1.2:
+47|3|Warning 1.3:Crane not on mission.
+47|4|Warning 1.4:Crane in motion.
+47|5|Warning 1.5:Pneumatic Valve hooks not up.
+47|6|Warning 1.6:Magnetic switches hooks not up.
+47|7|Warning 1.7:Proximity switches basket on hooks.
+47|8|Warning 1.8:
+47|9|Warning 1.9:
+47|10|Warning 1.10:
+47|11|Warning 1.11:Crane not in target position hz (x).
+47|12|Warning 1.12:Crane not in load position hz (x).
+47|13|Warning 1.13:Crane not in load position hz(x), vt(z).
+47|14|Warning 1.14:Crane not in target position vertically (z).
+47|15|Warning 1.15:Crane not in load position vertically(z).
+47|16|Warning 1.16:Pneumatic Valves hooks not down.
+47|17|Warning 1.17:Magnetic switches hooks not down.
+47|18|Warning 1.18:Proximity switches basket not on hooks.
+47|19|Warning 1.19:
+47|20|Warning 1.20:
+47|21|Warning 1.21:
+47|22|Warning 1.22:
+47|23|Warning 1.23:
+47|24|Warning 1.24:
+47|25|Warning 1.25:
+47|26|Warning 1.26:
+47|27|Warning 1.27:
+47|28|Warning 1.28:
+47|29|Warning 1.29:Crane not in unload position horizontally (x).
+47|30|Warning 1.30:Crane not in unload position hz(x), vt(z).
+47|31|Warning 1.31:Crane not in unload position vertically (z).

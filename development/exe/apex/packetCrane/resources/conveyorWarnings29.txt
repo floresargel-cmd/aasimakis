@@ -1,0 +1,33 @@
+27|0| Warning 27.0:Packet not aligned in cassette.
+27|1| Warning 27.1:Packet length check photocell is activated.
+27|2| Warning 27.2:Safety light curtain is activated. Reset to continue.
+27|3| Warning 27.3:Conveyor 45 is locked from ForkCrane2.
+27|4| Warning 27.4:Communications with ForkCrane2 not ok
+27|5| Warning 27.5:
+27|6| Warning 27.6:
+27|7| Warning 27.7:
+27|8| Warning 27.8:
+27|9| Warning 27.9:
+27|10|Warning 27.10:
+27|11|Warning 27.11:
+27|12|Warning 27.12:
+27|13|Warning 27.13:
+27|14|Warning 27.14:
+27|15|Warning 27.15:
+27|16|Warning 27.16:
+27|17|Warning 27.17:
+27|18|Warning 27.18:
+27|19|Warning 27.19:
+27|20|Warning 27.20:
+27|21|Warning 27.21:
+27|22|Warning 27.22:
+27|23|Warning 27.23:
+27|24|Warning 27.24:
+27|25|Warning 27.25:
+27|26|Warning 27.26:
+27|27|Warning 27.27:
+27|28|Warning 27.28:
+27|29|Warning 27.29:
+27|30|Warning 27.30:
+27|31|Warning 27.31:
+

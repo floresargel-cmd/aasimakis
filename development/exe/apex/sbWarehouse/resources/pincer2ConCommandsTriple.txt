@@ -1,0 +1,51 @@
+3|0|Command  3.0:Command SRCrane->12.Cassette  is moving from SRCrane to conveyor RC12.
+3|1|Command  3.1:Command 12->13.Cassette  is moving from conveyor 12 to conveyor RC13.
+3|2|Command  3.2:Command SRCrane->8.Cassette  is moving from SRCrane to conveyor RC8.
+3|3|Command  3.3:Command 8->9.Cassette  is moving from conveyor RC8 to conveyor RC9.
+3|4|Command  3.4:Command 10->11.Cassette  is moving from conveyor RC10 to conveyor RC11.
+3|5|Command  3.5:Command 11->SRCrane.Cassette  is moving from conveyor RC11 to SRCrane.
+3|6|Command  3.6:
+3|7|Command  3.7:
+3|8|Command  3.8:
+3|9|Command  3.9:
+3|10|Command 3.10:
+3|11|Command 3.11:
+3|12|Command 3.12:
+3|13|Command 3.13:
+3|14|Command 3.14:
+3|15|Command 3.15:
+3|16|Command 3.16:
+3|17|Command 3.17:
+3|18|Command 3.18:
+3|19|Command 3.19: 
+3|20|Command 3.20:
+3|21|Command 3.21:
+3|22|Command 3.22:
+3|23|Command 3.23:
+3|24|Command 3.24:
+3|25|Command 3.25:
+3|26|Command 3.26:
+3|27|Command 3.27:
+3|28|Command 3.28:
+3|29|Command 3.29:
+3|30|Command 3.30:
+3|31|Command 3.31:
+4|0|Command  4.0:
+4|1|Command  4.1:
+4|2|Command  4.2:Command 13->10.Cassette  is moving from conveyor 13 to conveyor 10.
+4|3|Command  4.3:Command 9->10.Cassette  is moving from conveyor 9 to conveyor 10.
+4|4|Command  4.4:
+4|5|Command  4.5:
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{bb91eec8-d65d-4303-9f25-393af12db581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{1a14fcfa-070e-48fa-a8e2-2d1c3611d546}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{9aabf676-e441-4197-b369-0b4927fb8ceb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conv.cpp" />
+    <ClCompile Include="..\destacker.cpp" />
+    <ClCompile Include="..\eMem.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\move.cpp" />
+    <ClCompile Include="..\movement.cpp" />
+    <ClCompile Include="..\mPos.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\p.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\pos.cpp" />
+    <ClCompile Include="..\pRes.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\rollers.cpp" />
+    <ClCompile Include="..\sp.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\move.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\movement.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\mPos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\p.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\pos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\pRes.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\ps.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\rollers.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\sp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\conv.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\destacker.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\exportStationHmi\mocFiles.5.1.1\eMem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conv.h" />
+    <ClInclude Include="..\destacker.h" />
+    <ClInclude Include="..\ehG.h" />
+    <ClInclude Include="..\eMem.h" />
+    <ClInclude Include="..\move.h" />
+    <ClInclude Include="..\movement.h" />
+    <ClInclude Include="..\mPos.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\p.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pos.h" />
+    <ClInclude Include="..\pRes.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\rollers.h" />
+    <ClInclude Include="..\sp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+</Project>

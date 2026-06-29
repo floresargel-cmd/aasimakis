@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apexPacketWarehouse.old.5.7.0", "apexPacketWarehouse.old.5.7.0.vcxproj", "{80546A70-6E96-41DA-8586-CD1911CFBE57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|Win64 = Debug|Win64
+		Debug|x64 = Debug|x64
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|Win64 = Release|Win64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|Win32.ActiveCfg = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|Win32.Build.0 = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|Win64.ActiveCfg = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Debug|x64.ActiveCfg = Debug|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|Win32.ActiveCfg = Release|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|Win32.Build.0 = Release|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|Win64.ActiveCfg = Release|Win32
+		{80546A70-6E96-41DA-8586-CD1911CFBE57}.Release|x64.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED966A26-D95B-4582-8FBA-6CA00016352E}
+	EndGlobalSection
+EndGlobal

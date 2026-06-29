@@ -1,0 +1,20 @@
+﻿0|0|Alarm 0.0 Strapping head not up
+0|1|Alarm 0.1 Strapping head not down
+0|2|Alarm 0.2 Wood not closed
+0|3|Alarm 0.3 Wood not opened
+0|4|Alarm 0.4 Wood not at home position
+0|5|Alarm 0.5 Wood not at strap position
+0|6|Alarm 0.6 Cover not opened
+0|7|Alarm 0.7 Cover not back position
+0|8|Alarm 0.8 Cover not front position
+0|9|Alarm 0.9 Thermal overload Q16,Q17,U16,U17
+0|10|Alarm 0.10 
+0|11|Alarm 0.11 
+0|12|Alarm 0.12 
+0|13|Alarm 0.13 
+0|14|Alarm 0.14 
+0|15|Alarm 0.15 
+0|16|Alarm 0.16 
+0|17|Alarm 0.17 
+0|18|Alarm 0.18 
+0|19|Alarm 0.19 

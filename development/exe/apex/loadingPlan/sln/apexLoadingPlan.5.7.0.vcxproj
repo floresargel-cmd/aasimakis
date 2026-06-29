@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\groupOfCol.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\loadPlan.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\mW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\optim.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\options.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\packCol.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\packs.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\loadingPlan\mocFiles.5.1.1\packW.h.cpp" />
+    <ClCompile Include="..\groupOfCol.cpp" />
+    <ClCompile Include="..\loadPlan.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\optim.cpp" />
+    <ClCompile Include="..\options.cpp" />
+    <ClCompile Include="..\pack.cpp" />
+    <ClCompile Include="..\packCol.cpp" />
+    <ClCompile Include="..\packs.cpp" />
+    <ClCompile Include="..\packW.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\G.h" />
+    <ClInclude Include="..\groupOfCol.h" />
+    <ClInclude Include="..\loadPlan.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\optim.h" />
+    <ClInclude Include="..\options.h" />
+    <ClInclude Include="..\pack.h" />
+    <ClInclude Include="..\packCol.h" />
+    <ClInclude Include="..\packs.h" />
+    <ClInclude Include="..\packW.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C2A1B117-1AF7-4B55-8CC9-7C5891598732}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>C:\vcexpress\intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>../#exe/$(ProjectName)/$(Configuration)/</OutDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>C:\vcexpress\intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>../#exe/$(ProjectName)/$(Configuration)/</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Lib>
+      <OutputFile>../lib/2012x64/tuxeipD.lib</OutputFile>
+    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <OutputFile>../#exe/$(ProjectName)/$(Configuration)/$(TargetName).exe</OutputFile>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

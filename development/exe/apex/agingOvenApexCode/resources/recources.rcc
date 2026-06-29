@@ -1,0 +1,32 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./_r.bat</file>
+<file>./arrowDown - Copy.png</file>
+<file>./arrowDown.png</file>
+<file>./arrowLeft.png</file>
+<file>./arrowMoveDown.png</file>
+<file>./arrowMoveLeft.png</file>
+<file>./arrowMoveRight.png</file>
+<file>./arrowMoveUp.png</file>
+<file>./arrowNull.png</file>
+<file>./arrowRight.png</file>
+<file>./arrowUp.png</file>
+<file>./excel.png</file>
+<file>./hmi/active.png</file>
+<file>./hmi/copy.png</file>
+<file>./hmi/insight.png</file>
+<file>./hmi/ok.png</file>
+<file>./hmi/proximitySwitchOff.png</file>
+<file>./hmi/proximitySwitchOn.png</file>
+<file>./hmi/refresh.png</file>
+<file>./logo_16x16.png</file>
+<file>./ovenLayout.png</file>
+<file>./photoSensorDoubleActive.png</file>
+<file>./photoSensorInactive.png</file>
+<file>./photoSensorSingleActive.png</file>
+<file>./proximitySwitchOff.png</file>
+<file>./proximitySwitchOn.png</file>
+<file>./recources.cpp</file>
+<file>./recources.rcc</file>
+</qresource>
+</RCC>

@@ -1,0 +1,422 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\Infrastructure\Repositories\ProductionRepository.cpp">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Services\ProductionApplicationService.cpp">
+      <Filter>Application\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Services\MainWindowOrchestrator.cpp">
+      <Filter>Application\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\App\ApplicationBootstrapper.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Services\UserContextService.cpp">
+      <Filter>Application\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\SqlCommandExecutor.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\DatabaseInitializer.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Logging\FileLogger.cpp">
+      <Filter>Infrastructure\Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\bs.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\bst.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\dxf.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\dxfData.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\dxfDataClasses.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\dxfGV.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\he.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\ls.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\m.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\mW.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\op.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\ovGL.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\ovL.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\ovS.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\pass.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\pl.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\pp.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\ppl.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\sp.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_dxf.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_dxfGV.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_he.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_ls.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_ovGL.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_ovL.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_ovS.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_sp.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\SqlRetryPolicy.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\TransactionScope.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\DatabaseInitializerSqlScripts.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\ProductionSqlScripts.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\BasketSqlScripts.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Repositories\BasketRepository.cpp">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Services\BasketApplicationService.cpp">
+      <Filter>Application\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\ProductionMonitorSqlScripts.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Repositories\ProductionMonitorRepository.cpp">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Services\ProductionMonitorService.cpp">
+      <Filter>Application\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\LegacyDatabaseBootstrapSqlScripts.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\LegacyDatabaseBootstrapper.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\LegacyLoggingBridge.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\LegacyGlobalState.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\SqlScripts\LegacyDatabaseTableDefinitions.cpp">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClCompile>
+    <ClCompile Include="..\legacy\LegacySqlBridge.cpp">
+      <Filter>legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Database\SqlHelper.cpp">
+      <Filter>Infrastructure\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Infrastructure\Repositories\LegacyProductionRepository.cpp">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_ppl.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_op.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_pass.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_bst.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_mw.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_tcpTux.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_bs.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_pl.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Generated\moc_pp.cpp">
+      <Filter>Genereated</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Application\Interfaces\IProductionRepository.h">
+      <Filter>Application\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionRepository.h">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\ProductionApplicationService.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\MainWindowOrchestrator.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\App\ApplicationBootstrapper.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\AppSettings.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\UserContextService.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\SqlCommandExecutor.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\DatabaseInitializer.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Domain\Entities\ProductionProfile.h">
+      <Filter>Domain\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Logging\FileLogger.h">
+      <Filter>Infrastructure\Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\bs.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\bst.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\dxf.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\dxfData.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\dxfDataClasses.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\dxfGV.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\he.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ls.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\mW.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\op.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ovGL.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ovL.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ovS.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\pass.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\pl.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\pp.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ppG.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\ppl.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\sp.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\SqlRetryPolicy.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\TransactionScope.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\DatabaseInitializerSqlScripts.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\ProductionSqlScripts.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Interfaces\IBasketRepository.h">
+      <Filter>Application\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\BasketSqlScripts.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Repositories\BasketRepository.h">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\BasketApplicationService.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Interfaces\IProductionMonitorRepository.h">
+      <Filter>Application\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\ProductionMonitorSqlScripts.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionMonitorRepository.h">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\ProductionMonitorService.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Services\LegacyRuntimeContext.h">
+      <Filter>Application\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\LegacyDatabaseBootstrapSqlScripts.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\LegacyDatabaseBootstrapper.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\LegacyLoggingBridge.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\LegacyGlobalState.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\SqlScripts\LegacyDatabaseTableDefinitions.h">
+      <Filter>Infrastructure\SqlScripts</Filter>
+    </ClInclude>
+    <ClInclude Include="..\legacy\LegacySqlBridge.h">
+      <Filter>legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Database\SqlHelper.h">
+      <Filter>Infrastructure\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionRow.h">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Infrastructure\Repositories\LegacyProductionRepository.h">
+      <Filter>Infrastructure\Repositories</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Application">
+      <UniqueIdentifier>{7e6c9c0b-89e7-426f-a4cb-4671399eb98d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Services">
+      <UniqueIdentifier>{e8be6ed4-fcab-4193-b8a7-0f74939d294a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{53041dc8-c5aa-4170-b95b-f7c3fcdfdd3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure">
+      <UniqueIdentifier>{06fc4caa-ed1b-446a-bea9-836c1a0a6886}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure\Logging">
+      <UniqueIdentifier>{b37f1034-c0e4-41b5-8498-7de201e557a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure\Database">
+      <UniqueIdentifier>{9f883d06-ba41-4e6b-acd5-c3378c78a3bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Domain">
+      <UniqueIdentifier>{7b0ad0e6-b441-42fa-a258-2218fcf17fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Domain\Entities">
+      <UniqueIdentifier>{0f9bc421-4970-4cf8-87e5-ac5cd499673c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Interfaces">
+      <UniqueIdentifier>{3e17f797-928a-4cb5-932c-c48e721bcec9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure\Repositories">
+      <UniqueIdentifier>{b4cb1951-70e9-4e2d-ba20-cef925dcdd9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="legacy">
+      <UniqueIdentifier>{0e0f4680-e019-40d8-b269-5a7af0959a75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bc675c53-8948-47a2-ab2c-0f7530091164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Genereated">
+      <UniqueIdentifier>{21c8359f-6fb5-4cba-9d10-9382871a8610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{a5d8f3a6-2f27-4aec-ba04-388ba22fa9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Infrastructure\SqlScripts">
+      <UniqueIdentifier>{aae0fcd0-54e9-4b18-bae5-72ec438fa3d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\images">
+      <UniqueIdentifier>{19b34fe8-e559-4010-8492-1f2ec30334c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\legacy\_m.bat">
+      <Filter>legacy</Filter>
+    </None>
+    <None Include="..\app.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\images\apexlogo.png">
+      <Filter>Resources\images</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

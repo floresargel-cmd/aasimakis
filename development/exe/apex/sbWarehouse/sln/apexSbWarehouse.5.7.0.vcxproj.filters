@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dxf">
+      <UniqueIdentifier>{058f36c0-866f-4d08-98fe-6fd953e1cee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{1a4933ec-c18a-4bdb-87f2-0b6bfb7da6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{43e7bbdb-b30f-45e6-856e-188fe3f96add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qtResourceFiles">
+      <UniqueIdentifier>{b183320c-8a94-474d-a141-b8e2ade75d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxf\moc">
+      <UniqueIdentifier>{b0936a8c-97f2-40f9-8f7e-b171b27be112}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers">
+      <UniqueIdentifier>{bd34045a-2b30-4c43-a032-82e97c77decd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\pincer2">
+      <UniqueIdentifier>{02f613d1-d000-4a7b-bfbb-4aab5e4a8ffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\pincer2\moc">
+      <UniqueIdentifier>{5331afb6-ed24-456c-baac-4249c98a94ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\moc">
+      <UniqueIdentifier>{4e18a4f9-56df-48fc-bdb4-5f189e809344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\pincer1">
+      <UniqueIdentifier>{cb435ddf-99ac-41ed-9e26-37d007606213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\pincer1\moc">
+      <UniqueIdentifier>{45c72e01-cef7-42e4-9e85-f8adaf2c0f6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\conveyors">
+      <UniqueIdentifier>{f3f66b08-21cc-4807-97b1-48efd79f4080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="pincers\conveyors\moc">
+      <UniqueIdentifier>{f06b35f7-2843-4c1d-b36b-b0f839db2531}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>qtResourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gData.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gDataC.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gItem.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gText.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gView.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\allPos.cpp" />
+    <ClCompile Include="..\autoWdg.cpp" />
+    <ClCompile Include="..\bSelect.cpp" />
+    <ClCompile Include="..\crane.cpp" />
+    <ClCompile Include="..\crConv.cpp" />
+    <ClCompile Include="..\crConvW.cpp" />
+    <ClCompile Include="..\expWdg.cpp" />
+    <ClCompile Include="..\hmiB.cpp" />
+    <ClCompile Include="..\hmiDlg.cpp" />
+    <ClCompile Include="..\hmiSett.cpp" />
+    <ClCompile Include="..\logW.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\pos.cpp" />
+    <ClCompile Include="..\proxItem.cpp" />
+    <ClCompile Include="..\search.cpp" />
+    <ClCompile Include="..\triplePos.cpp" />
+    <ClCompile Include="..\usageDlg.cpp" />
+    <ClCompile Include="..\posDlg.cpp" />
+    <ClCompile Include="..\bCont.cpp" />
+    <ClCompile Include="..\craneWdg.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\gText.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\gView.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\gItem.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\allPos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\autoWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\bCont.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\bSelect.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\crane.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\craneWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\crConv.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\crConvW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\expWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\hmiB.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\hmiDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\hmiSett.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\logW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\posDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\proxItem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\search.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\triplePos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\usageDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer1.h.cpp">
+      <Filter>pincers\pincer1\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gsw.cpp" />
+    <ClCompile Include="..\..\Gs.cpp" />
+    <ClCompile Include="..\pincer2.cpp">
+      <Filter>pincers\pincer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer2.h.cpp">
+      <Filter>pincers\pincer2\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincer2AllPos.cpp">
+      <Filter>pincers\pincer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincerCol.cpp">
+      <Filter>pincers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincerPos.cpp">
+      <Filter>pincers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer2AllPos.h.cpp">
+      <Filter>pincers\pincer2\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincerCol.h.cpp">
+      <Filter>pincers\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincerPos.h.cpp">
+      <Filter>pincers\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincer1Allpos.cpp">
+      <Filter>pincers\pincer1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincer1.cpp">
+      <Filter>pincers\pincer1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer1Allpos.h.cpp">
+      <Filter>pincers\pincer1\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincer1Conv.cpp">
+      <Filter>pincers\pincer1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conMove.cpp">
+      <Filter>pincers\conveyors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conPos.cpp">
+      <Filter>pincers\conveyors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conProxItem.cpp">
+      <Filter>pincers\conveyors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conBtn.cpp">
+      <Filter>pincers\conveyors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\conPs.cpp">
+      <Filter>pincers\conveyors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\conPos.h.cpp">
+      <Filter>pincers\conveyors\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\conProxItem.h.cpp">
+      <Filter>pincers\conveyors\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\conPs.h.cpp">
+      <Filter>pincers\conveyors\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\conBtn.h.cpp">
+      <Filter>pincers\conveyors\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\conMove.h.cpp">
+      <Filter>pincers\conveyors\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer1Conv.h.cpp">
+      <Filter>pincers\pincer1\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pincer2Conv.cpp">
+      <Filter>pincers\pincer2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\sbWarehouse\mocFiles.5.1.1\pincer2Conv.h.cpp">
+      <Filter>pincers\pincer2\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+    <None Include="..\resources\recources.rcc">
+      <Filter>qtResourceFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\gData.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gDataC.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gItem.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gText.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gView.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\allPos.h" />
+    <ClInclude Include="..\autoWdg.h" />
+    <ClInclude Include="..\bSelect.h" />
+    <ClInclude Include="..\crane.h" />
+    <ClInclude Include="..\crConv.h" />
+    <ClInclude Include="..\crConvW.h" />
+    <ClInclude Include="..\expWdg.h" />
+    <ClInclude Include="..\hmiB.h" />
+    <ClInclude Include="..\hmiDlg.h" />
+    <ClInclude Include="..\hmiSett.h" />
+    <ClInclude Include="..\logW.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\pos.h" />
+    <ClInclude Include="..\proxItem.h" />
+    <ClInclude Include="..\search.h" />
+    <ClInclude Include="..\triplePos.h" />
+    <ClInclude Include="..\usageDlg.h" />
+    <ClInclude Include="..\posDlg.h" />
+    <ClInclude Include="..\bCont.h" />
+    <ClInclude Include="..\craneWdg.h" />
+    <ClInclude Include="..\Gsw.h" />
+    <ClInclude Include="..\..\Gs.h" />
+    <ClInclude Include="..\pincer2.h">
+      <Filter>pincers\pincer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincer2AllPos.h">
+      <Filter>pincers\pincer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincerCol.h">
+      <Filter>pincers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincerPos.h">
+      <Filter>pincers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincer1Allpos.h">
+      <Filter>pincers\pincer1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincer1.h">
+      <Filter>pincers\pincer1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincer1Conv.h">
+      <Filter>pincers\pincer1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conMove.h">
+      <Filter>pincers\conveyors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conPos.h">
+      <Filter>pincers\conveyors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conProxItem.h">
+      <Filter>pincers\conveyors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conBtn.h">
+      <Filter>pincers\conveyors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\conPs.h">
+      <Filter>pincers\conveyors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pincer2Conv.h">
+      <Filter>pincers\pincer2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch.h" />
+  </ItemGroup>
+</Project>

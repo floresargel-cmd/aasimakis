@@ -1,0 +1,1 @@
+2025-02-27 15:56:16	-database error-	 -query: 'select temperType from temperTypes where id=0' returned no results

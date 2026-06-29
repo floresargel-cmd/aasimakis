@@ -1,0 +1,39 @@
+﻿25|0|Alarm  0.0:CB.24 Volt DC alarm.
+25|1|Alarm  0.1:CB.Stop cycle button pressed on OP.
+25|2|Alarm  0.2:CB.Thermal overload Q1//Alarm from inverter U1.//Inverter fault or//ethernet communication problem.
+25|3|Alarm  0.3:CB.Thermal overload Q2//Alarm from inverter U2.//Inverter fault or//ethernet communication problem.
+25|4|Alarm  0.4:CB.Thermal overload Q3,Q4,Q5,Q6,Q300,Q301,Q302,//Q400,Q401,Q402,Q500,Q501,Q502,Q600,Q601
+25|5|Alarm  0.5:CB.Safety unit off
+25|6|Alarm  0.6:CB.Overtime for active command.//Possible problem.
+25|7|Alarm  0.7:CB.Thermal overload//or alarm from 1734-AENT.//1734-AENT fault or ethernet communication problem.
+25|8|Alarm  0.8:CB.Thermal overload
+25|9|Alarm  0.9 :Conveyor 41 cannot//move up.//Check for jam.//Check sensor,valve.
+25|10|Alarm 0.10:Conveyor 41 cannot//move down.//Check for jam.//Check sensor,valve.
+25|11|Alarm 0.11:Conveyor 42 cannot//move up.//Check for jam.//Check sensor,valve.
+25|12|Alarm 0.12:Conveyor 42 cannot//move down.//Check for jam.//Check sensor,valve.
+25|13|Alarm 0.13:Conveyor 45 cannot//move up.//Check for jam.//Check sensor,valve.
+25|14|Alarm 0.14:Conveyor 45 cannot//move down.//Check for jam.//Check sensor,valve.
+25|15|Alarm 0.15:Pneumatic valve safety stop//cannot move down.//Check for jam.//Check sensor,valve,air.
+25|16|Alarm 0.16:Pneumatic valve safety stop//cannot move up.//Check for jam.//Check sensor,valve,air.
+25|17|Alarm 0.17:Safety door open//(safety interlock from BC2)
+25|18|Alarm 0.18:
+25|19|Alarm 0.19:
+25|20|Alarm 0.20:
+25|21|Alarm 0.21:
+25|22|Alarm 0.22:
+25|23|Alarm 0.23:
+25|24|Alarm 0.24:
+25|25|Alarm 0.25:
+25|26|Alarm 0.26:
+25|27|Alarm 0.27:
+25|28|Alarm 0.28:
+25|29|Alarm 0.29:
+25|30|Alarm 0.30:
+25|31|Alarm 0.31:
+24|8|Packet not aligned in cassette.
+24|9|Packet length check photocell is activated.
+24|10|Safety light curtain is activated
+
+
+
+

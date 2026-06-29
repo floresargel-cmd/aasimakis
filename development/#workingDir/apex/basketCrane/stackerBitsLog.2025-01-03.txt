@@ -1,0 +1,4 @@
+2025-01-03 08:07:05	N20[13].4=0   befforeStackerPosition is empty=0
+2025-01-03 08:07:05	N20[13].6=0   afterStackerPosition has basket=0
+2025-01-03 08:25:19	N20[13].4=0   befforeStackerPosition is empty=0
+2025-01-03 08:25:19	N20[13].6=0   afterStackerPosition has basket=0

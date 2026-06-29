@@ -1,0 +1,1 @@
+2026/04/08 11:06:00-error-	 -Cannot execQuery:select tid from epicsProduction2 where (status=0 and quantityInBaskets<totalQuantity) and pressNum=1 order by productionOrder/nsql server:Driver not loaded Driver not loaded

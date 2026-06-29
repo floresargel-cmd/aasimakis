@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\emulate.cr.cpp" />
+    <ClCompile Include="..\emulate.mW.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\oP.cpp" />
+    <ClCompile Include="..\oW.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\pl.cpp" />
+    <ClCompile Include="..\plcDlg.cpp" />
+    <ClCompile Include="..\plcM.cpp" />
+    <ClCompile Include="..\plcW.cpp" />
+    <ClCompile Include="..\uglyfont.cpp" />
+    <ClCompile Include="..\ap.cpp" />
+    <ClCompile Include="..\b.cpp" />
+    <ClCompile Include="..\bP.cpp" />
+    <ClCompile Include="..\cr.cpp" />
+    <ClCompile Include="..\dc.cpp" />
+    <ClCompile Include="..\emulate.conv.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\ap.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\b.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\bP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\cr.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.conv.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.cr.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\oP.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\oW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\pl.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcM.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\emulate.cr.h" />
+    <ClInclude Include="..\emulate.G.h" />
+    <ClInclude Include="..\emulate.mW.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\oP.h" />
+    <ClInclude Include="..\oW.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pl.h" />
+    <ClInclude Include="..\plcDlg.h" />
+    <ClInclude Include="..\plcM.h" />
+    <ClInclude Include="..\plcW.h" />
+    <ClInclude Include="..\uglyfont.h" />
+    <ClInclude Include="..\ap.h" />
+    <ClInclude Include="..\b.h" />
+    <ClInclude Include="..\bP.h" />
+    <ClInclude Include="..\cG.h" />
+    <ClInclude Include="..\cr.h" />
+    <ClInclude Include="..\dc.h" />
+    <ClInclude Include="..\emulate.conv.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="moc">
+      <UniqueIdentifier>{a1c3c5b0-dfa5-4d3f-af86-604748a90a42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{560fc54b-10ce-4797-acc1-4a0e69932a12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icons">
+      <UniqueIdentifier>{2d5dfe41-c0e4-47aa-b0ca-dc02778ce6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\moc">
+      <UniqueIdentifier>{c2098973-7874-457b-8745-0e56681438a8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icons</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icons</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

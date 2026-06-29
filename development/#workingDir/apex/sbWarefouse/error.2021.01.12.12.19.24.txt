@@ -1,0 +1,1 @@
+2021/01/12 12:19:24-error-	 -Cannot execQuery:insert into importExportLog (ticket,sbNumber,dateAndTime,importLocation,exportLocation,triggerStatus) values(5000,50,now(),'10050 (Old pincer destacker working sb conveyor)','',2)/nsql server:Data too long for column 'importLocation' at row 1 QMYSQL: Unable to execute query

@@ -1,0 +1,2 @@
+2025/03/07 10:57:44-error-	 -Cannot execQuery:insert into frorkPackingBarcodeScansLog (message,dateStr) values ('Error opening serial port COM1.
+Error:No such file or directory','2025.03.07.10.57.44')/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'frorkPackingBarcodeScansLog'. QODBC3: Unable to execute statement

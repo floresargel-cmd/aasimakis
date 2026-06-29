@@ -1,0 +1,39 @@
+﻿13|0|Alarm  0.0:CB2.24 Volt DC alarm.
+13|1|Alarm  0.1:CB2.Stop cycle button pressed on OP.
+13|2|Alarm  0.2:CB2.Thermal overload Q5.Alarm from inverter U5.//Inverter fault or ethernet communication problem.
+13|3|Alarm  0.3:CB2.
+13|4|Alarm  0.4:CB2.Thermal overload  Q5,Q500,Q501,Q6,Q7,Q8,Q9,Q17.
+13|5|Alarm  0.5:CB2.
+13|6|Alarm  0.6:CB2.Overtime for active command.Possible problem.
+13|7|Alarm  0.7:CB2.
+13|8|Alarm  0.8:CB2.
+13|9|Alarm  0.9:CB2.Conveyor RC13 cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+13|10|Alarm 0.10:CB2.Conveyor RC13 cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+13|11|Alarm 0.11:CB2.Conveyor RC10 cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+13|12|Alarm 0.12:CB2.Conveyor RC10 cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+13|13|Alarm 0.13:CB2.Conveyor RC9 cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+13|14|Alarm 0.14:CB2.Conveyor RC9 cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+13|15|Alarm 0.15:CB2.Conveyor RC11 safety stop cannot move down.Possible causes:Magnetic switch feedback fault,air pressure.
+13|16|Alarm 0.16:CB2.Conveyor RC11 safety stop cannot move up.Possible causes:Magnetic switch feedback fault,air pressure.
+13|17|Alarm 0.17:CB2.
+13|18|Alarm 0.18:CB2.
+13|19|Alarm 0.19:CB2.
+13|20|Alarm 0.20:CB2.
+13|21|Alarm 0.21:CB2.
+13|22|Alarm 0.22:CB2.
+13|23|Alarm 0.23:CB2.
+13|24|Alarm 0.24:CB2.
+13|25|Alarm 0.25:CB2.
+13|26|Alarm 0.26:CB2.
+13|27|Alarm 0.27:CB2.
+13|28|Alarm 0.28:CB2.
+13|29|Alarm 0.29:CB2.
+13|30|Alarm 0.30:CB2.
+13|31|Alarm 0.31:CB2.
+
+
+
+
+
+
+

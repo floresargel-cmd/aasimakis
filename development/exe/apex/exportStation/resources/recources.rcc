@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./_r.bat</file>
+<file>./add.png</file>
+<file>./arrowDown.png</file>
+<file>./arrowUp.png</file>
+<file>./assimakis.png</file>
+<file>./conveyorsLayout.png</file>
+<file>./delete.png</file>
+<file>./lock.png</file>
+<file>./recources.cpp</file>
+<file>./recources.rcc</file>
+<file>./remove.png</file>
+<file>./return.png</file>
+<file>./unLock.png</file>
+</qresource>
+</RCC>

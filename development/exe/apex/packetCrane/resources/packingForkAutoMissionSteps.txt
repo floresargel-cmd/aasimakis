@@ -1,0 +1,19 @@
+﻿24|1|Step  1: Mission active.
+24|2|Step  2: Go to Safe area
+24|3|Step  3: Move hz (X) in safe area
+24|4|Step  4: Rotate empty
+24|5|Step  5: Go to load B position (X,Y,R)
+24|6|Step  6: Go to load Z position
+24|7|Step  7: Go to load position (X,Y,Z,R)
+24|8|Step  8: Go to Z=0 at load position
+24|9|Step  9: Go to safe area or to rotation position
+24|10|Step 10: Rotate full (if load = 8)
+24|11|Step 11: Move hz (X) in safe area
+24|12|Step 12: Rotate full (if unload = 8)
+24|13|Step 13: Go to unload B position (X,Y, R)
+24|14|Step 14: Go to unload Z position
+24|15|Step 15: Go to unload position (X,Y,Z,R)
+24|16|Step 16: Go to Z=0 at unload position
+24|17|Step 17: Go to roation/safe position
+24|18|Step 18: Rotate empty
+24|19|Step 19: End mission

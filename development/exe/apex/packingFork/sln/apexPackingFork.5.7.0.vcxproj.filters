@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="icon">
+      <UniqueIdentifier>{c58d90be-7057-40c9-8096-2148d20c683a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{631a2479-28fb-4e6d-8e1b-fb743d620df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxf">
+      <UniqueIdentifier>{b15e636d-dd39-4242-b381-b830a80cfa96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxf\moc">
+      <UniqueIdentifier>{7968c079-f014-45f3-8654-796c592a0af4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rollers">
+      <UniqueIdentifier>{d807c058-4e2f-4f42-ad99-e695d09438cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rollers\moc">
+      <UniqueIdentifier>{af616919-8be3-4084-a2cc-a4507bd422df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\allPosPackingFork.cpp" />
+    <ClCompile Include="..\forkPacking.cpp" />
+    <ClCompile Include="..\hmiDlgForkPacking.cpp" />
+    <ClCompile Include="..\hmiSettingsPackingFork.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\posPackingFork.cpp" />
+    <ClCompile Include="..\posDlgPackingFork.cpp" />
+    <ClCompile Include="..\gText.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gData.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gDataC.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gItemP.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gView.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch.cpp" />
+    <ClCompile Include="..\Gf.cpp" />
+    <ClCompile Include="..\..\Gs.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\allPosPackingFork.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\posDlgPackingFork.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\hmiDlgForkPacking.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\hmiSettingsPackingFork.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\posPackingFork.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gItemP.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gText.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gView.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\rollersDlg.cpp">
+      <Filter>rollers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gProxItem.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gProxItem.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gBtnItem.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gBtnItem.h.cpp">
+      <Filter>dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\rollersDlg.h.cpp">
+      <Filter>rollers\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\forkPacking.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\forkPackingWdgt.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\forkPackingWdgt.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\G.cpp" />
+    <ClCompile Include="..\serialPortDlg.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\serialPortDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\forkUserWdgt.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\forkUserWdgt.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\allPosPackingFork.h" />
+    <ClInclude Include="..\forkPacking.h" />
+    <ClInclude Include="..\..\G.h" />
+    <ClInclude Include="..\hmiDlgForkPacking.h" />
+    <ClInclude Include="..\hmiSettingsPackingFork.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\posPackingFork.h" />
+    <ClInclude Include="..\posDlgPackingFork.h" />
+    <ClInclude Include="..\gText.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gData.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gDataC.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gItemP.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gView.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pch.h" />
+    <ClInclude Include="..\Gf.h" />
+    <ClInclude Include="..\..\Gs.h" />
+    <ClInclude Include="..\rollersDlg.h">
+      <Filter>rollers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gProxItem.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gBtnItem.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\forkPackingWdgt.h" />
+    <ClInclude Include="..\serialPortDlg.h" />
+    <ClInclude Include="..\forkUserWdgt.h" />
+  </ItemGroup>
+</Project>

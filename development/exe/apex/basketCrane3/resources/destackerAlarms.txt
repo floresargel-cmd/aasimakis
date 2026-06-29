@@ -1,0 +1,66 @@
+﻿52|0|Alarm 0.0:24V DC alarm (Input CB3.424)
+52|1|Alarm 0.1:Stop cycle button pressed on Destacker2 OP(Input CB3.200)
+52|2|Alarm 0.2:Thermal overload switch(es) CB3.Q200,Q201,Q200F,Q201F tripped (Input CB3.426)
+52|3|Alarm 0.3:PLC card(s) or Point I/O card(s) fault
+52|4|Alarm 0.4:
+52|5|Alarm 0.5:Thermal overload switch CB3.Q2 tripped or alarm from inverter CB3.U2.
+52|6|Alarm 0.6:
+52|7|Alarm 0.7:
+52|8|Alarm 0.8:
+52|9|Alarm 0.9:
+52|10|Alarm 0.10:Alarm from encoder vertical axis.Encoder card fault.Reset vertical in manual mode.
+52|11|Alarm 0.11:Alarm from encoder horizontal axis.Encoder card fault.Reset horizontal in manual mode.
+52|12|Alarm 0.12:
+52|13|Alarm 0.13:Destacker2 valve "hooks inside" but no feedback from magnetic switch.Check valve (Output CB3.912).Check magnetic switch (Input CB3.220).
+52|14|Alarm 0.14:Destacker2 valve  "hooks out" but no feedback from magnetic switch.Check valve (Output CB3.913).Check magnetic switch (Input CB3.221).
+52|15|Alarm 0.15:Destacker2 horizontal axis overspeed.                                                                                        
+52|16|Alarm 0.16:Destacker2 horizontal axis underspeed.
+52|17|Alarm 0.17:Destacker2 vertical axis overspeed.
+52|18|Alarm 0.18:Destacker2 vertical axis underspeed.
+52|19|Alarm 0.19:
+52|20|Alarm 0.20:
+52|21|Alarm 0.21:
+52|22|Alarm 0.22:
+52|23|Alarm 0.23:
+52|24|Alarm 0.24:
+52|25|Alarm 0.25:
+52|26|Alarm 0.26:
+52|27|Alarm 0.27:
+52|28|Alarm 0.28:
+52|29|Alarm 0.29:
+52|30|Alarm 0.30:
+52|31|Alarm 0.31:
+53|0|Safety Alarm 6.0:Emergency Stop pressed on CB3 (Input CB3.A100)
+53|1|Safety Alarm 6.1:Emergency Stop pressed on Fork Crane OP (Input CB3.A101)
+53|2|Safety Alarm 6.2:Door 1 open (Input CB3.A300)
+53|3|Safety Alarm 6.3:Door 2 open (Input CB3.A301)
+53|4|Safety Alarm 6.4:Door 3 open (Input CB3.A302)
+53|5|Safety Alarm 6.5:Emergency Stop pressed on Destacker OP (CB3.A306)
+53|6|Safety Alarm 6.6:
+53|7|Safety Alarm 6.7:
+53|8|Safety Alarm 6.8:
+53|9|Safety Alarm 6.9:
+53|10|Safety Alarm 6.10:
+53|11|Safety Alarm 6.11:
+53|12|Safety Alarm 6.12:
+53|13|Safety Alarm 6.13:
+53|14|Safety Alarm 6.14:
+53|15|Safety Alarm 6.15:
+53|16|Safety Alarm 6.16:
+53|17|Safety Alarm 6.17:
+53|18|Safety Alarm 6.18:
+53|19|Safety Alarm 6.19:
+53|20|Safety Alarm 6.20:
+53|21|Safety Alarm 6.21:
+53|22|Safety Alarm 6.22:
+53|23|Safety Alarm 6.23:
+53|24|Safety Alarm 6.24:
+53|25|Safety Alarm 6.25:
+53|26|Safety Alarm 6.26:
+53|27|Safety Alarm 6.27:
+53|28|Safety Alarm 6.28:
+53|29|Safety Alarm 6.29:
+53|30|Safety Alarm 6.30:
+53|31|Safety Alarm 6.31:
+
+

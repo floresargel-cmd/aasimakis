@@ -1,0 +1,1 @@
+2022/11/28 09:10:46-error-	 -Cannot execQuery:select layer  from basketSpacers where (sp1=1 or sp2=1 or sp3=1 or sp4=1 or sp5=1 or sp6=1 or sp7=1 or sp8=1) and basket=0 order by layer/nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'basketSpacers'. QODBC3: Unable to execute statement

@@ -1,0 +1,104 @@
+﻿42|0|Alarm 0.0:24V DC alarm (Input CB3.424)
+42|1|Alarm 0.1:Stop cycle button pressed (Input CB3.811 or CB3.518) or stop from conditions.
+42|2|Alarm 0.2:Thermal overload switch(es) tripped - Q1,Q100,Q100F,Q101,Q101F (Input CB3.425)
+42|3|Alarm 0.3:Alarm from Profile length
+42|4|Alarm 0.4:Thermal overload switch CB3.Q1 tripped or Inverter CB3.U1 fault (Horizontal - X & Vertical - Z Axes)
+42|5|Alarm 0.5:Basket unlock but no feedback from magnetic switches.Check valve (Output CB3.906).Check magnetic switches (Inputs CB3.804-806).
+42|6|Alarm 0.6:Basket lock but no feedback from magnetic switches.Check valve (Output CB3.907).Check magnetic switches (Inputs CB3.805-807).
+42|7|Alarm 0.7:Alarm from proximity sensors on pulleys with basket locked.Basket detection  must be inactive only very close to the target.//Check pulleys proximity switches (Inputs CB3.802-803)
+42|8|Alarm 0.8:Alarm from proximity sensors on pulleys with basket unlocked.Basket detection  must be inactive only very close to the target.//Check pulleys proximity switches (Inputs CB3.802-803)
+42|9|Alarm 0.9:Alarm from mission timer.
+42|10|Alarm 0.10:Step overtime for mission.
+42|11|Alarm 0.11:Crane carriage X axis underspeed.
+42|12|Alarm 0.12:Crane carriage X axis overspeed.
+42|13|Alarm 0.13:Wrong motion direction at horiozntal - X axis
+42|14|Alarm 0.14:Crane carriage Z axis underspeed.
+42|15|Alarm 0.15:Crane carriage Z axis overspeed.                                                                                       
+42|16|Alarm 0.16:Wrong motion direction at vertical - Z axis
+42|17|Alarm 0.17:Crane carriage slips down.
+42|18|Alarm 0.18:Target out of limits
+42|19|Alarm 0.19:Actual Position Value out of limits
+42|20|Alarm 0.20:Alarm from proximity sensors on hooks.Hooks open but basket detection sensor active.
+42|21|Alarm 0.21:Alarm from proximity sensors on hooks.Lost basket detection sensor.
+42|22|Alarm 0.22:Alarm from proximity sensors on hooks (basket detection).Basket detection sensor must be inactive only very close to the target.
+42|23|Alarm 0.23:Alarm from proximity sensors on hooks (basket detection). Basket detection sesnor can be inactive only some mm after basket is taken form the crane.
+42|24|Alarm 0.24:Alarm from Destacker distance.
+42|25|Alarm 0.25:Alarm from current with hooks open.
+42|26|Alarm 0.26:Alarm from current with hooks closed.
+42|27|Alarm 0.27:Vertical - Z maximum speed limit surpassed
+42|28|Alarm 0.28:Alarm from encoder (vertical motion). Encoder fault or ethernet communication problem.
+42|29|Alarm 0.29::Alarm from encoder (horizontal motion). Encoder fault or ethernet communication problem.
+42|30|Alarm 0.30:PLC card(s) or Point I/O card(s) fault
+42|31|Alarm 0.31:
+43|0|Alarm 1.0:
+43|1|Alarm 1.1:
+43|2|Alarm 1.2:
+43|3|Alarm 1.3:
+43|4|Alarm 1.4:
+43|5|Alarm 1.5:
+43|6|Alarm 1.6:
+43|7|Alarm 1.7:
+43|8|Alarm 1.8:
+43|9|Alarm 1.9:
+43|10|Alarm 1.10:
+43|11|Alarm 1.11:
+43|12|Alarm 1.12:
+43|13|Alarm 1.13:
+43|14|Alarm 1.14:
+43|15|Alarm 1.15:
+43|16|Alarm 1.16:
+43|17|Alarm 1.17.
+43|18|Alarm 1.18:
+43|19|Alarm 1.19:
+43|20|Alarm 1.20:
+43|21|Alarm 1.21:
+43|22|Alarm 1.22:
+43|23|Alarm 1.23:
+43|24|Alarm 1.24:
+43|25|Alarm 1.25:
+43|26|Alarm 1.26:
+43|27|Alarm 1.27:
+43|28|Alarm 1.28:
+43|29|Alarm 1.29:
+43|30|Alarm 1.30:
+43|31|Alarm 1.31:
+44|0|Safety Alarm 0.0:Emergency Stop pressed on CB3 (Input CB3.A100)
+44|1|Safety Alarm 0.1:Emergency Stop pressed on Fork Crane OP (Input CB3.A101)
+44|2|Safety Alarm 0.2:Door 1 open (Input CB3.A300)
+44|3|Safety Alarm 0.3:Door 2 open (Input CB3.A301)
+44|4|Safety Alarm 0.4:Door 3 Open (Input CB3.A302)
+44|5|Safety Alarm 0.5:Light Curtain at Conveyor under Basket Crane 3 was interrupted (Input CB3.A1400)
+44|6|Safety Alarm 0.6:Emergency Stop pressed on Destacker OP (Input CB3.A306)
+44|7|Safety Alarm 0.7:
+44|8|Safety Alarm 0.8:
+44|9|Safety Alarm 0.9:
+44|10|Safety Alarm 0.10:
+44|11|Safety Alarm 0.11:
+44|12|Safety Alarm 0.12:
+44|13|Safety Alarm 0.13:
+44|14|Safety Alarm 0.14:
+44|15|Safety Alarm 0.15:
+44|16|Safety Alarm 0.16:
+44|17|Safety Alarm 0.17:
+44|18|Safety Alarm 0.18:
+44|19|Safety Alarm 0.19:
+44|20|Safety Alarm 0.20:
+44|21|Safety Alarm 0.21:
+44|22|Safety Alarm 0.22:
+44|23|Safety Alarm 0.23:
+44|24|Safety Alarm 0.24:
+44|25|Safety Alarm 0.25:
+44|26|Safety Alarm 0.26:
+44|27|Safety Alarm 0.27:
+44|28|Safety Alarm 0.28:
+44|29|Safety Alarm 0.29:
+44|30|Safety Alarm 0.30:
+44|31|Safety Alarm 0.31:
+
+
+
+
+
+
+
+

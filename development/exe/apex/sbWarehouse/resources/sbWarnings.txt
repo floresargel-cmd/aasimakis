@@ -1,0 +1,98 @@
+46|0|Warning 0.0:Crane can not move fwd-bwd,up-down.Right safety photocell not inside.Magnetic switch 0.
+46|1|Warning 0.1:Crane can not move fwd-bwd,up-down.Left safety photocell not inside.Magnetic switch 0.
+46|2|Warning 0.2:Crane can not move fwd-bwd,up-down.Hooks carriage not in safe position down.
+46|3|Warning 0.3:Crane can not move fwd-bwd,up-down.Hooks carriage not in safe position.
+46|4|Warning 0.4:
+46|5|Warning 0.5:
+46|6|Warning 0.6:Crane can not move fwd-bwd,up-down.Check proximity sensors carriage 1A. 
+46|7|Warning 0.7:
+46|8|Warning 0.8:Stop from stop cycle / alarms.
+46|9|Warning 0.9:Crane carriage not in load position vertical / horizontal.
+46|10|Warning 0.10:Crane carriage not in unload position vertical / horizontal.
+46|11|Warning 0.11:
+46|12|Warning 0.12:
+46|13|Warning 0.13:Crane carriage 1A not in unload position 10003 vertical / horizontal.
+46|14|Warning 0.14:Basket can not move on position.Conveyor E1-10003 not up.
+46|15|Warning 0.15:Crane carriage can not move vertical.Proximity switch vertical reset is 1.
+46|16|Warning 0.16:Crane carriage 2B not in load position 10004 vertical / horizontal.
+46|17|Warning 0.17:Basket can not move on position.Conveyor I1-10002 not up.
+46|18|Warning 0.18:
+46|19|Warning 0.19:Crane carriage can not move up/down.Pads not unlocked.Magnetic switch not 1. 
+46|20|Warning 0.20:Thermal overload switch AQ103,AQ104,AQ204,AQ205.Input A403.
+46|21|Warning 0.21:Thermal overload switch AQ3,AQ4,AQ5,AQ6,AQ7,AQ8,AQ9.Input A407.
+46|22|Warning 0.22:Crane not in home position (sensor horizontal,vertical position 597mm).
+46|23|Warning 0.23:
+46|24|Warning 0.24:Crane can not move fwd-bwd,up-down.Right safety photocell not 1.
+46|25|Warning 0.25:Crane can not move fwd-bwd,up-down.Left safety photocell not 1.
+46|26|Warning 0.26:
+46|27|Warning 0.27:
+46|28|Warning 0.28:
+46|29|Warning 0.29:
+46|30|Warning 0.30:Low air pressure.
+46|31|Warning 0.31:Ethernet communication problem.Crane PLC not connected.
+
+48|0|Warning 2.0: A sensor on conveyor a is activated.Conveyor A sensors() must not be activated.
+48|1|Warning 2.1:Crane carriage A not in vertical or horizontal load position.
+48|2|Warning 2.2:Magnetic switches for anchors inside are not activated.Magnetic switches for anchors inside() must be activated. 
+48|3|Warning 2.3:Hooks carriage A is not down.Magnetic sensor for position down() must be activated.
+48|4|Warning 2.4:Hooks carriage A must be in safe position.
+48|5|Warning 2.5:Magnetic switch for anchor outside()is not activated.
+48|6|Warning 2.6:
+48|7|Warning 2.7:
+48|8|Warning 2.8:
+48|9|Warning 2.9:Waiting for application confirmation PC STATUS=2.
+48|10|Warning 2.10:Hooks carriage B sensor for position down() must be activated.
+48|11|Warning 2.11:Hooks carriage B must be in safe position.
+48|12|Warning 2.12:Hooks carriage A is not on the correct position to start next step.
+48|13|Warning 2.13:Hooks carriage A is not on the correct drop basket position on the right side.
+48|14|Warning 2.14:Hooks carriage A is not on the correct drop basket position on the left side.
+48|15|Warning 2.15:Hooks carriage A is not up.Magnetic sensor for position up() must be activated.
+48|16|Warning 2.16:
+48|17|Warning 2.17:
+48|18|Warning 2.18:
+48|19|Warning 2.19:
+48|20|Warning 2.20:
+48|21|Warning 2.21:
+48|22|Warning 2.22:
+48|23|Warning 2.23:
+48|24|Warning 2.24:
+48|25|Warning 2.25:
+48|26|Warning 2.26:
+48|27|Warning 2.27:
+48|28|Warning 2.28:
+48|29|Warning 2.29:
+48|30|Warning 2.30:
+48|31|Warning 2.31:
+
+48|0|Warning 3.0: A sensor on conveyor a is activated.Conveyor B sensors() must not be activated.
+48|1|Warning 3.1:Crane carriage B not in vertical or horizontal load position.
+48|2|Warning 3.2:Magnetic switches for anchors inside are not activated.Magnetic switches for anchors inside() must be activated. 
+48|3|Warning 3.3:Hooks carriage B is not down.Magnetic sensor for position down() must be activated.
+48|4|Warning 3.4:Hooks carriage B must be in safe position.
+48|5|Warning 3.5:Magnetic switch for anchor outside()is not activated.
+48|6|Warning 3.6:
+48|7|Warning 3.7:
+48|8|Warning 3.8:
+48|9|Warning 3.9:Waiting for application confirmation PC STATUS=2.
+48|10|Warning 3.10:Hooks carriage A sensor for position down() must be activated.
+48|11|Warning 3.11:Hooks carriage A must be in safe position.
+48|12|Warning 3.12:Hooks carriage B is not on the correct position to start next step.
+48|13|Warning 3.13:Hooks carriage B is not on the correct drop basket position on the right side.
+48|14|Warning 3.14:Hooks carriage B is not on the correct drop basket position on the left side.
+48|15|Warning 3.15:Hooks carriage B is not up.Magnetic sensor for position up() must be activated.
+48|16|Warning 3.16:
+48|17|Warning 3.17:
+48|18|Warning 3.18:
+48|19|Warning 3.19:
+48|20|Warning 3.20:
+48|21|Warning 3.21:
+48|22|Warning 3.22:
+48|23|Warning 3.23:
+48|24|Warning 3.24:
+48|25|Warning 3.25:
+48|26|Warning 3.26:
+48|27|Warning 3.27:
+48|28|Warning 3.28:
+48|29|Warning 3.29:
+48|30|Warning 3.30:
+48|31|Warning 3.31:

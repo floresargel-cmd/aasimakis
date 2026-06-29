@@ -1,0 +1,1 @@
+2025/02/27 15:27:15-error-	 -Cannot execQuery:select RTRIM(temper) from temperTypes /nsql server:[Microsoft][ODBC SQL Server Driver][SQL Server]Invalid object name 'temperTypes'. QODBC3: Unable to execute statement

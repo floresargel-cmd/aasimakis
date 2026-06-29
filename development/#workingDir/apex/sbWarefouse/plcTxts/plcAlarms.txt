@@ -1,0 +1,65 @@
+42|0|Alarm 0.0:Stop cycle button pressed on OP1.
+42|1|Alarm 0.1:CB_5:24 Volt DC alarm from aux circuit.Thermal overload switch Q6 tripped.//Relay K6-K30 off or aux selection switch is off.Input 210 off.
+42|2|Alarm 0.2:PLC restart.All PLC outputs off.Start aux circuit.
+42|3|Alarm 0.3:CB_5:Thermal overload Q1.Alarm from inverter U1.//Inverter fault or ethernet communication problem.
+42|4|Alarm 0.4:CB_5:Thermal overload Q2.Alarm from inverter U2.//Inverter fault or ethernet communication problem.
+42|5|Alarm 0.5:CB_5:Thermal overload Q3.Alarm from inverter U3.//Inverter fault or ethernet communication problem.
+42|6|Alarm 0.6:CB_5:Thermal overload Q4.Alarm from inverter U4.//Inverter fault or ethernet communication problem.
+42|7|Alarm 0.7:CB_5:Thermal overload Q5.Alarm from inverter U5.//Inverter fault or ethernet communication problem.
+42|8|Alarm 0.8:
+42|9|Alarm 0.9:Crane vertical carriage  overspeed.
+42|10|Alarm 0.10:Crane carriage slips down.
+42|11|Alarm 0.11:Hooks A up/down but no feedback from magnetic switch.//Check valve.Check magnetic switch.
+42|12|Alarm 0.12:Hooks B up/down but no feedback from magnetic switch.//Check valve.Check magnetic switch.
+42|13|Alarm 0.13:Stop cycle button pressed on OP2.  
+42|14|Alarm 0.14:
+42|15|Alarm 0.15:
+42|16|Alarm 0.16:
+42|17|Alarm 0.17:Crane carriage vertical overspeed.Actual speed bigger than calculated.
+42|18|Alarm 0.18:Crane carriage vertical underspeed.Actual speed lower than calculated.
+42|19|Alarm 0.19:Crane carriage horizontal overspeed.Actual speed bigger than calculated.
+42|20|Alarm 0.20:Crane carriage horizontal underspeed.Actual speed lower than calculated.
+42|21|Alarm 0.21:Hooks A carriage overspeed.Actual speed bigger than calculated.
+42|22|Alarm 0.22:Hooks A carriage underspeed.Actual speed lower than calculated.
+42|23|Alarm 0.23:Hooks B carriage overspeed.Actual speed bigger than calculated.
+42|24|Alarm 0.24:Hooks B carriage underspeed.Actual speed lower than calculated.
+42|25|Alarm 0.25:Step overtime for mission A.
+42|26|Alarm 0.26:Step overtime for mission B.
+42|27|Alarm 0.27:Left anchor in/out but no feedback from magnetic switch.//Check valve O402/403.Check magnetic switch I212/I213.
+42|28|Alarm 0.28:Right anchor in/out but no feedback from magnetic switch.//Check valve O400/401.Check magnetic switch I214/I215.
+42|29|Alarm 0.29:Safety pads on/off but no feedback from magnetic switch.//Check valve.Check magnetic switch I209.
+42|30|Alarm 0.30:CB_5:Alarm from thermal overload Q1F.
+42|31|Alarm 31:
+43|0|Alarm 1.0:Alarm from encoder 2 ENC2(20.20.20.58).Encoder fault or ethernet communication problem. 
+43|1|Alarm 1.1:Alarm from laser 1 (20.20.20.57).Encoder fault or ethernet communication problem. 
+43|2|Alarm 1.2:Alarm from encoder 3 ENC3(20.20.20.59).Encoder fault or ethernet communication problem. 
+43|3|Alarm 1.3:Alarm from encoder 4 ENC4(20.20.20.59).Encoder fault or ethernet communication problem. 
+43|4|Alarm 1.4:Picking basket from cell with hooks A but the basket is not on sensors.
+43|5|Alarm 1.5:Picking basket from cell with hooks B but the basket is not on sensors.
+43|6|Alarm 1.6:Drop basket to cell from car A.basket is not on correct position.Hooks car A can not move up.
+43|7|Alarm 1.7:Alarm from actual encoder values.Targets out of limit. 
+43|8|Alarm 1.8:Alarm from actual encoder values.Actual encoder value out of limit. 
+43|9|Alarm 1.9:Ethernet module fault or ethernet communication problem.
+43|10|Alarm 1.10:
+43|11|Alarm 1.11:
+43|12|Alarm 1.12:
+43|13|Alarm 1.13:
+43|14|Alarm 1.14:Alarm from horizontal/vertical motion stop.Loss of sensor or stop cycle pressed.
+43|15|Alarm 1.15:Proximity sensors alarm on A conveyor.
+43|16|Alarm 1.16:Proximity sensors alarm on B conveyor.
+43|17|Alarm 1.17:Drop basket to cell from car B.basket is not on correct position.Hooks car B can not move up.
+43|18|Alarm 1.18:CB_5:Thermal overload Q200/Q201/Q202/Q1F/Q  /Q2F tripped.
+43|19|Alarm 1.19:CB_5:Not reading feedback from K1F1,K1F2.Input 218.
+43|20|Alarm 1.20:CB_5:Not reading feedback from K200F,K201F.Input 217.
+43|21|Alarm 1.21:Laser distance sensor alarm.Zero density or laser cannot see reflective foil.
+43|22|Alarm 1.22:Laser distance sensor alarm.Sensor I119 activated in incorrect horizontal position.
+43|23|Alarm 1.23:
+43|24|Alarm 1.24:Drop basket to cell from A.Light barrier sensor activated from profiles or cassette.
+43|25|Alarm 1.25:Drop basket to cell from B.Light barrier sensor activated from profiles or cassette.
+43|26|Alarm 1.26:
+43|27|Alarm 1.27:
+43|28|Alarm 1.28:
+43|29|Alarm 1.29:
+43|30|Alarm 1.30:
+43|31|Alarm 1.31:Not reading feedback from K200,K201,K202.Input 221.
+

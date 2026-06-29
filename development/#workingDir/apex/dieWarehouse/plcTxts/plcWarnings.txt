@@ -1,0 +1,64 @@
+46|0|Warning 0.0:Crane can not move fwd-bwd,up-down.Right anchor is not inside.Magnetic switch is 0.
+46|1|Warning 0.1:Crane can not move fwd-bwd,up-down.Left anchor is not inside.Magnetic switch 0.
+46|2|Warning 0.2:
+46|3|Warning 0.3:Crane can not move fwd-bwd,up-down.Hooks A carriage not in safe position.
+46|4|Warning 0.4:
+46|5|Warning 0.5:
+46|6|Warning 0.6:Crane can not move fwd-bwd,up-down.Check proximity sensors carriage A. 
+46|7|Warning 0.7:
+46|8|Warning 0.8:Stop from stop cycle / alarms.
+46|9|Warning 0.9:Crane  not in load position vertical / horizontal.
+46|10|Warning 0.10:Crane  not in unload position vertical / horizontal.
+46|11|Warning 0.11:
+46|12|Warning 0.12:
+46|13|Warning 0.13:
+46|14|Warning 0.14
+46|15|Warning 0.15:
+46|16|Warning 0.16:
+46|17|Warning 0.17:
+46|18|Warning 0.18:
+46|19|Warning 0.19:Crane carriage can not move up/down.Pads not unlocked.Magnetic switch not 1. 
+46|20|Warning 0.20:
+46|21|Warning 0.21:
+46|22|Warning 0.22:Crane not in home position (sensor horizontal,vertical position 12mm).
+46|23|Warning 0.23:Conditions to continue mission not ok.Anchors must be inside.Hooks carriage must be up.Hooks carriage must be in safe position (green).
+46|24|Warning 0.24:Conditions to continue mission not ok.2 proximity sensors for die cassette must be activated.
+46|25|Warning 0.25:Key selective switch not turned on.
+46|26|Warning 0.26:Reset die car on die press.
+46|27|Warning 0.27:
+46|28|Warning 0.28:
+46|29|Warning 0.29:
+46|30|Warning 0.30:Low air pressure.
+46|31|Warning 0.31:
+47|0|Warning 2.0:24 Volt DC alarm.Thermal overload Q24,Q24C,Q24D tripped.//Relay K24 off or aux selection switch is off.Input 219 off.
+47|1|Warning 2.1:Thermal overload switch Q3,Q5 not ready.
+47|2|Warning 2.2:Stop from stop cycle in die press OP.
+47|3|Warning 2.3:
+47|4|Warning 2.4:
+47|5|Warning 2.5:
+47|6|Warning 2.6:
+47|7|Warning 2.7:
+47|8|Warning 2.8:Proximity switches for cassette must not be activated.Check if proximity switches for cassette are activated.
+47|9|Warning 2.9:Hooks car must be on safe position inside the car.
+47|10|Warning 2.10:Hooks car is not down.Check magnetic switch.
+47|11|Warning 2.11:Anchors must be inside the car(safe to move).check magnetic switches.
+47|12|Warning 2.12:Car is not on the load target positions vertically or horizontally.
+47|13|Warning 2.13:Die car in station is not on the home position.
+47|14|Warning 2.14:Hooks car is not on the left pick position.Check left proximity switch for the hooks car.
+47|15|Warning 2.15:Hooks car is not on the right pick position.Check right proximity switch for the hooks car.
+47|16|Warning 2.16:Hooks car is not up.Check magnetic switch.
+47|17|Warning 2.17:Proximity switches for cassette must be activated.Check proximity switches for cassette.
+47|18|Warning 2.18:Car is not on the unload target positions vertically or horizontally.
+47|19|Warning 2.19:PC application does not respond to PLC status 2.
+47|20|Warning 2.20:Hooks car is not on the right push cassette position.
+47|21|Warning 2.21:Hooks car is not on the left push cassette position.
+47|22|Warning 2.22:Hooks car is not on the target position.
+47|23|Warning 2.23:Photocell (I115) on carriage sides is not free. 
+47|24|Warning 2.24:
+47|25|Warning 2.25:
+47|26|Warning 2.26:
+47|27|Warning 2.27:
+47|28|Warning 2.28:
+47|29|Warning 2.29:
+47|30|Warning 2.30:
+47|31|Warning 2.31:
