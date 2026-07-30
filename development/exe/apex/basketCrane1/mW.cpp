@@ -1,4 +1,6 @@
 #include "mW.h"
+#include "configuration/ConfigurationManager.h"
+#include "configuration/DatabaseConfigurator.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
 #include "timerStatus.h"
@@ -7,6 +9,11 @@
 #include <QDebug>
 #include <QDir>
 #include <QLibraryInfo>
+#include <QDialogButtonBox>
+#include <QHeaderView>
+#include <QIntValidator>
+#include <QLineEdit>
+#include <QTableWidget>
 
 
 #include "../common/applogger.h"
@@ -43,25 +50,12 @@ QVector<int>	*profileIntName;		// one on one with profilePicFileName
 
 mainWindowClass::mainWindowClass()
 {
+	const BasketCrane::Configuration::ConfigurationManager& configuration =
+		BasketCrane::Configuration::ConfigurationManager::Instance();
 	// Lazy ass programming, just set the variable from the logger.h...
 	theOneBCToRuleThemAll = isAppHostEnabled(getAppHostname());
 
 	setWindowIcon(QIcon(":/logo_16x16.png"));
-
-#ifdef EMULATE
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins/sqldrivers");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins/sqldrivers/dll");
-	// QMessageBox::warning(0,"Warning","Emulation mode - not to be used in production!");
-#endif
-#ifdef inMyLaptop
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins/sqldrivers");
-	qApp->addLibraryPath("C:/assimakis/development/#workingDir/apex/basketCrane1/plugins/sqldrivers/dll");
-	// QMessageBox::warning(0,"Warning","inMyLaptop mode - not to be used in production!");
-#endif
 
 	//
 	LOG("mW.cpp", "initializeDatabase()");
@@ -74,6 +68,8 @@ mainWindowClass::mainWindowClass()
 	rootLayout->addLayout(mainLayout);
 	// Status bar: database table activity indicators (green=read, blue=write, grey=idle)
 	QWidget *statusBarWidget = new QWidget(this);
+	statusBarWidget->setObjectName("systemStatusStrip");
+	statusBarWidget->setStyleSheet("#systemStatusStrip{background:#111827;border-top:1px solid #334155;}");
 	statusBarWidget->setFixedHeight(28);
 	QHBoxLayout *statusBarLayout = new QHBoxLayout(statusBarWidget);
 	statusBarLayout->setContentsMargins(4, 2, 4, 2);
@@ -154,6 +150,8 @@ mainWindowClass::mainWindowClass()
 	// Auto mode flags
 	LOG("mW.cpp", "Auto mode flags");
 	QVBoxLayout *autoGroupBoxLayout = new QVBoxLayout();
+	autoGroupBoxLayout->setContentsMargins(10, 12, 10, 8);
+	autoGroupBoxLayout->setSpacing(1);
 
 	QCheckBox	*beforStackerQCheckBox = new QCheckBox(tr("Before stacker"), this);
 	connect(beforStackerQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(beforeStackerAutoModeSlot(int)));
@@ -226,7 +224,7 @@ mainWindowClass::mainWindowClass()
 	QCheckBox	*exportsBeforeImportsQCheckBox = new QCheckBox(tr("Exports before imports"),this);
 	connect(exportsBeforeImportsQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(exportsBeforeImportsCheckBtnSlot(int)));
 	autoGroupBoxLayout->addWidget(exportsBeforeImportsQCheckBox);
-	exportsBeforeImportsQCheckBox->setChecked(false);
+	exportsBeforeImportsQCheckBox->setChecked(configuration.Operations().ExportsBeforeImports());
 	exportsBeforeImportsQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QHBoxLayout *numberOfEmptyPosInBufferSpinBoxLayout=new QHBoxLayout();
@@ -234,11 +232,15 @@ mainWindowClass::mainWindowClass()
 	QLabel *numberOfEmptyPosInBufferSpinBoxLabel=new QLabel(tr("Empty buffer"));
 	numberOfEmptyPosInBufferSpinBoxLabel->setStyleSheet("QLabel{color:#aaaaaa;}");
 	numberOfEmptyPosInBufferSpinBoxLayout->addWidget(numberOfEmptyPosInBufferSpinBoxLabel);
-	QSpinBox *numberOfEmptyPosInBufferSpinBox=new QSpinBox();numberOfEmptyPosInBufferSpinBoxLayout->addWidget(numberOfEmptyPosInBufferSpinBox);
+	QSpinBox *numberOfEmptyPosInBufferSpinBox=new QSpinBox();
+	numberOfEmptyPosInBufferSpinBox->setFixedWidth(64);
+	numberOfEmptyPosInBufferSpinBox->setAlignment(Qt::AlignCenter);
+	numberOfEmptyPosInBufferSpinBoxLayout->addStretch(1);
+	numberOfEmptyPosInBufferSpinBoxLayout->addWidget(numberOfEmptyPosInBufferSpinBox);
 	connect(numberOfEmptyPosInBufferSpinBox,SIGNAL(valueChanged(int)),this,SLOT(numberOfEmptyPosInBufferSpinBoxSlot(int)));
-	numberOfEmptyPosInBufferSpinBox->setMinimum(3);
-	numberOfEmptyPosInBufferSpinBox->setMaximum(7);
-	numberOfEmptyPosInBufferSpinBox->setValue(4);
+	numberOfEmptyPosInBufferSpinBox->setMinimum(configuration.Operations().EmptyBufferMinimum());
+	numberOfEmptyPosInBufferSpinBox->setMaximum(configuration.Operations().EmptyBufferMaximum());
+	numberOfEmptyPosInBufferSpinBox->setValue(configuration.Operations().EmptyBufferDefault());
 	openGLWidget->setNumberOfPosToBeKeptEmptyInBuffer(numberOfEmptyPosInBufferSpinBox->value());
 
 	QCheckBox *rearrangeBasketsQCheckBox = new QCheckBox(tr("Rearrange baskets"),this);
@@ -249,13 +251,13 @@ mainWindowClass::mainWindowClass()
 	
 	QGroupBox *autoGroupBox = new QGroupBox(tr("Auto mode"),openGLWidget);
 	autoGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
-	autoGroupBox->setGeometry(25,20,165,270);
+	autoGroupBox->setGeometry(25, 20, 200, 310);
 	autoGroupBox->setLayout(autoGroupBoxLayout);
 	autoGroupBox->show();
 	// End auto flags
 
 	//
-	int w = 140; int h = 25; int m = 5; int x = 30; int y = 295;
+	int w = 185; int h = 27; int m = 5; int x = 25; int y = 340;
 
 	QCheckBox *takeBasketsFromStackerOutQCheckBox = new QCheckBox(tr("New baskets out"), openGLWidget);
 	connect(takeBasketsFromStackerOutQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(takeBasketsFromStackerOutSlot(int)));
@@ -284,7 +286,7 @@ mainWindowClass::mainWindowClass()
 
 	QGroupBox *fullBasketsToEmptyPosGroupBox=new QGroupBox(tr("20feet in empty buffer "),openGLWidget);
 	fullBasketsToEmptyPosGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
-	fullBasketsToEmptyPosGroupBox->setGeometry(25, y += 25 + m, 150, 90);
+	fullBasketsToEmptyPosGroupBox->setGeometry(25, y += 25 + m, 190, 90);
 	fullBasketsToEmptyPosGroupBox->setLayout(emptyBasketsPosGroupBoxLayout);
 	fullBasketsToEmptyPosGroupBox->show();
 
@@ -295,30 +297,30 @@ mainWindowClass::mainWindowClass()
 	QCheckBox *Oven1EnableQCheckBox = new QCheckBox(tr("Oven1 Enable"), this);
 	connect(Oven1EnableQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven1EnableAutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven1EnableQCheckBox);
-	Oven1EnableQCheckBox->setChecked(true);
+	Oven1EnableQCheckBox->setChecked(configuration.Operations().Oven1Enabled());
 	Oven1EnableQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven2EnableQCheckBox = new QCheckBox(tr("Oven2 Enable"), this);
 	connect(Oven2EnableQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven2EnableAutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven2EnableQCheckBox);
-	Oven2EnableQCheckBox->setChecked(true);
+	Oven2EnableQCheckBox->setChecked(configuration.Operations().Oven2Enabled());
 	Oven2EnableQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven1Not24QCheckBox = new QCheckBox(tr("Not longer than 24f in Oven1"), this);
 	connect(Oven1Not24QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven1Not24AutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven1Not24QCheckBox);
-	Oven1Not24QCheckBox->setChecked(true);
+	Oven1Not24QCheckBox->setChecked(configuration.Operations().Oven1Maximum24Feet());
 	Oven1Not24QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven2Not24QCheckBox = new QCheckBox(tr("Just Longer than 24f in Oven2"), this);
 	connect(Oven2Not24QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven2Not24AutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven2Not24QCheckBox);
-	Oven2Not24QCheckBox->setChecked(true);
+	Oven2Not24QCheckBox->setChecked(configuration.Operations().Oven2OnlyOver24Feet());
 	Oven2Not24QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QGroupBox *OvenSelGroupBox = new QGroupBox(tr("Ovens Selections"), openGLWidget);
 	OvenSelGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
-	OvenSelGroupBox->setGeometry(200, 20, 190, 110);
+	OvenSelGroupBox->setGeometry(235, 20, 245, 115);
 	OvenSelGroupBox->setLayout(OvenSelGroupBoxLayout);
 	OvenSelGroupBox->show();
 
@@ -326,12 +328,12 @@ mainWindowClass::mainWindowClass()
 	LOG("mW.cpp", "Next oven 1 cycle");
 	QVBoxLayout *nextOvenCycleGroupBoxLayout = new QVBoxLayout();
 
-	QRadioButton *nextOvenCycle185RadioButton = new QRadioButton("185C 6 hours", this);
+	QRadioButton *nextOvenCycle185RadioButton = new QRadioButton("185C 5 hours 30 minutes", this);
 	connect(nextOvenCycle185RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOvenCycle185RadioButtonSlot(bool)));
 	nextOvenCycleGroupBoxLayout->addWidget(nextOvenCycle185RadioButton);
 	nextOvenCycle185RadioButton->setStyleSheet("QRadioButton	{color:#aaaaaa;}");
 
-	QRadioButton *nextOvenCycle230RadioButton = new QRadioButton("230C 6 hours", this);
+	QRadioButton *nextOvenCycle230RadioButton = new QRadioButton("230C 8 hours 50 minutes", this);
 	connect(nextOvenCycle230RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOvenCycle230RadioButtonSlot(bool)));
 	nextOvenCycleGroupBoxLayout->addWidget(nextOvenCycle230RadioButton);
 	nextOvenCycle230RadioButton->setStyleSheet("QRadioButton{color:#aaaaaa;}");
@@ -343,7 +345,7 @@ mainWindowClass::mainWindowClass()
 
 	QGroupBox *nextOvenCycleGroupBox = new QGroupBox(tr("Next Oven cycle"), openGLWidget);
 	nextOvenCycleGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
-	nextOvenCycleGroupBox->setGeometry(200, 135, 140, 75);
+	nextOvenCycleGroupBox->setGeometry(235, 140, 285, 82);
 	nextOvenCycleGroupBox->setLayout(nextOvenCycleGroupBoxLayout);
 	nextOvenCycleGroupBox->show();
 
@@ -351,12 +353,12 @@ mainWindowClass::mainWindowClass()
 	LOG("mW.cpp", "Next oven 2 cycle");
 	QVBoxLayout *nextOven2CycleGroupBoxLayout = new QVBoxLayout();
 
-	QRadioButton *nextOven2Cycle185RadioButton = new QRadioButton("185C 6 hours", this);
+	QRadioButton *nextOven2Cycle185RadioButton = new QRadioButton("185C 5 hours 30 minutes", this);
 	connect(nextOven2Cycle185RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOven2Cycle185RadioButtonSlot(bool)));
 	nextOven2CycleGroupBoxLayout->addWidget(nextOven2Cycle185RadioButton);
 	nextOven2Cycle185RadioButton->setStyleSheet("QRadioButton	{color:#aaaaaa;}");
 
-	QRadioButton *nextOven2Cycle230RadioButton = new QRadioButton("230C 6 hours", this);
+	QRadioButton *nextOven2Cycle230RadioButton = new QRadioButton("230C 8 hours 50 minutes", this);
 	connect(nextOven2Cycle230RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOven2Cycle230RadioButtonSlot(bool)));
 	nextOven2CycleGroupBoxLayout->addWidget(nextOven2Cycle230RadioButton);
 	nextOven2Cycle230RadioButton->setStyleSheet("QRadioButton{color:#aaaaaa;}");
@@ -374,7 +376,7 @@ mainWindowClass::mainWindowClass()
 
 	QGroupBox *nextOven2CycleGroupBox = new QGroupBox(tr("Next Oven2 cycle"), openGLWidget);
 	nextOven2CycleGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
-	nextOven2CycleGroupBox->setGeometry(200, 215, 140, 75);
+	nextOven2CycleGroupBox->setGeometry(235, 227, 285, 82);
 	nextOven2CycleGroupBox->setLayout(nextOven2CycleGroupBoxLayout);
 	nextOven2CycleGroupBox->show();
 
@@ -389,13 +391,20 @@ mainWindowClass::mainWindowClass()
 	unlockBasketReturningFromOvenBtn->setGeometry(x, y += h + m, w, h);
 	unlockBasketReturningFromOvenBtn->show();
 
-	plcWidgetTemp->setGeometry(x - 15, y += h + m + 50, 170, 330);
+	QPushButton *basketTrackerBtn = new QPushButton(tr("Find basket"), openGLWidget);
+	basketTrackerBtn->setProperty("accent", true);
+	basketTrackerBtn->setGeometry(x, y += h + m, w, h);
+	basketTrackerBtn->setToolTip(tr("Locate a basket and review its recent movement history."));
+	basketTrackerBtn->show();
+
+	plcWidgetTemp->setGeometry(x - 15, y += h + m + 50, 195, 330);
 	plcWidgetTemp->show();
 
 	//connect(takeScrapBasketBtn,SIGNAL(clicked()),this,SLOT(takeScrapBasketBtnSlot()));
 	LOG("mW.cpp", "connecting unlockBaset* SIGNAL(s)");
 	connect(unlockBasketAfterStackerBtn, SIGNAL(clicked()), this, SLOT(unlockBasketAfterStackerBtnSlot()));
 	connect(unlockBasketReturningFromOvenBtn, SIGNAL(clicked()), this, SLOT(unlockBasketReturningFromOvenBtnSlot()));
+	connect(basketTrackerBtn, &QPushButton::clicked, this, &mainWindowClass::showBasketTrackerSlot);
 	connect(openGLWidget, SIGNAL(scrapBasketPositionChangedSignal(int)), this, SLOT(scrapBasketPositionChangedSlot(int)));
 
 #ifdef VB_PLC_COMMS
@@ -415,8 +424,7 @@ mainWindowClass::mainWindowClass()
 
 	LOG("mW.cpp", "Setting mainTimer (15s)");
 	connect(&mainTimer, SIGNAL(timeout()), this, SLOT(onMainTimer()));
-	// mainTimer.start(1500);
-	mainTimer.start(3000);  // @@@@@ - Slowing down the main timer to 3 seconds, since we don't need it to run every 1.5 seconds, and it was causing some performance issues.
+	mainTimer.start(configuration.Timers().MainWindowMilliseconds());
 	clearLogTable();
 	scrapBasketPositionChangedSlot(openGLWidget->getBasketTableIdOfScrapBasketPos());
 
@@ -457,6 +465,11 @@ mainWindowClass::mainWindowClass()
 	qtAboutAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
 	connect(qtAboutAction, SIGNAL(triggered()), this, SLOT(qtAboutSlot()));
 	addAction(qtAboutAction);
+
+	QAction *basketTrackerAction = new QAction(this);
+	basketTrackerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+	connect(basketTrackerAction, &QAction::triggered, this, &mainWindowClass::showBasketTrackerSlot);
+	addAction(basketTrackerAction);
 }
 
 mainWindowClass::~mainWindowClass()
@@ -505,6 +518,210 @@ void mainWindowClass::showServerSlot()
 #ifdef TUX_PLC_COMMS
 	plcWidget->showTuxServerCommsDialog();
 #endif
+}
+
+void mainWindowClass::showBasketTrackerSlot()
+{
+	QDialog dialog(this);
+	dialog.setWindowTitle(tr("Basket Tracker"));
+	dialog.setWindowIcon(QIcon(":/logo_16x16.png"));
+	dialog.resize(900, 650);
+
+	QVBoxLayout *layout = new QVBoxLayout(&dialog);
+	QHBoxLayout *searchLayout = new QHBoxLayout();
+	QLabel *basketIdLabel = new QLabel(tr("Basket ID:"), &dialog);
+	QLineEdit *basketIdEdit = new QLineEdit(&dialog);
+	basketIdEdit->setValidator(new QIntValidator(1, 2147483647, basketIdEdit));
+	basketIdEdit->setPlaceholderText(tr("Enter the basket table ID"));
+	QPushButton *searchButton = new QPushButton(tr("Search"), &dialog);
+	searchButton->setProperty("accent", true);
+	searchButton->setDefault(true);
+	searchLayout->addWidget(basketIdLabel);
+	searchLayout->addWidget(basketIdEdit, 1);
+	searchLayout->addWidget(searchButton);
+	layout->addLayout(searchLayout);
+
+	QLabel *statusLabel = new QLabel(tr("Enter a basket ID to locate it."), &dialog);
+	statusLabel->setWordWrap(true);
+	statusLabel->setMinimumHeight(52);
+	statusLabel->setStyleSheet("QLabel{font-size:14px;font-weight:bold;background:#e5e7eb;color:#111827;padding:8px;border-radius:3px;}");
+	layout->addWidget(statusLabel);
+
+	QLabel *positionsLabel = new QLabel(tr("Current recorded position(s)"), &dialog);
+	positionsLabel->setStyleSheet("QLabel{font-weight:bold;}");
+	layout->addWidget(positionsLabel);
+
+	QTableWidget *positionsTable = new QTableWidget(&dialog);
+	positionsTable->setColumnCount(6);
+	positionsTable->setHorizontalHeaderLabels(QStringList()
+		<< tr("Description") << tr("Position") << tr("Index")
+		<< tr("Locked") << tr("Mission target") << tr("Target index"));
+	positionsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	positionsTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	positionsTable->setAlternatingRowColors(true);
+	positionsTable->horizontalHeader()->setStretchLastSection(true);
+	positionsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+	layout->addWidget(positionsTable, 2);
+
+	QLabel *historyLabel = new QLabel(tr("Recent movement history"), &dialog);
+	historyLabel->setStyleSheet("QLabel{font-weight:bold;}");
+	layout->addWidget(historyLabel);
+
+	QTableWidget *historyTable = new QTableWidget(&dialog);
+	historyTable->setColumnCount(4);
+	historyTable->setHorizontalHeaderLabels(QStringList()
+		<< tr("Event") << tr("From / position") << tr("Destination") << tr("Date"));
+	historyTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	historyTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+	historyTable->setAlternatingRowColors(true);
+	historyTable->horizontalHeader()->setStretchLastSection(true);
+	historyTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+	historyTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+	layout->addWidget(historyTable, 3);
+
+	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Close, &dialog);
+	connect(buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+	layout->addWidget(buttonBox);
+
+	auto setTableText = [](QTableWidget *table, int row, int column, const QString& text)
+	{
+		QTableWidgetItem *item = new QTableWidgetItem(text.trimmed());
+		item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+		table->setItem(row, column, item);
+	};
+
+	auto searchBasket = [=]()
+	{
+		bool basketIdIsValid = false;
+		int basketId = basketIdEdit->text().toInt(&basketIdIsValid);
+		if (!basketIdIsValid || basketId <= 0)
+		{
+			statusLabel->setText(tr("Enter a valid positive basket ID."));
+			statusLabel->setStyleSheet("QLabel{font-size:14px;font-weight:bold;background:#fef3c7;color:#92400e;padding:8px;border-radius:3px;}");
+			basketIdEdit->setFocus();
+			return;
+		}
+
+		positionsTable->setRowCount(0);
+		historyTable->setRowCount(0);
+
+		QString positionOrder = " order by posNumber, posIndex";
+		QString positionWhere = QString(" from positions where basketTableId = %1").arg(basketId);
+
+		setDbTableActive("positions", true);
+		QVector<QVariant> positionDescriptions = execDBQuery("select description" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> positionNumbers = execDBQuery("select posNumber" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> positionIndexes = execDBQuery("select posIndex" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> positionLocks = execDBQuery("select locked" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> targetNumbers = execDBQuery("select targetNumber" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> targetIndexes = execDBQuery("select targetIndex" + positionWhere + positionOrder, MAIN_DB_CONNECTION);
+		int activeMissionCount = GETONEATMOST("select count(*) from positions where targetNumber <> 0").toInt();
+		setDbTableIdle("positions");
+
+		int positionCount = positionNumbers.count();
+		positionsTable->setRowCount(positionCount);
+		for (int row = 0; row < positionCount; ++row)
+		{
+			setTableText(positionsTable, row, 0, row < positionDescriptions.count() ? positionDescriptions[row].toString() : QString());
+			setTableText(positionsTable, row, 1, positionNumbers[row].toString());
+			setTableText(positionsTable, row, 2, row < positionIndexes.count() ? positionIndexes[row].toString() : QString());
+			setTableText(positionsTable, row, 3, row < positionLocks.count() && positionLocks[row].toInt() != 0 ? tr("Yes") : tr("No"));
+			setTableText(positionsTable, row, 4, row < targetNumbers.count() && targetNumbers[row].toInt() != 0 ? targetNumbers[row].toString() : QString());
+			setTableText(positionsTable, row, 5, row < targetIndexes.count() && targetIndexes[row].toInt() != 0 ? targetIndexes[row].toString() : QString());
+		}
+
+		setDbTableActive("baskets", true);
+		int basketRecordCount = GETONEATMOST(QString("select count(*) from baskets where pid = %1").arg(basketId)).toInt();
+		setDbTableIdle("baskets");
+
+		setDbTableActive("toAssimakisExports", true);
+		int assimakisExportCount = GETONEATMOST(QString("select count(*) from toAssimakisExports where basketTableId = %1").arg(basketId)).toInt();
+		setDbTableIdle("toAssimakisExports");
+		setDbTableActive("toOmavExports", true);
+		int omavExportCount = GETONEATMOST(QString("select count(*) from toOmavExports where basketTableId = %1").arg(basketId)).toInt();
+		setDbTableIdle("toOmavExports");
+
+		QString historyWhere = QString(" from basketHistory where basketTableId = %1").arg(basketId);
+		QString historyOrder = " order by sec desc, id desc";
+		setDbTableActive("basketHistory", true);
+		QVector<QVariant> historyTypes = execDBQuery("select top 50 type" + historyWhere + historyOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> historyPositions = execDBQuery("select top 50 position" + historyWhere + historyOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> historyDestinations = execDBQuery("select top 50 destination" + historyWhere + historyOrder, MAIN_DB_CONNECTION);
+		QVector<QVariant> historyDates = execDBQuery("select top 50 date" + historyWhere + historyOrder, MAIN_DB_CONNECTION);
+		setDbTableIdle("basketHistory");
+
+		int historyCount = historyTypes.count();
+		historyTable->setRowCount(historyCount);
+		for (int row = 0; row < historyCount; ++row)
+		{
+			setTableText(historyTable, row, 0, historyTypes[row].toString());
+			setTableText(historyTable, row, 1, row < historyPositions.count() ? historyPositions[row].toString() : QString());
+			setTableText(historyTable, row, 2, row < historyDestinations.count() ? historyDestinations[row].toString() : QString());
+			setTableText(historyTable, row, 3, row < historyDates.count() ? historyDates[row].toString() : QString());
+		}
+
+		QString latestEvent = historyCount > 0 ? historyTypes[0].toString().trimmed().toLower() : QString();
+		QString latestDestination = historyDestinations.count() > 0 ? historyDestinations[0].toString().trimmed() : QString();
+		QString statusText;
+		QString statusStyle;
+
+		if (positionCount > 1)
+		{
+			statusText = tr("DUPLICATE RECORD: basket %1 is assigned to %2 positions. Stop automatic handling and reconcile the database with the physical basket.")
+				.arg(basketId).arg(positionCount);
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#fee2e2;color:#991b1b;padding:8px;border-radius:3px;}";
+		}
+		else if (positionCount == 1 && latestEvent == "new" && activeMissionCount > 0)
+		{
+			statusText = tr("IN TRANSIT: basket %1 is associated with an active crane mission. Recorded position: %2-%3.")
+				.arg(basketId).arg(positionNumbers[0].toInt()).arg(positionIndexes.value(0).toInt());
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#dbeafe;color:#1e40af;padding:8px;border-radius:3px;}";
+		}
+		else if (positionCount == 1)
+		{
+			statusText = tr("LOCATED: basket %1 is recorded at %2-%3 (%4).")
+				.arg(basketId).arg(positionNumbers[0].toInt()).arg(positionIndexes.value(0).toInt())
+				.arg(positionDescriptions.value(0).toString().trimmed());
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#dcfce7;color:#166534;padding:8px;border-radius:3px;}";
+		}
+		else if (assimakisExportCount > 0 || omavExportCount > 0)
+		{
+			QStringList queues;
+			if (assimakisExportCount > 0) queues << tr("Assimakis");
+			if (omavExportCount > 0) queues << tr("Omav");
+			statusText = tr("QUEUED FOR EXPORT: basket %1 has no internal position and is present in the %2 export queue.")
+				.arg(basketId).arg(queues.join(" / "));
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#fef3c7;color:#92400e;padding:8px;border-radius:3px;}";
+		}
+		else if (basketRecordCount > 0)
+		{
+			statusText = tr("NOT LOCATED: basket %1 exists in the basket register but is not assigned to any internal position or export queue.")
+				.arg(basketId);
+			if (!latestDestination.isEmpty())
+				statusText += tr(" Last recorded destination: %1.").arg(latestDestination);
+			statusText += tr(" Verify whether it physically left the system before marking it missing.");
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#ffedd5;color:#9a3412;padding:8px;border-radius:3px;}";
+		}
+		else if (historyCount > 0)
+		{
+			statusText = tr("HISTORY ONLY: basket %1 has movement history but no basket-register or current-position record. Database reconciliation is required.")
+				.arg(basketId);
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#fee2e2;color:#991b1b;padding:8px;border-radius:3px;}";
+		}
+		else
+		{
+			statusText = tr("UNKNOWN BASKET: no basket, position, export-queue, or history record was found for ID %1.").arg(basketId);
+			statusStyle = "QLabel{font-size:14px;font-weight:bold;background:#e5e7eb;color:#374151;padding:8px;border-radius:3px;}";
+		}
+
+		statusLabel->setText(statusText);
+		statusLabel->setStyleSheet(statusStyle);
+	};
+
+	connect(searchButton, &QPushButton::clicked, searchBasket);
+	connect(basketIdEdit, &QLineEdit::returnPressed, searchBasket);
+	basketIdEdit->setFocus();
+	dialog.exec();
 }
 
 //for backwards compatibility
@@ -570,7 +787,6 @@ void mainWindowClass::clearLogTable()
 #endif
 }
 
-static const int STATUS_LABEL_FADE_MS = 250;
 static const QString s_dbTableStyleGrey("QLabel{font-size:11px;background-color:#808080;color:#fff;padding:2px 6px;border-radius:2px;}");
 
 void mainWindowClass::setDbTableActive(const QString& tableName, bool isRead)
@@ -598,7 +814,7 @@ void mainWindowClass::setDbTableIdle(const QString& tableName)
 		connect(timer, &QTimer::timeout, this, [this, key]() { setDbTableIdleNow(key); });
 	}
 	timer->stop();
-	timer->start(STATUS_LABEL_FADE_MS);
+	timer->start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().StatusFadeMilliseconds());
 }
 
 void mainWindowClass::setDbTableIdleNow(const QString& tableName)
@@ -663,7 +879,7 @@ void mainWindowClass::setPlcNetworkIdle(const QString& networkName)
 	LOG("mW.cpp", "INFO: Stopping previous timer");
 	timer->stop();
 	LOG("mW.cpp", "INFO: starting new timer");
-	timer->start(STATUS_LABEL_FADE_MS);
+	timer->start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().StatusFadeMilliseconds());
 	LOG("mW.cpp", "INFO: PLC Network Idle Timer Started for " + networkName);
 	LOG("mW.cpp", "INFO: PLC Network Is Idle END FUNCTION");
 }
@@ -718,7 +934,7 @@ void mainWindowClass::setMainTimerFiring()
 void mainWindowClass::setMainTimerIdle()
 {
 	mainTimerIdleTimer->stop();
-	mainTimerIdleTimer->start(STATUS_LABEL_FADE_MS);
+	mainTimerIdleTimer->start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().StatusFadeMilliseconds());
 }
 
 void mainWindowClass::onMainTimerIdleTimeout()
@@ -735,7 +951,7 @@ void mainWindowClass::setAutoModeTimerFiring()
 void mainWindowClass::setAutoModeTimerIdle()
 {
 	autoModeTimerIdleTimer->stop();
-	autoModeTimerIdleTimer->start(STATUS_LABEL_FADE_MS);
+	autoModeTimerIdleTimer->start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().StatusFadeMilliseconds());
 }
 
 void mainWindowClass::onAutoModeTimerIdleTimeout()
@@ -1434,197 +1650,54 @@ void mainWindowClass::demoFillTables(bool force)
 
 void mainWindowClass::initializeDatabase()
 {
+	using BasketCrane::Configuration::ConfigurationManager;
+	using BasketCrane::Configuration::DatabaseConfigurator;
+	using BasketCrane::Configuration::DatabaseProfile;
+
+	const ConfigurationManager& configuration = ConfigurationManager::Instance();
+	const BasketCrane::Configuration::DatabaseSettings& databaseSettings = configuration.Database();
 	LOG("mW.cpp", "INFO:  Start: mainWindowClass::initializeDatabase");
 #ifdef EMULATE
 	LOG("mW.cpp", "EMULATE");
-	bool forceDemoFillTables = false;
+	bool forceDemoFillTables = configuration.Emulation().ForceDemoFillTables();
 #endif
-	//MAIN_DB_CONNECTION
-#ifdef inMyLaptop
-	LOG("mW.cpp", "inMyLaptop");
-	#ifdef EMULATE
-		
-		// qDebug() << "Qt version:" << QT_VERSION_STR;
-		// qDebug() << "QT_PLUGIN_PATH environment variable:" << qgetenv("QT_PLUGIN_PATH");
-		// qDebug() << "Qt lib plugins path:" << QLibraryInfo::location(QLibraryInfo::PluginsPath);
-		// qDebug() << "QT_PLUGIN_PATH:" << qgetenv("QT_PLUGIN_PATH");
-		// qDebug() << "Library paths:" << QCoreApplication::libraryPaths();
-		// qDebug() << "Drivers available:" << QSqlDatabase::drivers();
-		// QString a = QDir::current().absolutePath();
-		// qDebug() << "emulationBasketCrane.db needs to be in the absolute path...";
-		// qDebug() << "Current absolute path: " + a;
-		
-		// if (!QFile(QDir::current().absolutePath()+"/emulationBasketCrane.db").exists()) 
-		// 	forceDemoFillTables = true;
-		// qDebug() << "Current xdirectory:" << QDir::current().absolutePath();
-		// qDebug() << "Available SQL drivers:" << QSqlDatabase::drivers();
-		// qDebug() << "MAIN_DB_CONNECTION: " << MAIN_DB_CONNECTION;
-		// QSqlDatabase mainDb = QSqlDatabase::addDatabase("QSQLITE", MAIN_DB_CONNECTION);
-		// mainDb.setDatabaseName(QDir::current().absolutePath()+"/emulationBasketCrane.db");//odbc name
-		// if (!mainDb.open()) 
-		// 	EXIT(tr("Error in database emulationBasketCrane.db"),mainDb.lastError().text());
-	
-		//QSqlDatabase mainDb = QSqlDatabase::addDatabase("QODBC", MAIN_DB_CONNECTION);
-		//mainDb.setDatabaseName("mainConnectionTest");  //odbc name
-		//// mainDb.setUserName("apex2023");
-		//// mainDb.setPassword("apex2023");
-		//mainDb.setUserName("peadm2");
-		//mainDb.setPassword("peadm2");
-		//if (!mainDb.open())
-		//	EXIT(tr("Error in database"), mainDb.lastError().text());
-		//execQuery("if not exists(select * from sys.databases where [name] = 'basketCraneData') create database basketCraneData", MAIN_DB_CONNECTION);
-		//execQuery("USE basketCraneData", MAIN_DB_CONNECTION);
 
-		// @@@@@ - Use SAE01MSSQL02 as the test DB.
-		QSqlDatabase mainDb = QSqlDatabase::addDatabase("QODBC", MAIN_DB_CONNECTION);
-		mainDb.setDatabaseName("apexBasketCraneTest");//odbc name
-		// mainDb.setUserName("sa");
-		// mainDb.setPassword("123");
-		mainDb.setUserName("peadm2");
-		mainDb.setPassword("peadm2");
-		if (!mainDb.open())
-			EXIT(tr("Error in database"), mainDb.lastError().text());
-		execQuery("if not exists(select * from sys.databases where name='basketCraneData') create database basketCraneData", MAIN_DB_CONNECTION);
-		// execQuery("USE basketCraneDataTest", MAIN_DB_CONNECTION);
-		execQuery("USE basketCraneData", MAIN_DB_CONNECTION); // No need for xxxTest, this is MSSQL02, the test server.
-		
-	#else
-		LOG("mW.cpp", "inMyLaptop - mainDb: setDatabaseName & execQuery");
-		QSqlDatabase mainDb=QSqlDatabase::addDatabase("QODBC",MAIN_DB_CONNECTION);
-		mainDb.setDatabaseName("apexBasketCraneTest");//odbc name
-		// mainDb.setUserName("sa"); 
-		// mainDb.setPassword("123");
-		mainDb.setUserName("peadm2");
-		mainDb.setPassword("peadm2");
-		if (!mainDb.open()) 
-			EXIT(tr("Error in database"),mainDb.lastError().text());
-		execQuery("if not exists(select * from sys.databases where name='basketCraneData') create database basketCraneData",MAIN_DB_CONNECTION);
-		execQuery("USE basketCraneData",MAIN_DB_CONNECTION);  // No need for xxxTest, this is MSSQL02, the test server.
-	#endif
+#if defined(inMyLaptop) || defined(SEMILIVE) || defined(EMULATE)
+	const bool useLiveProfile = false;
 #else
-	QSqlDatabase mainDb = QSqlDatabase::addDatabase("QODBC",MAIN_DB_CONNECTION);
-	#ifdef SEMILIVE
-		mainDb.setDatabaseName("apexBasketCraneTest");//odbc name - SEMILIVE (this ODBC connection MUST point to SAE01MSSQL02, the test server).
-		mainDb.setUserName("peadm2");
-		mainDb.setPassword("peadm2");
-	#else
-		// We are live!  But check to make sure we are the one basket crane which is enabled/live
-		if (theOneBCToRuleThemAll) {
-			mainDb.setDatabaseName("apexBasketCraneMainOdbc");//odbc name - LIVE!
-			mainDb.setUserName("sa");
-			mainDb.setPassword("123");
-		}
-		else {
-			// Since we are not the LIVE BC, use the test DB on MSSQL02, which is the same DB that SEMILIVE uses.
-			QMessageBox::warning(0,"Warning - " + appHostname, "This version is not ENABLED - it will read/write to the TEST EIPCS Database, and has limited PLC communications.");
-			mainDb.setDatabaseName("apexBasketCraneTest");//odbc name - SEMILIVE (this ODBC connection MUST point to SAE01MSSQL02, the test server).
-			mainDb.setUserName("peadm2");
-			mainDb.setPassword("peadm2");
-		}
-	#endif	
-	
-	if (!mainDb.open()) 
-		EXIT(tr("Error in database"),mainDb.lastError().text());
-	execDBQuery("if not exists(select * from sys.databases where name='basketCraneData') create database basketCraneData",MAIN_DB_CONNECTION);
-	execDBQuery("USE basketCraneData",MAIN_DB_CONNECTION);
-#endif
-	///////////////////////////////////////////////////////////APEX_DB_CONNECTION
-#ifdef inMyLaptop
-	#ifdef EMULATE
-	//	if (!QFile(QDir::current().absolutePath()+"/emulationApex.db").exists())forceDemoFillTables=true;
-	//	QSqlDatabase apexDb=QSqlDatabase::addDatabase("QSQLITE",APEX_DB_CONNECTION);
-	//	apexDb.setDatabaseName(QDir::current().absolutePath()+"/emulationApex.db");//odbc name
-	//	if (!apexDb.open()) 
-	//		EXIT(tr("Error in database emulationApex.db "),apexDb.lastError().text());
-	///*
-	//	QSqlDatabase apexDb = QSqlDatabase::addDatabase("QODBC", APEX_DB_CONNECTION);
-	//	apexDb.setDatabaseName("apexConnectionTest");//odbc name
-	//	apexDb.setUserName("apex2023");
-	//	apexDb.setPassword("apex2023");
-	//	if (!apexDb.open())
-	//		EXIT(tr("Error in database"), apexDb.lastError().text());
-	//	execQuery("if not exists(select * from sys.databases where name='PEManager_tmp') create database PEManager_tmp", APEX_DB_CONNECTION);
-	//	execQuery("USE PEManager_tmp", APEX_DB_CONNECTION);
-	//	*/
-
-		// @@@@@ - Use SAE01MSSQL02 as the test DB.
-		LOG("mW.cpp", "EMULATE - apexDb: setDatabaseName & execQuery");
-		QSqlDatabase apexDb = QSqlDatabase::addDatabase("QODBC", APEX_DB_CONNECTION);
-		apexDb.setDatabaseName("apexEpicsOdbcTest");//odbc name
-		apexDb.setUserName("peadm2");
-		apexDb.setPassword("peadm2");
-		if (!apexDb.open())
-			EXIT(tr("Error in database"), apexDb.lastError().text());
-		execQuery("if not exists(select * from sys.databases where name='PEManager_tmp') create database PEManager_tmp", APEX_DB_CONNECTION);
-		execQuery("USE PEManager_tmp", APEX_DB_CONNECTION);
-	#else
-		LOG("mW.cpp", "inMyLaptop - apexDb: setDatabaseName & execQuery");
-		QSqlDatabase apexDb=QSqlDatabase::addDatabase("QODBC",APEX_DB_CONNECTION);
-		apexDb.setDatabaseName("apexEpicsOdbcTest");//odbc name
-		apexDb.setUserName("peadm2"); 
-		apexDb.setPassword("peadm2");
-		if (!apexDb.open()) 
-			EXIT(tr("Error in database"),apexDb.lastError().text());
-		execQuery("if not exists(select * from sys.databases where name='PEManager_tmp') create database PEManager_tmp",APEX_DB_CONNECTION);
-		execQuery("USE PEManager_tmp",APEX_DB_CONNECTION);
-	#endif
-#else
-	QSqlDatabase apexDb=QSqlDatabase::addDatabase("QODBC",APEX_DB_CONNECTION);
-	#ifdef SEMILIVE
-		apexDb.setDatabaseName("apexEpicsOdbcTest");//odbc name - SEMILIVE (this ODBC connection MUST point to SAE01MSSQL02, the test server).
-		apexDb.setUserName("peadm2");
-		apexDb.setPassword("peadm2");
-	#else
-		// We are live!  But check to make sure we are the one basket crane which is enabled/live
-		if (theOneBCToRuleThemAll) {
-			apexDb.setDatabaseName("apexEpicsOdbc");//odbc name - LIVE!
-			apexDb.setUserName("peadm2");
-			apexDb.setPassword("peadm2");
-		}
-		else {
-			// Since we are not the LIVE BC, use the test DB on MSSQL02, which is the same DB that SEMILIVE uses.
-			apexDb.setDatabaseName("apexEpicsOdbcTest");//odbc name - SEMILIVE (this ODBC connection MUST point to SAE01MSSQL02, the test server).
-			apexDb.setUserName("peadm2");
-			apexDb.setPassword("peadm2");
-		}
-	#endif
-
-	execDBQuery("USE PEManager_tmp",APEX_DB_CONNECTION);
+	const bool useLiveProfile = theOneBCToRuleThemAll;
+	if (!useLiveProfile)
+	{
+		QMessageBox::warning(0, "Warning - " + appHostname,
+			"This version is not ENABLED - it will read/write to the configured TEST databases, and has limited PLC communications.");
+	}
 #endif
 
-///////////////////////////////////////EMULATE_DB_CONNECTION
-#ifdef EMULATE
-	//if (!QFile(QDir::current().absolutePath()+"/emulationPlc.db").exists())forceDemoFillTables=true;
-	//QSqlDatabase emulateDb = QSqlDatabase::addDatabase("QSQLITE",EMULATE_DB_CONNECTION);
-	//emulateDb.setDatabaseName(QDir::current().absolutePath()+"/emulationPlc.db");//odbc name
-	//if (!emulateDb.open()) 
-	//	EXIT(tr("Error in database emulationPlc.db"),emulateDb.lastError().text());
-		// Log database path and plugin/driver diagnostics before attempting open.
-		// QString emulateDbPath = QDir::current().absoluteFilePath("emulationPlc.db");
-		// if (!QFile(emulateDbPath).exists()) forceDemoFillTables = true;
-		// forceDemoFillTables = true;
-		forceDemoFillTables = false;
-		// QSqlDatabase mainDb = QSqlDatabase::addDatabase("QODBC", MAIN_DB_CONNECTION);
-		LOG("mW.cpp", "EMULATE - apexDb: setDatabaseName & execQuery - forceDemoFillTables");
-		mainDb.setDatabaseName("apexBasketCraneTest");//odbc name
-		// mainDb.setUserName("sa");
-		// mainDb.setPassword("123");
-		mainDb.setUserName("peadm2");
-		mainDb.setPassword("peadm2");
-		// if (!mainDb.open())
-		// 	EXIT(tr("Error in database"), mainDb.lastError().text());
-		// execQuery("if not exists(select * from sys.databases where name='positions') create database positions", MAIN_DB_CONNECTION);
-		// execQuery("USE basketCraneData", MAIN_DB_CONNECTION); // No need for xxxTest, this is MSSQL02, the test server.
-		LOG("mW.cpp", "EMULATE - apexDb: setDatabaseName & execQuery - forceDemoFillTables -- DONE");
-		// Ok, this should create a positions table - but there should already be one on MSSQL02, so it should do nothing. 
-		// If the table doesn't exist, it will be created. If it does exist, it will be left as is.
-		// I also have a python utility which can keep populating this table based on the REAL database table in MSSQL01.
+	const DatabaseProfile& mainProfile = databaseSettings.MainProfile(useLiveProfile);
+	const DatabaseProfile& apexProfile = databaseSettings.ApexProfile(useLiveProfile);
 
+	LOG("mW.cpp", QString("Opening main database profile '%1'").arg(mainProfile.Name()));
+	QSqlDatabase mainDb = QSqlDatabase::addDatabase(databaseSettings.Driver(), MAIN_DB_CONNECTION);
+	DatabaseConfigurator::Apply(mainDb, mainProfile);
+	if (!mainDb.open())
+		EXIT(tr("Error in main database"), mainDb.lastError().text());
 
-		// QSqlDatabase emulateDb = QSqlDatabase::addDatabase("QSQLITE", EMULATE_DB_CONNECTION);
-		// emulateDb.setDatabaseName(emulateDbPath); // explicit absolute path
+	const QString mainCatalog = databaseSettings.MainCatalog();
+	if (databaseSettings.CreateCatalogs())
+		execDBQuery(QString("if not exists(select * from sys.databases where name='%1') create database [%1]").arg(mainCatalog), MAIN_DB_CONNECTION);
+	execDBQuery(QString("USE [%1]").arg(mainCatalog), MAIN_DB_CONNECTION);
 
-#endif
+	LOG("mW.cpp", QString("Opening Apex database profile '%1'").arg(apexProfile.Name()));
+	QSqlDatabase apexDb = QSqlDatabase::addDatabase(databaseSettings.Driver(), APEX_DB_CONNECTION);
+	DatabaseConfigurator::Apply(apexDb, apexProfile);
+	if (!apexDb.open())
+		EXIT(tr("Error in Apex database"), apexDb.lastError().text());
+
+	const QString apexCatalog = databaseSettings.ApexCatalog();
+	if (databaseSettings.CreateCatalogs())
+		execDBQuery(QString("if not exists(select * from sys.databases where name='%1') create database [%1]").arg(apexCatalog), APEX_DB_CONNECTION);
+	execDBQuery(QString("USE [%1]").arg(apexCatalog), APEX_DB_CONNECTION);
+
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////
 #ifdef EMULATE
@@ -1756,7 +1829,12 @@ void mainWindowClass::initializeDatabase()
 	createTable("users",colNames,colTypes,MAIN_DB_CONNECTION);
 
 #ifndef EMULATE
-	execDBQuery("if not exists (select name from users where name='admin') insert into users (name,pass) values('admin','123')",MAIN_DB_CONNECTION);
+	QString initialAdminUser = configuration.Security().InitialAdminUser();
+	QString initialAdminPassword = configuration.Security().InitialAdminPassword();
+	initialAdminUser.replace("'", "''");
+	initialAdminPassword.replace("'", "''");
+	execDBQuery(QString("if not exists (select name from users where name='%1') insert into users (name,pass) values('%1','%2')")
+		.arg(initialAdminUser).arg(initialAdminPassword), MAIN_DB_CONNECTION);
 #endif
 
 #ifdef EMULATE

@@ -1,4 +1,6 @@
 ﻿#include "emulate.cr.h"
+#include "configuration/ConfigurationManager.h"
+
 craneEmulatorClass::craneEmulatorClass(tuxipClass *craneTuxip_):QWidget()
 {
 	craneTuxip=craneTuxip_;
@@ -167,7 +169,7 @@ craneEmulatorClass::craneEmulatorClass(tuxipClass *craneTuxip_):QWidget()
 	step=0;
 	fromPos=toPos=NULL;
 	///
-	mainTimer.start(1000);
+	mainTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().EmulationCraneMainMilliseconds());
 	QVBoxLayout *mainLayout=new QVBoxLayout();QWidget::setLayout(mainLayout);
 	//velocitySpinBox
 	QHBoxLayout *velocitySpinBoxLayout=new QHBoxLayout();mainLayout->addLayout(velocitySpinBoxLayout);
@@ -605,9 +607,9 @@ void craneEmulatorClass::onAnimateTimerSlot()
 		if (!stepTimer.isActive())
 		{
 			if (movingZ)
-				stepTimer.start(1000);
+				stepTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().EmulationMovingZStepMilliseconds());
 			else
-				stepTimer.start(100);
+				stepTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().EmulationStepMilliseconds());
 		}
 	}
 	if (step==END)
@@ -632,7 +634,7 @@ void craneEmulatorClass::setPcStatus(int st)
 		craneTuxip->writeInteger("N20",12,1);
 		step=START;
 		onAnimateTimerSlot();
-		animateTimer.start(50);
+		animateTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().EmulationAnimationMilliseconds());
 	}
 	if ((pcStatus==2)&&(fromPos)&&(toPos))
 	{

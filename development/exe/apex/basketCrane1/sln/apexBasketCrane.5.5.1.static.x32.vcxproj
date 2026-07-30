@@ -26,10 +26,10 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
-    <Import Project="..\..\..\5.5.1.static.x32.props" />
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
-    <Import Project="..\..\..\5.5.1.static.x32.props" />
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
@@ -80,7 +80,7 @@
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>libvlc.lib;libvlccore.lib;oci.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>c:\assimakis\development\libs\_deploy\builds\vlc\vlc-2.2.1\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\..\..\libs\#qt\qt.5.7.0.static.x32\__\oracleSdk12.1.0.2.0\sdk\lib\msvc;c:\assimakis\development\libs\_deploy\builds\vlc\vlc-2.2.1\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -100,6 +100,8 @@
     <ClCompile Include="..\..\..\..\#moc\apex\basketCrane1\mocFiles.5.1.1\plcM.h.cpp" />
     <ClCompile Include="..\..\..\..\#moc\apex\basketCrane1\mocFiles.5.1.1\plcW.h.cpp" />
     <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\applogger.cpp" />
+    <ClCompile Include="..\..\common\execDBQuery.cpp" />
     <ClCompile Include="..\..\common\moc\mocFiles.5.1.1\btns.h.cpp" />
     <ClCompile Include="..\..\common\moc\mocFiles.5.1.1\tcpTux.h.cpp" />
     <ClCompile Include="..\..\common\tcpTux.cpp" />
@@ -148,12 +150,21 @@
     <ClInclude Include="..\uglyfont.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\basketCrane.ini" />
     <None Include="..\icon\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\icon\script.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\configuration\BasketCrane.Configuration.vcxproj">
+      <Project>{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="CopyRuntimeConfiguration" AfterTargets="Build">
+    <Copy SourceFiles="$(ProjectDir)..\basketCrane.ini" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+  </Target>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
 </Project>

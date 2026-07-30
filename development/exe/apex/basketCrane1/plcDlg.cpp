@@ -1,10 +1,17 @@
 #include "plcDlg.h"
+#include "configuration/ConfigurationManager.h"
 
 QVector<QProcess*> externalProcessesVector;
 static QMap<QString, tuxipClass*> g_tuxConnections;
 
 plcDialogClass::plcDialogClass(plcWidgetClass *plcWidget_)
 {
+	const BasketCrane::Configuration::PlcSettings& plcSettings =
+		BasketCrane::Configuration::ConfigurationManager::Instance().Plc();
+	const QString craneIp = plcSettings.CraneIp();
+	const QString conveyorsAddress = plcSettings.ConveyorsIp();
+	const QString newOvenAddress = plcSettings.NewOvenIp();
+
 	setGeometry(250, 50, 1500, 1100);
 	setWindowIcon(QIcon(":/logo_16x16.png"));
 	plcWidget = plcWidget_;
@@ -26,14 +33,14 @@ plcDialogClass::plcDialogClass(plcWidgetClass *plcWidget_)
 	QWidget *craneTcpWidget=new QWidget();commsTabWidget->addTab(craneTcpWidget,tr("crane"));
 	QWidget *conveyorsTcpWidget=new QWidget();commsTabWidget->addTab(conveyorsTcpWidget,tr("conveyors"));
 #ifdef EMULATE
-	cranePlcTcpServer=new tcpServerClass(CRANE_READ_PORT,CRANE_WRITE_PORT,craneTcpWidget,true,false);
+	cranePlcTcpServer=new tcpServerClass(plcSettings.CraneReadPort(),plcSettings.CraneWritePort(),craneTcpWidget,true,false);
 #else
-	cranePlcTcpServer=new tcpServerClass(CRANE_READ_PORT,CRANE_WRITE_PORT,craneTcpWidget,false,true);
+	cranePlcTcpServer=new tcpServerClass(plcSettings.CraneReadPort(),plcSettings.CraneWritePort(),craneTcpWidget,false,true);
 #endif
 #ifdef EMULATE
-	conveyorsPlcTcpServer=new tcpServerClass(AGEING_OVEN_READ_PORT,AGEING_OVEN_WRITE_PORT,conveyorsTcpWidget,true,false);
+	conveyorsPlcTcpServer=new tcpServerClass(plcSettings.ConveyorsReadPort(),plcSettings.ConveyorsWritePort(),conveyorsTcpWidget,true,false);
 #else
-	conveyorsPlcTcpServer=new tcpServerClass(AGEING_OVEN_READ_PORT,AGEING_OVEN_WRITE_PORT,conveyorsTcpWidget,false,true);
+	conveyorsPlcTcpServer=new tcpServerClass(plcSettings.ConveyorsReadPort(),plcSettings.ConveyorsWritePort(),conveyorsTcpWidget,false,true);
 #endif
 	cranePlcTcpServer->addTableMonitor(tableMonitorClass::TYPE_INT,"N20",25);
 	cranePlcTcpServer->addTableMonitor(tableMonitorClass::TYPE_DOUBLE,"F21",18);
@@ -69,16 +76,16 @@ plcDialogClass::plcDialogClass(plcWidgetClass *plcWidget_)
 		return conn;
 		};
 
-	LOG("TUX_PLC_COMMS - basket crane", basketCraneIp);
-	tuxIpCrane = getOrCreateTuxConnection(basketCraneIp, "basket crane");
+	LOG("TUX_PLC_COMMS - basket crane", craneIp);
+	tuxIpCrane = getOrCreateTuxConnection(craneIp, plcSettings.CraneDescription());
 	cranePlcTcpServer = new tcpServerClass(tuxIpCrane);
 
-	LOG("TUX_PLC_COMMS - oven1", conveyorsIp);
-	tuxIpConveyors = getOrCreateTuxConnection(conveyorsIp, "oven1");
+	LOG("TUX_PLC_COMMS - oven1", conveyorsAddress);
+	tuxIpConveyors = getOrCreateTuxConnection(conveyorsAddress, plcSettings.ConveyorsDescription());
 	conveyorsPlcTcpServer = new tcpServerClass(tuxIpConveyors);
 
-	LOG("TUX_PLC_COMMS - oven2", newOvenIp);
-	tuxIpNewOven = getOrCreateTuxConnection(newOvenIp, "oven2");
+	LOG("TUX_PLC_COMMS - oven2", newOvenAddress);
+	tuxIpNewOven = getOrCreateTuxConnection(newOvenAddress, plcSettings.NewOvenDescription());
 #endif
 
 #ifdef VB_PLC_COMMS
@@ -143,17 +150,19 @@ tuxipClass *plcDialogClass::getNewOvenTuxClass()
 void plcDialogClass::startExternalSoft()
 {
 #ifdef VB_PLC_COMMS
+	const BasketCrane::Configuration::PlcSettings& plcSettings =
+		BasketCrane::Configuration::ConfigurationManager::Instance().Plc();
 #ifndef EMULATE
 	QProcess *craneProc=new QProcess();
 	QStringList craneArgs;
-	craneArgs<<basketCraneIp<<cranePlcTcpServer->getIp()<<QString().number(CRANE_WRITE_PORT)<<QString().number(CRANE_READ_PORT)<<QString().number(100)<<"N20"<<QString().number(25)<<QString().number(100)<<"F21"<<QString().number(18)<<QString().number(500);
-	craneProc->start(QDir::currentPath()+"//hmiBasketCrane//hmiBasketCrane.exe ",craneArgs);
+	craneArgs<<plcSettings.CraneIp()<<cranePlcTcpServer->getIp()<<QString().number(plcSettings.CraneWritePort())<<QString().number(plcSettings.CraneReadPort())<<QString().number(100)<<"N20"<<QString().number(25)<<QString().number(100)<<"F21"<<QString().number(18)<<QString().number(500);
+	craneProc->start(plcSettings.CraneHmiExecutable(),craneArgs);
 	externalProcessesVector.append(craneProc);
 
 	QProcess *conveyorsProc=new QProcess();
 	QStringList conveyorsArgs;
-	conveyorsArgs<<conveyorsIp<<conveyorsPlcTcpServer->getIp()<<QString().number(AGEING_OVEN_WRITE_PORT)<<QString().number(AGEING_OVEN_READ_PORT)<<QString().number(100)<<"N11"<<QString().number(27)<<QString().number(100);
-	conveyorsProc->start(QDir::currentPath()+"//hmiAgingOven//hmiAgingOven.exe ",conveyorsArgs);
+	conveyorsArgs<<plcSettings.ConveyorsIp()<<conveyorsPlcTcpServer->getIp()<<QString().number(plcSettings.ConveyorsWritePort())<<QString().number(plcSettings.ConveyorsReadPort())<<QString().number(100)<<"N11"<<QString().number(27)<<QString().number(100);
+	conveyorsProc->start(plcSettings.ConveyorsHmiExecutable(),conveyorsArgs);
 	externalProcessesVector.append(conveyorsProc);
 #endif
 #endif
@@ -162,18 +171,22 @@ void plcDialogClass::startExternalSoft()
 #ifdef TUX_PLC_COMMS
 void plcDialogClass::addTables()
 {
+	const BasketCrane::Configuration::PlcSettings& plcSettings =
+		BasketCrane::Configuration::ConfigurationManager::Instance().Plc();
+	const int pollingMs = theOneBCToRuleThemAll
+		? plcSettings.EnabledPollingMilliseconds()
+		: plcSettings.StandbyPollingMilliseconds();
 	if (theOneBCToRuleThemAll) {
-		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, 750);
-		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, 750);
-		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, 750);
-		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, 750);
+		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, pollingMs);
+		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, pollingMs);
+		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, pollingMs);
+		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, pollingMs);
 	}
 	else {
-		// @@@@@ - Slowing down the PLC polling.... was 750ms above, slowing down to 2000 for the NON ENABLED apps
-		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, 2000);
-		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, 2000);
-		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, 2000);
-		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, 2000);
+		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, pollingMs);
+		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, pollingMs);
+		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, pollingMs);
+		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, pollingMs);
 	}
 #ifdef EMULATE
 	/* -- AB - Remvoing this from EMULATE for now @@@@@

@@ -4,6 +4,12 @@
     <ClCompile Include="..\..\common\btns.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\common\applogger.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\execDBQuery.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
     <ClCompile Include="..\resources\recources.cpp">
       <Filter>icons</Filter>
     </ClCompile>
@@ -125,6 +131,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\basketCrane.ini" />
     <None Include="..\icon\icon.ico">
       <Filter>icons</Filter>
     </None>

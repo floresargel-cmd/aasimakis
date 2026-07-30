@@ -17,7 +17,7 @@ public:
 	tuxipServerClass(QWidget *p=NULL);							
 	~tuxipServerClass();							
 	void setPacketRequestInterval(int t);
-	tuxipClass* addConnection(QString ip, QString comment);//,bool noPlc=false,bool useSimplePing=false);
+	tuxipClass* addConnection(QString ip, QString comment, bool noPlc = false, bool useSimplePing = false);
 	void addConnection(tuxipClass *tClass);
 	void addTable(QString tableName,int type,int minIndex,int maxIndex,int updateInterval,QString ip);
 	void setVarComment(QString ip,QString table,int index,QString comment);

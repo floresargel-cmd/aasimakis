@@ -2,9 +2,6 @@
 
 #include <QDebug>
 
-// 🔧 DEFINE THE GLOBAL VARIABLE
-bool theOneBCToRuleThemAll = true;
-
 // #define SEMILIVE
 
 tcpServerClass::tcpServerClass(tuxipClass* tuxip_, QWidget* parent)

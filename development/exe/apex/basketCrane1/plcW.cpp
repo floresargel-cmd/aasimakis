@@ -1,4 +1,16 @@
 #include "plcW.h"
+
+static QString readablePlcLabelStyle(QString style)
+{
+	if (style.contains("background-color:white", Qt::CaseInsensitive))
+		style.replace("background-color:white", "background-color:#f8fafc;color:#334155", Qt::CaseInsensitive);
+	else if (style.contains("background-color:red", Qt::CaseInsensitive))
+		style.replace("background-color:red", "background-color:#b91c1c;color:#ffffff", Qt::CaseInsensitive);
+
+	style.replace("QLabel{", "QLabel{padding-left:6px;");
+	return style;
+}
+
 plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 {
 	p->setStyleSheet(QString("QLabel{font-size:%1px} QPushButton{font-size:%1px}  QCheckBox{font-size:%1px}").arg(12));
@@ -20,27 +32,27 @@ plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 	toPosLabel->setMinimumHeight(30);
 	mainLayout->addWidget(toPosLabel);
 
-	stopLabel=new QLabel("...");		 stopLabel->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}");stopLabel->setMinimumHeight(30);mainLayout->addWidget(stopLabel); 
-	status0Label=new QLabel("...");  status0Label->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}");status0Label->setMinimumHeight(30);mainLayout->addWidget(status0Label); 
-	status1Label=new QLabel("...");  status1Label->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}");status1Label->setMinimumHeight(30);mainLayout->addWidget(status1Label); 
+	stopLabel=new QLabel("...");		 stopLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");stopLabel->setMinimumHeight(30);mainLayout->addWidget(stopLabel); 
+	status0Label=new QLabel("...");  status0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");status0Label->setMinimumHeight(30);mainLayout->addWidget(status0Label); 
+	status1Label=new QLabel("...");  status1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");status1Label->setMinimumHeight(30);mainLayout->addWidget(status1Label); 
 	
 	status2Label = new QLabel("...");  
-	status2Label->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}"); 
+	status2Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
 	status2Label->setMinimumHeight(30); 
 	mainLayout->addWidget(status2Label);
 	
 	error0Label = new QLabel("...");   
-	error0Label->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}"); 
+	error0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
 	error0Label->setMinimumHeight(30); 
 	mainLayout->addWidget(error0Label);
 
 	error1Label=new QLabel("...");   
-	error1Label->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}"); 
+	error1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
 	error1Label->setMinimumHeight(30); 
 	mainLayout->addWidget(error1Label);  
 	
 	makeResetLabel=new QLabel("...");   
-	makeResetLabel->setStyleSheet("QLabel{color:#ffffff;background-color:transparent;background:white;}"); 
+	makeResetLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
 	makeResetLabel->setMinimumHeight(25); 
 	mainLayout->addWidget(makeResetLabel);  
 
@@ -115,42 +127,42 @@ void plcWidgetClass::setToPosLabelText(QString str)
 void plcWidgetClass::setStopLabelText(QString str,QString style)
 {
 	stopLabel->setText(str);
-	stopLabel->setStyleSheet(style);
+	stopLabel->setStyleSheet(readablePlcLabelStyle(style));
 }
 void plcWidgetClass::setStatus0LabelText(QString str,QString style)
 {
 	status0Label->setText(str);
-	status0Label->setStyleSheet(style);
+	status0Label->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::setStatus1LabelText(QString str,QString style)
 {
 	status1Label->setText(str);
-	status1Label->setStyleSheet(style);
+	status1Label->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::setStatus2LabelText(QString str, QString style)
 {
 	status2Label->setText(str);
-	status2Label->setStyleSheet(style);
+	status2Label->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::setError0LabelText(QString str, QString style)
 {
 	error0Label->setText(str);
-	error0Label->setStyleSheet(style);
+	error0Label->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::setError1LabelText(QString str,QString style)
 {
 	error1Label->setText(str);
-	error1Label->setStyleSheet(style);
+	error1Label->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::setMakeResetLabelText(QString str,QString style)
 {
 	makeResetLabel->setText(str);
-	makeResetLabel->setStyleSheet(style);
+	makeResetLabel->setStyleSheet(readablePlcLabelStyle(style));
 }
 
 void plcWidgetClass::signalFromCranePlc(QString table, int index, QString value)

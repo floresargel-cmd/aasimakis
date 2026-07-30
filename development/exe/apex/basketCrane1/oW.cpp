@@ -15,7 +15,18 @@ GLfloat	quadVertexesForGlassArray[] = {49.000f, 7.590f, 0.250f,  66.500, 7.590f,
 																	/*	17.500f,4.750f,0.0f,      26.950f,4.750f,0.0f,    26.950f,4.750f,2.200f, 17.500f,4.750f,2.200f,  */     };//destacker
 int numberOfQuadForGlass = 1;
 
-openGLWidgetClass::openGLWidgetClass(tcpServerClass *cranePlcTcpServer_,tcpServerClass *conveyorsPlcTcpServer_,tcpServerClass *newOvenConveyorsPlcTcpServer_,QWidget *parent, QGLWidget *shareWidget,GLfloat zoomMin_,GLfloat zoomMax_,GLfloat zRotMin_,GLfloat zRotMax_,GLfloat elevateMin_,GLfloat elevateMax_):QGLWidget(parent, shareWidget)
+static QGLFormat modernOpenGlFormat()
+{
+	QGLFormat format = QGLFormat::defaultFormat();
+	format.setDepth(true);
+	format.setDoubleBuffer(true);
+	format.setSampleBuffers(true);
+	format.setSamples(4);
+	format.setSwapInterval(1);
+	return format;
+}
+
+openGLWidgetClass::openGLWidgetClass(tcpServerClass *cranePlcTcpServer_,tcpServerClass *conveyorsPlcTcpServer_,tcpServerClass *newOvenConveyorsPlcTcpServer_,QWidget *parent, QGLWidget *shareWidget,GLfloat zoomMin_,GLfloat zoomMax_,GLfloat zRotMin_,GLfloat zRotMax_,GLfloat elevateMin_,GLfloat elevateMax_):QGLWidget(modernOpenGlFormat(), parent, shareWidget)
 {
 	cranePlcTcpServer = cranePlcTcpServer_;
 	conveyorsPlcTcpServer = conveyorsPlcTcpServer_;
@@ -231,10 +242,19 @@ void openGLWidgetClass::initializeGL()
 {
 	LOG("openGLWidgetClass", "INFO: Starting: initializeGL - Initializing OpenGL...");
 	glEnable(GL_DEPTH_TEST);
-	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-	glEnable (GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0);
+	glShadeModel(GL_SMOOTH);
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_DITHER);
+#ifdef GL_MULTISAMPLE
+	if (format().sampleBuffers())
+		glEnable(GL_MULTISAMPLE);
+#endif
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glMatrixMode(GL_PROJECTION);
-	glPolygonMode( GL_FRONT, GL_FILL );
 	glOrtho(-10.0, +10.0, -10.0, +10.0, -1000.0, 1000.0);
 
 	bindTexture(QPixmap(QString(":/whiteTextureTria.png")), GL_TEXTURE_2D);//WHITE_TEXTURE_TRIA
@@ -265,14 +285,24 @@ void openGLWidgetClass::paintGLMine(bool forPicking, bool forHighliting)
 		qglClearColor(QColor(0, 0, 0));
 		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
+		glDisable(GL_DITHER);
+#ifdef GL_MULTISAMPLE
+		glDisable(GL_MULTISAMPLE);
+#endif
 	}
 	else
 	{
-		qglClearColor(QColor(0, 0, 0));
+		qglClearColor(QColor(7, 13, 24));
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DITHER);
+#ifdef GL_MULTISAMPLE
+		if (format().sampleBuffers())
+			glEnable(GL_MULTISAMPLE);
+#endif
 		glEnable(GL_TEXTURE_2D);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	glLoadIdentity();
@@ -300,7 +330,7 @@ void openGLWidgetClass::paintGLMine(bool forPicking, bool forHighliting)
 		allPositions->draw(false, forHighliting);
 		
 		glPushAttrib(GL_COLOR_BUFFER_BIT|GL_CURRENT_BIT);
-		glColor3ub(150,150,175);
+		glColor3ub(100, 116, 139);
 		area->draw();
 		glPopAttrib();
 		///glass
@@ -309,7 +339,7 @@ void openGLWidgetClass::paintGLMine(bool forPicking, bool forHighliting)
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		//glEnableClientState(GL_VERTEX_ARRAY);
 		glPushAttrib(GL_COLOR_BUFFER_BIT|GL_CURRENT_BIT);
-		glColor4f(0.0,0.0,1.0,0.25);
+		glColor4f(0.22f, 0.74f, 0.97f, 0.18f);
 		glVertexPointer(3,GL_FLOAT,0,&quadVertexesForGlassArray[0]);
 		glDrawArrays(GL_QUADS,0,numberOfQuadForGlass*4);
 		glPopAttrib();

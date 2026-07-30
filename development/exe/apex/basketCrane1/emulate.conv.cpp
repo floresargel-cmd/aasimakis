@@ -1,20 +1,24 @@
 ﻿#include "emulate.conv.h"
 
+#include "configuration/ConfigurationManager.h"
+
 conveyorsEmulatorClass::conveyorsEmulatorClass(tuxipClass *conveyorTuxip_):QWidget()
 {
+	const BasketCrane::Configuration::ConfigurationManager& configuration =
+		BasketCrane::Configuration::ConfigurationManager::Instance();
 	conveyorTuxip=conveyorTuxip_;
 	///
 	connect(&mainTimer,SIGNAL(timeout()),this,SLOT(mainTimerSlot()));
-	mainTimer.start(1000);
+	mainTimer.start(configuration.Timers().EmulationConveyorMainMilliseconds());
 	QVBoxLayout *mainLayout=new QVBoxLayout();QWidget::setLayout(mainLayout);
 	//stayInOven
 	ovenEntranseReady=false;
 	QHBoxLayout *stayInOvenLayout=new QHBoxLayout();mainLayout->addLayout(stayInOvenLayout);
 	stayInOvenLayout->addWidget(new QLabel(tr("stay in oven for:")));
 	stayInOvenTimeSpinBox=new QSpinBox();stayInOvenLayout->addWidget(stayInOvenTimeSpinBox);
-	stayInOvenTimeSpinBox->setMinimum(1);
-	stayInOvenTimeSpinBox->setMaximum(1000);
-	stayInOvenTimeSpinBox->setValue(20);
+	stayInOvenTimeSpinBox->setMinimum(configuration.Emulation().OvenStayMinimumSeconds());
+	stayInOvenTimeSpinBox->setMaximum(configuration.Emulation().OvenStayMaximumSeconds());
+	stayInOvenTimeSpinBox->setValue(configuration.Emulation().OvenStayDefaultSeconds());
 	stayInOvenLayout->addWidget(new QLabel(tr(" sec")));
 	ovenReadyPushButton=new QPushButton(tr("oven ready"));stayInOvenLayout->addWidget(ovenReadyPushButton);
 	stayInOvenLayout->addStretch(1);
@@ -26,7 +30,7 @@ conveyorsEmulatorClass::conveyorsEmulatorClass(tuxipClass *conveyorTuxip_):QWidg
 		stayInOvenTimer.start(stayInOvenTimeSpinBox->value()*1000);
 	//
 	connect(&propagateBasketsTimer,SIGNAL(timeout()),this,SLOT(propagateBasketsTimerSlot()));
-	propagateBasketsTimer.start(1000);
+	propagateBasketsTimer.start(configuration.Timers().EmulationConveyorPropagationMilliseconds());
 	//
 	mainLayout->addStretch(1);
 	//

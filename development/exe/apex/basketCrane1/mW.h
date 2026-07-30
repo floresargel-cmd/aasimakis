@@ -117,6 +117,7 @@ public slots:
 	void signalFromCraneTuxPlcSlot(QString ip, QString table, int index, QVariant value);
 	void signalFromConveyorsTuxPlcSlot(QString ip, QString table, int index, QVariant value);
 	void showServerSlot();
+	void showBasketTrackerSlot();
 
 //for backwards compatibility
 	void signalFromCranePlcSlot(QString table, int index, QString value);

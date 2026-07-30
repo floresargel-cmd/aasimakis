@@ -1,4 +1,5 @@
 #include "ap.h"
+#include "configuration/ConfigurationManager.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
 #include "timerStatus.h"
@@ -661,8 +662,7 @@ allPositionsClass::allPositionsClass(tcpServerClass *conveyorsPlcTcpServer_, tcp
 		nextOven2LoadingCycleTemperEnum = NEXT_OVEN_CYCLE_TEMPER_185;
 
 	connect(&mainTimer, SIGNAL(timeout()), this, SLOT(mainTimerSlot()));
-	// mainTimer.start(500);
-	mainTimer.start(1500);  // @@@@@ -- Slowing this down for tesating purposes. Change back to 500 in final version.
+	mainTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().PositionsMilliseconds());
 
 	//connect(&inOvenUpdateTimeTimer,SIGNAL(timeout()),this,SLOT(inOvenUpdateTimeTimerSlot()));
 	//inOvenUpdateTimeTimer.start(1000);
@@ -796,8 +796,7 @@ bool allPositionsClass::isOven2EntranceFull()
 void allPositionsClass::addToAutoMode(int mode)
 {
 	autoModeEnum = autoModeEnum | mode;
-	// autoModeTimer.start(500); // @@@@@ -- Slowing this down for tesating purposes. Change back to 500 in final version.
-	autoModeTimer.start(1500);
+	autoModeTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().AutoModeMilliseconds());
 }
 
 void allPositionsClass::removeFromAutoMode(int mode)
@@ -2964,7 +2963,7 @@ void allPositionsClass::checkOvenUnloadPositions()
 void allPositionsClass::autoModeTimerSlot()
 {
 	setAutoModeTimerFiring();
-	int timeToWaitForBasketToStacker = 1000*60*2;  // 2 Minutes?
+	int timeToWaitForBasketToStacker = 1000 * 30;  // 30 seconds
 #ifdef EMULATE
 	timeToWaitForBasketToStacker=3*1000;
 #endif

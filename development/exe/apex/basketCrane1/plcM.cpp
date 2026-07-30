@@ -171,8 +171,8 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		command11PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|11", "N20|3|0", tr("Move axis z down"), this); commandsGroupBoxLayout->addWidget(command11PushButton);
 		command12PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|12", "N20|3|0", tr("Move axis x to ageing oven"), this); commandsGroupBoxLayout->addWidget(command12PushButton);
 		command13PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|13", "N20|3|0", tr("Move axis x to empty buffer"), this); commandsGroupBoxLayout->addWidget(command13PushButton);
-		command14PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|14", "N20|3|0", tr("Move axis y to press"), this); commandsGroupBoxLayout->addWidget(command14PushButton);
-		command15PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|15", "N20|3|0", tr("Move axis y to packing"), this); commandsGroupBoxLayout->addWidget(command15PushButton);
+		command14PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|14", "N20|3|0", tr("Move axis y to Press 1"), this); commandsGroupBoxLayout->addWidget(command14PushButton);
+		command15PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|15", "N20|3|0", tr("Move axis y to Press 2"), this); commandsGroupBoxLayout->addWidget(command15PushButton);
 		command16PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|16", "N20|3|0", tr("Basket pins out"), this); commandsGroupBoxLayout->addWidget(command16PushButton);
 		command17PushButton = new myQPushButton(cranePlcTcpServer, "", "N20|3|0", tr("Basket pins in"), this); commandsGroupBoxLayout->addWidget(command17PushButton);
 		command18PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|18", "N20|3|0", tr("Lock basket in upper position"), this); commandsGroupBoxLayout->addWidget(command18PushButton);

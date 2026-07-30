@@ -1,4 +1,5 @@
 #include "cr.h"
+#include "configuration/ConfigurationManager.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
 #include "../common/execDBQuery.h"
@@ -130,7 +131,7 @@ void craneClass::setPlcX(float x)
 		plcXVelocity=avarage(plcXVelocityArray);
 		plcXTime.restart();
 		if ((plcXVelocity>0)&&(!animateTimer.isActive()))
-			animateTimer.start(20);
+			animateTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().CraneAnimationMilliseconds());
 	}
 	else
 	{
@@ -151,7 +152,7 @@ void craneClass::setPlcY(float y)
 		plcYVelocity=avarage(plcYVelocityArray);
 		plcYTime.restart();
 		if ((plcYVelocity>0)&&(!animateTimer.isActive()))
-			animateTimer.start(20);
+			animateTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().CraneAnimationMilliseconds());
 	}
 	else
 	{
@@ -170,7 +171,7 @@ void craneClass::setPlcZ(float z)
 		plcZVelocityArray.append(1.0f*fabs(openGlZ-z)/float(dt));
 		plcZVelocity=avarage(plcZVelocityArray);
 		if ((plcZVelocity>0)&&(!animateTimer.isActive()))
-			animateTimer.start(20);
+			animateTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().CraneAnimationMilliseconds());
 	}
 	else
 	{
@@ -328,7 +329,7 @@ void craneClass::activeMissionTimerSlot()
 			plcXVelocityArray.clear();
 			plcYVelocityArray.clear();
 			plcZVelocityArray.clear();
-			animateTimer.start(20);
+			animateTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().CraneAnimationMilliseconds());
 			animateTime.restart();
 		}
 	}

@@ -1,4 +1,5 @@
 #include "emulate.mW.h"
+#include "configuration/ConfigurationManager.h"
 
 plcEmulateWindowClass::plcEmulateWindowClass(tuxipClass *craneTuxip_,tuxipClass *conveyorTuxip_,QWidget *p):QDialog(p)
 {
@@ -23,7 +24,7 @@ plcEmulateWindowClass::plcEmulateWindowClass(tuxipClass *craneTuxip_,tuxipClass 
 	connect(&mainTimer, SIGNAL(timeout()), this, SLOT(onMainTimer()));
 	onMainTimer();
 
-	mainTimer.start(1000);
+	mainTimer.start(BasketCrane::Configuration::ConfigurationManager::Instance().Timers().EmulationMainMilliseconds());
 }
 
 void plcEmulateWindowClass::tuxIsReady()
