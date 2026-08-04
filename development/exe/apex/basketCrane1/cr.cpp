@@ -65,7 +65,10 @@ void craneClass::openGlDraw()
 	verticalOpenGl->draw();
 	glPopAttrib();
 
-	if (activeFromBasketPos)
+	// Blink the pickup basket only while the crane is approaching it. The PLC
+	// carrying flag is authoritative and stops the warning as soon as pickup
+	// has completed.
+	if (activeFromBasketPos && !isCarryingBasket)
 		activeFromBasketPos->draw(false,true,false);
 
 	if (activeToBasketPos)

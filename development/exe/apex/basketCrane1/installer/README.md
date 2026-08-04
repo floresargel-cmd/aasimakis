@@ -14,6 +14,11 @@ msbuild .\ApexBasketCrane.Installer.wixproj /restore /p:Configuration=Release /p
 The application project is a project reference and builds first. The MSI is
 written to `bin\Release\ApexBasketCrane-Release-x86.msi`.
 
+Each application build increments the `major.minor.build` value in
+`..\build-version.txt`. The generated value is compiled into the application
+and then read by this WiX project for the MSI `ProductVersion`, keeping the
+on-screen version and Add/Remove Programs version identical.
+
 ## Installed resources
 
 - Application files under

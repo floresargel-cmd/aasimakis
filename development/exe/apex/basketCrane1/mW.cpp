@@ -1,6 +1,7 @@
 #include "mW.h"
 #include "configuration/ConfigurationManager.h"
 #include "configuration/DatabaseConfigurator.h"
+#include "generated/build_version.h"
 #include "../common/execDBQuery.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
@@ -174,9 +175,21 @@ mainWindowClass::mainWindowClass()
 	QHBoxLayout *appHeaderLayout = new QHBoxLayout(appHeader);
 	appHeaderLayout->setContentsMargins(18, 5, 18, 5);
 	appHeaderLayout->setSpacing(12);
-	QLabel *brandWordmark = new QLabel("APEX", appHeader);
-	brandWordmark->setObjectName("brandWordmark");
-	appHeaderLayout->addWidget(brandWordmark);
+	QLabel *brandLogo = new QLabel(appHeader);
+	brandLogo->setObjectName("brandLogo");
+	brandLogo->setAlignment(Qt::AlignCenter);
+	brandLogo->setFixedSize(116, 42);
+	const QPixmap headerLogo = loadApexLogo();
+	if (!headerLogo.isNull())
+	{
+		brandLogo->setPixmap(headerLogo.scaled(112, 40, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		brandLogo->setToolTip(tr("APEX Aluminum Extrusions"));
+	}
+	else
+	{
+		brandLogo->setText("APEX");
+	}
+	appHeaderLayout->addWidget(brandLogo);
 	QFrame *brandDivider = new QFrame(appHeader);
 	brandDivider->setFrameShape(QFrame::VLine);
 	brandDivider->setStyleSheet("color:#334155;");
@@ -288,29 +301,20 @@ mainWindowClass::mainWindowClass()
 	basketDataRefreshTimer.start();
 	LOG("BASKET CACHE", "Automatic display refresh enabled: interval=15000ms");
 
-	QLabel *apexLogoLabel = new QLabel(openGLWidget);
-	apexLogoLabel->setObjectName("apexLogo");
-	apexLogoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-	apexLogoLabel->setStyleSheet("#apexLogo{background:#111827;border:1px solid #334155;border-radius:6px;padding:6px;}");
-	const QPixmap apexLogo = loadApexLogo();
-	if (!apexLogo.isNull())
-	{
-		apexLogoLabel->setPixmap(apexLogo.scaled(260, 115, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-		apexLogoLabel->setFixedSize(apexLogoLabel->pixmap()->size() + QSize(14, 14));
-		apexLogoLabel->setToolTip(tr("APEX Aluminum Extrusions"));
-	}
-	else
-	{
-		apexLogoLabel->hide();
-	}
+	QLabel *versionLabel = new QLabel(QString("VERSION  %1").arg(APEX_BASKET_CRANE_VERSION), openGLWidget);
+	versionLabel->setObjectName("buildVersion");
+	versionLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
+	versionLabel->setAlignment(Qt::AlignCenter);
+	versionLabel->setStyleSheet("#buildVersion{color:#cbd5e1;background:#111827;border:1px solid #334155;border-radius:6px;padding:7px 12px;font-size:9pt;font-weight:600;}");
+	versionLabel->setToolTip(tr("Application and installer version"));
 
-	QHBoxLayout *apexLogoRow = new QHBoxLayout();
-	apexLogoRow->addStretch(1);
-	apexLogoRow->addWidget(apexLogoLabel);
+	QHBoxLayout *versionRow = new QHBoxLayout();
+	versionRow->addStretch(1);
+	versionRow->addWidget(versionLabel);
 	QVBoxLayout *brandingOverlayLayout = new QVBoxLayout(openGLWidget);
 	brandingOverlayLayout->setContentsMargins(0, 0, 22, 18);
 	brandingOverlayLayout->addStretch(1);
-	brandingOverlayLayout->addLayout(apexLogoRow);
+	brandingOverlayLayout->addLayout(versionRow);
 
 #ifdef TUX_PLC_COMMS
 	// Show PLC networks as "connecting" (yellow) until first data or error

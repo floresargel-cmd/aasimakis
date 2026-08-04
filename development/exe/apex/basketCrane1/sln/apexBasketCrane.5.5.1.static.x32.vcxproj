@@ -162,6 +162,9 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="GenerateBuildVersion" BeforeTargets="PrepareForBuild">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(ProjectDir)..\build\IncrementBuildVersion.ps1&quot; -VersionFile &quot;$(ProjectDir)..\build-version.txt&quot; -HeaderFile &quot;$(ProjectDir)..\generated\build_version.h&quot;" />
+  </Target>
   <Target Name="CopyRuntimeConfiguration" AfterTargets="Build">
     <Copy SourceFiles="$(ProjectDir)..\basketCrane.ini" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
   </Target>

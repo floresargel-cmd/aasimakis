@@ -1,5 +1,6 @@
 #include "mW.h"
 #include "configuration/ConfigurationManager.h"
+#include "generated/build_version.h"
 #include "../common/applogger.h"
 #include <QtPlugin>
 #include <QtGlobal>
@@ -28,7 +29,7 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);  //moved here by gene
 	QCoreApplication::setOrganizationName("Lorval Capital Management");
 	QCoreApplication::setApplicationName("ApexBasketCrane");
-	QCoreApplication::setApplicationVersion("5.5.1");
+	QCoreApplication::setApplicationVersion(APEX_BASKET_CRANE_VERSION);
 	applog_initialize("basket-crane", 30);
 	applog_installQtMessageHandler();
 	std::set_terminate(logTerminate);
@@ -68,10 +69,11 @@ int main(int argc, char *argv[])
 		"  background-color: #111827;"
 		"  border-bottom: 1px solid #263449;"
 		"}"
-		"#brandWordmark {"
+		"#brandLogo {"
 		"  color: #e11145;"
-		"  font-size: 17pt;"
-		"  font-weight: 300;"
+		"  font-size: 16pt;"
+		"  font-weight: 400;"
+		"  background: transparent;"
 		"}"
 		"#applicationTitle {"
 		"  color: #f8fafc;"
