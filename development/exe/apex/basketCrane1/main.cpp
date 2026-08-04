@@ -1,7 +1,10 @@
 #include "mW.h"
 #include "configuration/ConfigurationManager.h"
+#include "../common/applogger.h"
 #include <QtPlugin>
 #include <QtGlobal>
+#include <cstdlib>
+#include <exception>
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
 Q_IMPORT_PLUGIN (QWindowsIntegrationPlugin);
@@ -10,20 +13,11 @@ Q_IMPORT_PLUGIN (QWindowsIntegrationPlugin);
 #endif
 
 //Q_IMPORT_PLUGIN(qsqlodbc)
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-void messageOutPut(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+static void logTerminate()
 {
-	if (msg.left(6)=="libpng")
-		return;
-	QMessageBox::critical(0,"Fatal",msg);
-	return;
+	applog_write(APPLOG_SEV_ERROR, "UNHANDLED EXCEPTION", "std::terminate was called");
+	std::abort();
 }
-#else
-void messageOutPut(QtMsgType type, const char *msg)
-{
-	QMessageBox::critical(0,"Fatal",msg);
-}
-#endif
 
 #ifdef _DEBUG
 //#include "vld.h"
@@ -32,6 +26,12 @@ void messageOutPut(QtMsgType type, const char *msg)
 int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);  //moved here by gene
+	QCoreApplication::setOrganizationName("Lorval Capital Management");
+	QCoreApplication::setApplicationName("ApexBasketCrane");
+	QCoreApplication::setApplicationVersion("5.5.1");
+	applog_initialize("basket-crane", 30);
+	applog_installQtMessageHandler();
+	std::set_terminate(logTerminate);
 	using BasketCrane::Configuration::ConfigurationManager;
 	ConfigurationManager& configuration = ConfigurationManager::Instance();
 
@@ -48,7 +48,9 @@ int main(int argc, char *argv[])
 	QString configError;
 	if (!configuration.Load(configFileName, &configError))
 	{
+		applog_write(APPLOG_SEV_ERROR, "CONFIGURATION", configError);
 		QMessageBox::critical(0, "Configuration error", configError);
+		applog_shutdown();
 		return 2;
 	}
 
@@ -57,16 +59,47 @@ int main(int argc, char *argv[])
 		"QWidget {"
 		"  color: #e2e8f0;"
 		"  font-family: \"Segoe UI\";"
-		"  font-size: 10pt;"
+		"  font-size: 9.5pt;"
 		"}"
 		"mainWindowClass, QDialog {"
-		"  background-color: #0f172a;"
+		"  background-color: #0b1220;"
+		"}"
+		"#appHeader {"
+		"  background-color: #111827;"
+		"  border-bottom: 1px solid #263449;"
+		"}"
+		"#brandWordmark {"
+		"  color: #e11145;"
+		"  font-size: 17pt;"
+		"  font-weight: 300;"
+		"}"
+		"#applicationTitle {"
+		"  color: #f8fafc;"
+		"  font-size: 12pt;"
+		"  font-weight: 600;"
+		"}"
+		"#applicationSubtitle, #hostIdentity {"
+		"  color: #94a3b8;"
+		"  font-size: 8.5pt;"
+		"}"
+		"#systemMode {"
+		"  min-height: 22px;"
+		"  padding: 2px 10px;"
+		"  border-radius: 11px;"
+		"  font-size: 8.5pt;"
+		"  font-weight: 700;"
+		"}"
+		"#systemMode[mode=\"live\"] {"
+		"  color: #bbf7d0; background: #14532d; border: 1px solid #22c55e;"
+		"}"
+		"#systemMode[mode=\"test\"] {"
+		"  color: #fde68a; background: #422006; border: 1px solid #d97706;"
 		"}"
 		"QGroupBox {"
-		"  background-color: rgba(15, 23, 42, 210);"
-		"  border: 1px solid #334155;"
+		"  background-color: rgba(17, 24, 39, 232);"
+		"  border: 1px solid #2d3b50;"
 		"  border-radius: 8px;"
-		"  margin-top: 12px;"
+		"  margin-top: 14px;"
 		"  padding: 10px 8px 8px 8px;"
 		"  font-weight: 600;"
 		"  color: #f8fafc;"
@@ -75,7 +108,8 @@ int main(int argc, char *argv[])
 		"  subcontrol-origin: margin;"
 		"  left: 10px;"
 		"  padding: 0 5px;"
-		"  color: #93c5fd;"
+		"  color: #7dd3fc;"
+		"  font-size: 9pt;"
 		"}"
 		"QCheckBox, QRadioButton {"
 		"  spacing: 7px;"
@@ -84,6 +118,8 @@ int main(int argc, char *argv[])
 		"  color: #e2e8f0;"
 		"  background: transparent;"
 		"}"
+		"QCheckBox:hover, QRadioButton:hover { color: #ffffff; }"
+		"QCheckBox:disabled, QRadioButton:disabled { color: #64748b; }"
 		"QCheckBox::indicator, QRadioButton::indicator {"
 		"  width: 16px;"
 		"  height: 16px;"
@@ -128,6 +164,15 @@ int main(int argc, char *argv[])
 		"}"
 		"QPushButton[accent=\"true\"]:hover {"
 		"  background-color: #0369a1;"
+		"}"
+		"QPushButton[warning=\"true\"] {"
+		"  color: #fef3c7; background-color: #78350f; border-color: #b45309;"
+		"}"
+		"QPushButton[warning=\"true\"]:hover {"
+		"  background-color: #92400e; border-color: #f59e0b;"
+		"}"
+		"QPushButton:disabled {"
+		"  color: #64748b; background-color: #1e293b; border-color: #334155;"
 		"}"
 		"QLineEdit, QSpinBox, QComboBox {"
 		"  min-height: 26px;"
@@ -199,22 +244,8 @@ int main(int argc, char *argv[])
 	// 	LOG("SQL Drivers", "SQL driver:" + QSqlDatabase::drivers()[x]);
 	// LOG("Qt plugins path", QLibraryInfo::location(QLibraryInfo::PluginsPath));
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-	qDebug() << QCoreApplication::libraryPaths();
-	#ifdef _DEBUG
-		qInstallMessageHandler(messageOutPut);
-	#endif
-	//for (int x = 0; x < QCoreApplication::libraryPaths().count(); x++)
-	// 	LOG("Library Path(s)", "library path:" + QCoreApplication::libraryPaths()[x]);
-
-#else
-	#ifdef _DEBUG
-		qInstallMsgHandler(messageOutPut);
-	#endif
-	for (int x = 0; x < QCoreApplication::libraryPaths().count(); x++)
-		LOG("Library Path(s)", "library path:" + QCoreApplication::libraryPaths()[x]);
-
-#endif
+	applog_write(APPLOG_SEV_INFO, "APPLICATION",
+		"Qt library paths=" + QCoreApplication::libraryPaths().join(";"));
 	
 	// Library/plugin paths are configured in basketCrane.ini.
 	// LOG("Plugin Path(s)", localPlugins);
@@ -231,14 +262,29 @@ int main(int argc, char *argv[])
 		(isExeRuningClass::isRunning(pathInfo.fileName())))
 		uExit("Error",QString("The application %1 is already running.").arg(pathInfo.fileName()));
 
-	mainWindowClass mainWindow;
-	mainWindow.resize(
-		configuration.Application().WindowWidth(),
-		configuration.Application().WindowHeight());
-	if (configuration.Application().StartMaximized())
-		mainWindow.showMaximized();
-	else
-		mainWindow.show();
-	
-	return app.exec();
+	int result = 0;
+	{
+		mainWindowClass mainWindow;
+		mainWindow.resize(
+			configuration.Application().WindowWidth(),
+			configuration.Application().WindowHeight());
+		if (configuration.Application().StartMaximized())
+			mainWindow.showMaximized();
+		else
+			mainWindow.show();
+
+		try {
+			result = app.exec();
+		}
+		catch (const std::exception& error) {
+			applog_write(APPLOG_SEV_ERROR, "UNHANDLED EXCEPTION", QString::fromLocal8Bit(error.what()));
+			result = 1;
+		}
+		catch (...) {
+			applog_write(APPLOG_SEV_ERROR, "UNHANDLED EXCEPTION", "Unknown exception escaped the event loop");
+			result = 1;
+		}
+	}
+	applog_shutdown();
+	return result;
 }

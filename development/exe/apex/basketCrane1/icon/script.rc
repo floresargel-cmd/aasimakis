@@ -1,1 +1,4 @@
-IDI_ICON	ICON    DISCARDABLE     "icon.ico"
+#include "resource.h"
+
+IDI_ICON       ICON        DISCARDABLE "icon.ico"
+IDR_APEX_LOGO  RCDATA                  "..\\resources\\APEX-dark.png"

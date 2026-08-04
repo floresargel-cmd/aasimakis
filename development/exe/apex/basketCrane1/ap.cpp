@@ -739,6 +739,7 @@ void allPositionsClass::setNumberOfPosToBeKeptEmptyInBuffer(int n)
 
 void allPositionsClass::updateAfterStackerPositionContentsFromDatabase()
 {
+	refreshBasketDataCache(afterStackerPosition->getPosition(0)->getBasketTableId());
 	afterStackerPosition->calculateBasketContentsTypeFromEpicsDatabase();
 	afterStackerPosition->loadContentFromDatabase();
 }
@@ -1124,16 +1125,8 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Stacker 1 needs empty basket.
 	plcIsBeforeStackerPosEmpty = statusBits[4] ? true : false;
-		{
-			QFile file(QString("stackerBitsLog.") + QDateTime::currentDateTime().toString("yyyy-MM-dd") + ".txt");
-			QTextStream out(&file);
-			if (file.open(QIODevice::Append | QIODevice::Text))
-			{
-				out << QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss\t");
-				out << "N20[13].4 = " << plcIsBeforeStackerPosEmpty << " | beforeStackerPosition is empty = " << beforeStackerPosition->getPosition(0)->hasBasket() << "\n";
-				file.close();
-			}
-		}
+		LOG("STACKER PLC", QString("N20[13].4=%1 | beforeStackerPosition.hasBasket=%2")
+			.arg(plcIsBeforeStackerPosEmpty).arg(beforeStackerPosition->getPosition(0)->hasBasket()));
 	if (plcIsBeforeStackerPosEmpty)
 	{
 		beforeStackerPosition->setLockRecieve(false);
@@ -1146,16 +1139,8 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	//////////////////////////////////////////
 	// Basket ready for pickup at stacker 1
 	plcIsAfterStackerPosFull = statusBits[6] ? true : false;
-		{
-			QFile file(QString("stackerBitsLog.") + QDateTime::currentDateTime().toString("yyyy-MM-dd") + ".txt");
-			QTextStream out(&file);
-			if (file.open(QIODevice::Append | QIODevice::Text))
-			{
-				out << QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss --> ");
-				out << "N20[13].6 = " << plcIsAfterStackerPosFull << " | afterStackerPosition has basket = " << afterStackerPosition->getPosition(0)->hasBasket() << "\n";
-				file.close();
-			}
-		}
+		LOG("STACKER PLC", QString("N20[13].6=%1 | afterStackerPosition.hasBasket=%2")
+			.arg(plcIsAfterStackerPosFull).arg(afterStackerPosition->getPosition(0)->hasBasket()));
 	if (plcIsAfterStackerPosFull)
 	{
 		if (!afterStackerPosition->getPosition(0)->hasBasket())
@@ -1172,16 +1157,8 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	//if (plcIsBeforeStacker2PosEmpty)
 	plcIsBeforeStacker2PosEmpty = statusBits[17] ? true : false;
 
-	{
-		QFile file(QString("stackerBitsLog.") + QDateTime::currentDateTime().toString("yyyy-MM-dd") + ".txt");
-		QTextStream out(&file);
-		if (file.open(QIODevice::Append | QIODevice::Text))
-		{
-			out << QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss --> ");
-			out << "N20[13].17 = " << plcIsBeforeStacker2PosEmpty << " | beforeStacker2Position is empty = " << beforeStacker2Position->getPosition(0)->hasBasket() << "\n";
-			file.close();
-		}
-	}
+	LOG("STACKER PLC", QString("N20[13].17=%1 | beforeStacker2Position.hasBasket=%2")
+		.arg(plcIsBeforeStacker2PosEmpty).arg(beforeStacker2Position->getPosition(0)->hasBasket()));
 
 	if (plcIsBeforeStacker2PosEmpty)
 	{
@@ -1196,16 +1173,8 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	// Basket ready for pickup at stacker 2
 	// if (plcIsAfterStacker2PosFull)
 	plcIsAfterStacker2PosFull = statusBits[18] ? true : false;
-	{
-		QFile file(QString("stackerBitsLog.") + QDateTime::currentDateTime().toString("yyyy-MM-dd") + ".txt");
-		QTextStream out(&file);
-		if (file.open(QIODevice::Append | QIODevice::Text))
-		{
-			out << QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss\t");
-			out << "N20[13].18 = " << plcIsAfterStacker2PosFull << " | afterStacker2Position has basket = " << afterStacker2Position->getPosition(0)->hasBasket() << "\n";
-			file.close();
-		}
-	}
+	LOG("STACKER PLC", QString("N20[13].18=%1 | afterStacker2Position.hasBasket=%2")
+		.arg(plcIsAfterStacker2PosFull).arg(afterStacker2Position->getPosition(0)->hasBasket()));
 
 	if (plcIsAfterStacker2PosFull)
 	{

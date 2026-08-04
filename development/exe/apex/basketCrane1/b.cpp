@@ -3,7 +3,148 @@
 
 #include "../common/applogger.h" // @@@@@ -- logger LOG() function is now in its own file, so including that instead of apexG.h to avoid unnecessary dependencies. 
 #include "../common/execDBQuery.h"
+#include <QHash>
+#include <QSet>
 						      //		  Should be included in tcpTux.h when the logger is moved there.
+
+namespace {
+
+struct CachedBasketDetail
+{
+	QString die;
+	QString profileCount;
+	QVariant length;
+	QString temper;
+};
+
+QHash<int, QVector<CachedBasketDetail> > basketDetailsCache;
+QHash<int, QVariant> basketAgedTimeCache;
+QHash<QString, int> temperTypeCache;
+bool basketDataCacheLoaded = false;
+
+QVector<CachedBasketDetail> parseDetailRows(const QVector<QVector<QVariant> >& rows, int firstValueColumn, const QString& context)
+{
+	QVector<CachedBasketDetail> details;
+	for (int i = 0; i < rows.count(); ++i) {
+		if (rows[i].count() < firstValueColumn + 4) {
+			LOG("ERROR: BASKET CACHE", QString("%1 row %2 has %3 columns; expected at least %4")
+				.arg(context).arg(i).arg(rows[i].count()).arg(firstValueColumn + 4));
+			continue;
+		}
+		CachedBasketDetail detail;
+		detail.die = rows[i][firstValueColumn].toString().trimmed();
+		detail.profileCount = rows[i][firstValueColumn + 1].toString().trimmed();
+		detail.length = rows[i][firstValueColumn + 2];
+		detail.temper = rows[i][firstValueColumn + 3].toString().trimmed();
+		details.append(detail);
+	}
+	return details;
+}
+
+QVector<CachedBasketDetail> cachedDetailsForBasket(int basketId)
+{
+	if (!basketDataCacheLoaded)
+		loadBasketDataCache();
+	return basketDetailsCache.value(basketId);
+}
+
+QVariant cachedAgedTimeForBasket(int basketId)
+{
+	if (!basketDataCacheLoaded)
+		loadBasketDataCache();
+	return basketAgedTimeCache.value(basketId);
+}
+
+int cachedTemperType(const QString& temper)
+{
+	if (!basketDataCacheLoaded)
+		loadBasketDataCache();
+	return temperTypeCache.value(temper, 0);
+}
+
+} // namespace
+
+bool loadBasketDataCache()
+{
+	LOG("BASKET CACHE", "Loading bulk basket data cache");
+	setDbTableActive("basket_details", true);
+	const QVector<QVector<QVariant> > detailRows = execDBTableQuery(
+		"select distinct basketnum, dienum, Pc, PcLen, temper from basket_details where Pc<>0 order by basketnum, dienum, Pc, PcLen, temper",
+		APEX_DB_CONNECTION);
+	setDbTableIdle("basket_details");
+
+	setDbTableActive("basket_location", true);
+	const QVector<QVector<QVariant> > agedRows = execDBTableQuery(
+		"select basketnum, max(audittime) from basket_location where basketlocation=3 group by basketnum order by basketnum",
+		APEX_DB_CONNECTION);
+	setDbTableIdle("basket_location");
+
+	setDbTableActive("temperTypes", true);
+	const QVector<QVector<QVariant> > temperRows = execDBTableQuery(
+		"select temper, temperType from temperTypes order by temper", MAIN_DB_CONNECTION);
+	setDbTableIdle("temperTypes");
+
+	QHash<int, QVector<CachedBasketDetail> > newDetails;
+	for (int i = 0; i < detailRows.count(); ++i) {
+		if (detailRows[i].count() < 5) {
+			LOG("ERROR: BASKET CACHE", QString("Bulk detail row %1 has only %2 columns; expected 5")
+				.arg(i).arg(detailRows[i].count()));
+			continue;
+		}
+		const int basketId = detailRows[i][0].toInt();
+		const QVector<QVector<QVariant> > oneRow(1, detailRows[i]);
+		const QVector<CachedBasketDetail> parsed = parseDetailRows(oneRow, 1, QString("Basket %1").arg(basketId));
+		if (!parsed.isEmpty())
+			newDetails[basketId].append(parsed[0]);
+	}
+
+	QHash<int, QVariant> newAgedTimes;
+	for (int i = 0; i < agedRows.count(); ++i) {
+		if (agedRows[i].count() >= 2 && !agedRows[i][1].isNull())
+			newAgedTimes.insert(agedRows[i][0].toInt(), agedRows[i][1]);
+	}
+
+	QHash<QString, int> newTemperTypes;
+	for (int i = 0; i < temperRows.count(); ++i) {
+		if (temperRows[i].count() >= 2)
+			newTemperTypes.insert(temperRows[i][0].toString().trimmed(), temperRows[i][1].toInt());
+	}
+
+	basketDetailsCache = newDetails;
+	basketAgedTimeCache = newAgedTimes;
+	temperTypeCache = newTemperTypes;
+	basketDataCacheLoaded = true;
+	LOG("BASKET CACHE", QString("Bulk cache ready: detailRows=%1, basketsWithDetails=%2, agedBaskets=%3, temperTypes=%4")
+		.arg(detailRows.count()).arg(basketDetailsCache.count())
+		.arg(basketAgedTimeCache.count()).arg(temperTypeCache.count()));
+	return true;
+}
+
+bool refreshBasketDataCache(int basketId)
+{
+	if (basketId <= 0)
+		return false;
+
+	setDbTableActive("basket_details", true);
+	const QVector<QVector<QVariant> > detailRows = execDBTableQuery(
+		QString("select distinct dienum, Pc, PcLen, temper from basket_details where basketnum=%1 and Pc<>0 order by dienum, Pc, PcLen, temper")
+			.arg(basketId), APEX_DB_CONNECTION);
+	setDbTableIdle("basket_details");
+
+	setDbTableActive("basket_location", true);
+	const QVector<QVector<QVariant> > agedRows = execDBTableQuery(
+		QString("select max(audittime) from basket_location where basketnum=%1 and basketlocation=3").arg(basketId),
+		APEX_DB_CONNECTION);
+	setDbTableIdle("basket_location");
+
+	basketDetailsCache.insert(basketId, parseDetailRows(detailRows, 0, QString("Basket %1 refresh").arg(basketId)));
+	basketAgedTimeCache.remove(basketId);
+	if (!agedRows.isEmpty() && !agedRows[0].isEmpty() && !agedRows[0][0].isNull())
+		basketAgedTimeCache.insert(basketId, agedRows[0][0]);
+	basketDataCacheLoaded = true;
+	LOG("BASKET CACHE", QString("Basket %1 cache refreshed: detailRows=%2").arg(basketId).arg(detailRows.count()));
+	return true;
+}
 
 basketClass::basketClass():QObject()
 {
@@ -77,112 +218,54 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 		temperEnum = BASKET_TEMPER_NULL;
 		areContentsAged = false;
 
-		setDbTableActive("basket_details", true);
-		QVector<QVariant> profilesArray = execDBQuery(QString("select dienum from basket_details where basketnum=%1 and Pc<>0").arg(tableId), APEX_DB_CONNECTION);
-		QVector<QVariant> noOfProfilesArray = execDBQuery(QString("select Pc from basket_details where basketnum=%1 and Pc<>0").arg(tableId), APEX_DB_CONNECTION);
-		QVector<QVariant> lengthArray = execDBQuery(QString("select PcLen from basket_details where basketnum=%1 and Pc<>0").arg(tableId), APEX_DB_CONNECTION);
-		QVector<QVariant> temperArray = execDBQuery(QString("select temper from basket_details where basketnum=%1 and Pc<>0").arg(tableId), APEX_DB_CONNECTION);
-		setDbTableIdle("basket_details");
+		const QVector<CachedBasketDetail> detailRows = cachedDetailsForBasket(tableId);
 
-		maxLengthOfContents=0.;
+		maxLengthOfContents = 0.;
+		const int rowCount = detailRows.count();
+		const int maxTooltipRows = 100;
+		QSet<QString> seenRows;
+		QSet<QString> uniqueTempers;
+		int uniqueRows = 0;
+		for (int i = 0; i < rowCount; ++i) {
+			QString pa = detailRows[i].die;
+			QString npa = detailRows[i].profileCount;
+			QString tpa = detailRows[i].temper;
+			if (pa.isEmpty()) pa = "N/A";
+			if (npa.isEmpty()) npa = "N/A";
+			if (tpa.isEmpty()) tpa = "N/A";
 
-		for (int i = 0; i < lengthArray.count(); i++)
-		{
-			double tLength = lengthArray[i].toDouble();
-			bool doubleBatched = false;
+			const QString rowKey = pa + QChar(0x1f) + npa + QChar(0x1f)
+				+ detailRows[i].length.toString() + QChar(0x1f) + tpa;
+			if (seenRows.contains(rowKey))
+				continue;
+			seenRows.insert(rowKey);
+			++uniqueRows;
 
-			if (tLength < 3601)
-				doubleBatched = true;
-
+			double tLength = detailRows[i].length.toDouble();
+			if (tpa != "N/A")
+				uniqueTempers.insert(tpa);
+			const bool doubleBatched = tLength < 3601;
 			if (doubleBatched)
 				tLength = 2 * tLength + 200.;
-
-			// @@@@@ -- Last call before an access violation on the QVector stuff... AB
-			QString pa = "--";
-			QString npa = "--";
-			QString tpa = "--";
-
-			LOG("b.cpp", "WARNING: Size of loop is based on lengthArray.count(): " + QString::number(lengthArray.count()));
-			if (i > profilesArray.count()) {
-				LOG("b.cpp", "ERROR: Size of i INDEX exceeds profilesArray count (this will cause an array out of bounds if used): " + QString::number(profilesArray.count()));
-			}
-			else if (profilesArray.size() == 0) {
-				LOG("b.cpp", "ERROR: profilesArray[" + QString::number(i) + "] is 0 Size, therefore any iteration based on i INDEX will exceed the array");
-			}
-			else if (profilesArray.isEmpty()) {
-				LOG("b.cpp", "ERROR: profilesArray is emptytherefore any iteration based on i INDEX will exceed the array");
-			}
-			else {
-				// Assumed good...
-				try {
-					pa = (profilesArray[i].isValid() && !profilesArray[i].toString().isEmpty()) ? profilesArray[i].toString() : "N/A"; // @@@@@ - QVector ASSERT Failure
-				}
-				catch (...) {
-					LOG("b.cpp", "ERROR: Final Destination - something bad happened in PA b.cpp.");
-					if (pa == "--") {
-						LOG("b.cpp", "ERROR: pa was never set");
-						pa = "N/A";
-					}
-				}
-			}
-
-
-			if (i > noOfProfilesArray.count()) {
-				LOG("b.cpp", "ERROR: Size of i INDEX exceeds noOfProfilesArray vector (this will cause array out of bounds if i INDEX is used): " + QString::number(noOfProfilesArray.count()));
-			} else if (noOfProfilesArray.size() == 0) {
-				LOG("b.cpp", "ERROR: noOfProfilesArray[" + QString::number(i) + "] is 0 Size, therefore any iteration based on i INDEX will exceed the array");
-			}
-			else if (noOfProfilesArray.isEmpty()) {
-				LOG("b.cpp", "ERROR: profilesArray is empty, therefore any iteration based on i INDEX will exceed the array");
-			}
-			else {
-				// Assumed good...
-				try {
-					npa = (noOfProfilesArray[i].isValid() && !noOfProfilesArray[i].toString().isEmpty()) ? noOfProfilesArray[i].toString() : "N/A";
-				}
-				catch (...) {
-					LOG("b.cpp", "ERROR: Final Destination - something bad happened in NPA b.cpp.");
-					if (npa == "--") {
-						LOG("b.cpp", "ERROR: npa was never set");
-						npa = "N/A";
-					}
-				}
-			}
-
-			if (i > temperArray.count()) {
-				LOG("b.cpp", "ERROR: Size of temperArray exceeds vector (this will cause array out of bounds if i INDEX is used): " + QString::number(temperArray.count()));
-			}
-			else if (temperArray.size() == 0) {
-				LOG("b.cpp", "ERROR: temperArray[" + QString::number(i) + "] is 0 Size, therefore any iteration based on i INDEX will exceed the array");
-			}
-			else if (temperArray.isEmpty()) {
-				LOG("b.cpp", "ERROR: profilesArray is empty, therefore any iteration based on i INDEX will exceed the array");
-			}
-			else {
-				// Assumed good...
-				try {
-					tpa = (temperArray[i].isValid() && !temperArray[i].toString().isEmpty()) ? temperArray[i].toString() : "N/A"; // @@@@@ - QVector ASSERT Failure here
-				}
-				catch (...) {
-					LOG("b.cpp", "ERROR: Final Destination - something bad happened in TPA b.cpp.");
-					if (tpa == "--") {
-						LOG("b.cpp", "ERROR: tpa was never set");
-						tpa = "N/A";
-					}
-				}
-			}
-			
-			toolTipText += QString("die:%1, %2 profiles with length %3mm%4, temper:%5\n").arg(pa).arg(npa).arg(tLength).arg((doubleBatched ? " (double)" : "")).arg(tpa);
-			LOG("b.cpp", "INFO: ToolTip: [" + toolTipText +"]");
-
-			
 			if (tLength > maxLengthOfContents)
 				maxLengthOfContents = tLength;
+
+			if (uniqueRows <= maxTooltipRows) {
+				toolTipText += QString("die:%1, %2 profiles with length %3mm%4, temper:%5\n")
+					.arg(pa).arg(npa).arg(tLength)
+					.arg(doubleBatched ? " (double)" : "").arg(tpa);
+			}
 		}
+		if (uniqueRows > maxTooltipRows) {
+			toolTipText += QString("... %1 additional unique detail rows omitted\n")
+				.arg(uniqueRows - maxTooltipRows);
+		}
+		LOG("BASKET DATA", QString("Basket %1 details loaded: databaseRows=%2, uniqueRows=%3, duplicatesSkipped=%4")
+			.arg(tableId).arg(rowCount).arg(uniqueRows).arg(rowCount - uniqueRows));
 
 		contentsEnum = BASKET_CONTENS_NONE;
 		
-		if (lengthArray.count() > 0)
+		if (uniqueRows > 0)
 		{
 			if (maxLengthOfContents <= 6097)
 				contentsEnum = BASKET_CONTENS_LESS_THAN_20;
@@ -224,7 +307,7 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 		else if (contentsEnum == BASKET_CONTENS_LESS_THAN_30)
 			toolTipText += tr("Contents length more than 24 feet\n");
 
-		QVariant time = GETFIRST(QString("select audittime from basket_location where basketnum = %1 and basketlocation = %2").arg(tableId).arg(3), APEX_DB_CONNECTION);
+		QVariant time = cachedAgedTimeForBasket(tableId);
 #ifdef EMULATE
 		if ((!time.isNull()) && (time.toString().length() > 1))
 #else
@@ -240,31 +323,19 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 			areContentsAged = false;
 		}
 
-#ifdef EMULATE
-		setDbTableActive("basket_details", true);
-		QVector<QVariant> temperStrV=execQuery(QString("select temper from basket_details where basketnum = %1 and temper <> ''").arg(tableId),APEX_DB_CONNECTION);
-		setDbTableIdle("basket_details");
-#else
-		setDbTableActive("basket_details", true);
-		QVector<QVariant> temperStrV= execDBQuery(QString("select temper from basket_details where basketnum = %1 and temper <> ''").arg(tableId), APEX_DB_CONNECTION);
-		setDbTableIdle("basket_details");
-#endif
-
-		if (temperStrV.count() == 0)
+		if (uniqueTempers.isEmpty())
 			temperEnum = BASKET_TEMPER_NULL;
 		else
 		{
 			temperEnum = BASKET_TEMPER_230;
 			QString validTemper;
-			for (int i = 0; i < temperStrV.count(); i++)
-			{
-				QString qstr = QString("select temperType from temperTypes where temper='%1'").arg(temperStrV[i].toString());
-				qstr.toStdString();
-				int tTemper = GETFIRST(QString("select temperType from temperTypes where temper='%1'").arg(temperStrV[i].toString())).toInt();
+			QSet<QString>::const_iterator temperIt = uniqueTempers.constBegin();
+			for (; temperIt != uniqueTempers.constEnd(); ++temperIt) {
+				int tTemper = cachedTemperType(*temperIt);
 				if (temperEnum>tTemper)
 				{
 					temperEnum = tTemper;
-					validTemper = temperStrV[i].toString();
+					validTemper = *temperIt;
 				}
 			}
 			toolTipText += QString("Temper into account:%1\n").arg(validTemper);

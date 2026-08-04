@@ -1,0 +1,48 @@
+2026-07-31 09:56:00	N20[13].4 = 1 | beforeStackerPosition is empty = 0
+2026-07-31 09:56:00 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 09:56:00 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 09:56:00	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 09:57:22	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 09:57:22 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 09:57:22 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 09:57:22	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 09:58:38	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 09:58:38 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 09:58:38 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 09:58:38	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:02:34	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:02:34 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 10:02:34 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:02:34	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:04:14	N20[13].4 = 1 | beforeStackerPosition is empty = 0
+2026-07-31 10:04:14 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 10:04:14 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:04:14	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:07:14	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:07:14 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 10:07:14 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:07:14	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:09:08	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:09:08 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 10:09:08 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:09:08	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:14:38	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:14:38 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 10:14:38 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:14:38	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:16:19	N20[13].4 = 1 | beforeStackerPosition is empty = 0
+2026-07-31 10:16:19 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 10:16:19 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:16:19	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:21:47	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:21:47 --> N20[13].6 = 1 | afterStackerPosition has basket = 1
+2026-07-31 10:21:47 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:21:47	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 10:22:54	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 10:22:54 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 10:22:54 --> N20[13].17 = 1 | beforeStacker2Position is empty = 0
+2026-07-31 10:22:54	N20[13].18 = 1 | afterStacker2Position has basket = 1
+2026-07-31 14:22:44	N20[13].4 = 0 | beforeStackerPosition is empty = 0
+2026-07-31 14:22:44 --> N20[13].6 = 0 | afterStackerPosition has basket = 1
+2026-07-31 14:22:44 --> N20[13].17 = 0 | beforeStacker2Position is empty = 0
+2026-07-31 14:22:44	N20[13].18 = 0 | afterStacker2Position has basket = 1

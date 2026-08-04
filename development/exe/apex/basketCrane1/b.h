@@ -10,6 +10,10 @@
 #include "op.h"
 #include "GL/GLU.h"
 
+// Load all basket content/aging/temper lookup data in three bulk queries.
+// Runtime entry points can refresh one basket without rebuilding the cache.
+bool loadBasketDataCache();
+bool refreshBasketDataCache(int basketId);
 
 class basketClass:public QObject			
 {

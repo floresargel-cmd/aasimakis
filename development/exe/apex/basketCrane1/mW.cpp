@@ -4,16 +4,23 @@
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
 #include "timerStatus.h"
+#include "b.h"
+#include "icon/resource.h"
 #include <QApplication>
+#include <QByteArray>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 #include <QDebug>
 #include <QDir>
 #include <QLibraryInfo>
 #include <QDialogButtonBox>
+#include <QFrame>
 #include <QHeaderView>
 #include <QIntValidator>
 #include <QLineEdit>
 #include <QTableWidget>
+#include <windows.h>
 
 
 #include "../common/applogger.h"
@@ -35,6 +42,61 @@ void setMainTimerIdle() { if (g_timerStatusTarget) g_timerStatusTarget->setMainT
 void setAutoModeTimerFiring() { if (g_timerStatusTarget) g_timerStatusTarget->setAutoModeTimerFiring(); }
 void setAutoModeTimerIdle() { if (g_timerStatusTarget) g_timerStatusTarget->setAutoModeTimerIdle(); }
 
+static void logDatabaseEndpoint(const QSqlDatabase& database,
+	const QString& profileName,
+	const QString& configuredCatalog,
+	const QString& tables)
+{
+	QString server = database.hostName();
+	QString activeCatalog = configuredCatalog;
+	QSqlQuery identityQuery(database);
+
+	// Ask SQL Server for the effective endpoint after USE has executed. For an
+	// ODBC DSN, QSqlDatabase::databaseName() is the DSN rather than the server.
+	if (identityQuery.exec("SELECT @@SERVERNAME, DB_NAME()") && identityQuery.next())
+	{
+		server = identityQuery.value(0).toString();
+		activeCatalog = identityQuery.value(1).toString();
+	}
+	else
+	{
+		LOG("WARNING: DATABASE", QString("Could not resolve SQL server identity for connection '%1': %2")
+			.arg(database.connectionName()).arg(identityQuery.lastError().text()));
+	}
+
+	if (server.trimmed().isEmpty())
+		server = "<server hidden by ODBC DSN>";
+
+	LOG("DATABASE CONNECTION", QString("connection='%1'; profile='%2'; driver='%3'; DSN='%4'; server='%5'; database='%6'; user='%7'; tables='%8'")
+		.arg(database.connectionName()).arg(profileName).arg(database.driverName())
+		.arg(database.databaseName()).arg(server).arg(activeCatalog)
+		.arg(database.userName()).arg(tables));
+}
+
+static QPixmap loadApexLogo()
+{
+	QPixmap logo;
+	const HMODULE module = GetModuleHandle(NULL);
+	const HRSRC resource = FindResource(module, MAKEINTRESOURCE(IDR_APEX_LOGO), RT_RCDATA);
+	if (!resource)
+	{
+		LOG("ERROR: UI", "APEX logo resource was not found in the executable");
+		return logo;
+	}
+
+	const HGLOBAL loadedResource = LoadResource(module, resource);
+	const DWORD resourceSize = SizeofResource(module, resource);
+	const void* resourceData = loadedResource ? LockResource(loadedResource) : NULL;
+	if (!resourceData || resourceSize == 0
+		|| !logo.loadFromData(reinterpret_cast<const uchar*>(resourceData), static_cast<uint>(resourceSize), "PNG"))
+	{
+		LOG("ERROR: UI", "APEX logo resource could not be decoded");
+		return QPixmap();
+	}
+
+	return logo;
+}
+
 // #define inMyLaptop //@@@@@ - TODO: Remember to comment this out before building for production.
 // #define SEMILIVE //@@@@@ - This allows the app to run even if 1 is already present.  Don't allow AUTO mode in this mode, though.
 // With SEMILIVE, it connects to the TEST MSSQL02 Database.  It requires the moverDB2DB app to be running as well.
@@ -50,6 +112,11 @@ QVector<int>	*profileIntName;		// one on one with profilePicFileName
 
 mainWindowClass::mainWindowClass()
 {
+	openGLWidget = 0;
+	plcWidget = 0;
+	plcStatusWidget = 0;
+	plcStatusPreferredY = 0;
+
 	const BasketCrane::Configuration::ConfigurationManager& configuration =
 		BasketCrane::Configuration::ConfigurationManager::Instance();
 	// Lazy ass programming, just set the variable from the logger.h...
@@ -60,29 +127,64 @@ mainWindowClass::mainWindowClass()
 	//
 	LOG("mW.cpp", "initializeDatabase()");
 	initializeDatabase();
+	loadBasketDataCache();
 	//
 	LOG("mW.cpp", "setLayout(mainLayout)");
 	QHBoxLayout *mainLayout = new QHBoxLayout(); mainLayout->setMargin(0);
 	QVBoxLayout *rootLayout = new QVBoxLayout();
 	rootLayout->setMargin(0);
-	rootLayout->addLayout(mainLayout);
+	rootLayout->setSpacing(0);
+
+	QWidget *appHeader = new QWidget(this);
+	appHeader->setObjectName("appHeader");
+	appHeader->setFixedHeight(54);
+	QHBoxLayout *appHeaderLayout = new QHBoxLayout(appHeader);
+	appHeaderLayout->setContentsMargins(18, 5, 18, 5);
+	appHeaderLayout->setSpacing(12);
+	QLabel *brandWordmark = new QLabel("APEX", appHeader);
+	brandWordmark->setObjectName("brandWordmark");
+	appHeaderLayout->addWidget(brandWordmark);
+	QFrame *brandDivider = new QFrame(appHeader);
+	brandDivider->setFrameShape(QFrame::VLine);
+	brandDivider->setStyleSheet("color:#334155;");
+	appHeaderLayout->addWidget(brandDivider);
+	QVBoxLayout *titleStack = new QVBoxLayout();
+	titleStack->setSpacing(0);
+	QLabel *applicationTitle = new QLabel(tr("Basket Crane Control"), appHeader);
+	applicationTitle->setObjectName("applicationTitle");
+	QLabel *applicationSubtitle = new QLabel(tr("Material flow and aging operations"), appHeader);
+	applicationSubtitle->setObjectName("applicationSubtitle");
+	titleStack->addWidget(applicationTitle);
+	titleStack->addWidget(applicationSubtitle);
+	appHeaderLayout->addLayout(titleStack);
+	appHeaderLayout->addStretch(1);
+	QLabel *hostIdentity = new QLabel(QString("HOST  %1").arg(appHostname.toUpper()), appHeader);
+	hostIdentity->setObjectName("hostIdentity");
+	appHeaderLayout->addWidget(hostIdentity);
+	QLabel *systemMode = new QLabel(theOneBCToRuleThemAll ? tr("LIVE SYSTEM") : tr("TEST SYSTEM"), appHeader);
+	systemMode->setObjectName("systemMode");
+	systemMode->setProperty("mode", theOneBCToRuleThemAll ? "live" : "test");
+	systemMode->setAlignment(Qt::AlignCenter);
+	appHeaderLayout->addWidget(systemMode);
+	rootLayout->addWidget(appHeader);
+	rootLayout->addLayout(mainLayout, 1);
 	// Status bar: database table activity indicators (green=read, blue=write, grey=idle)
 	QWidget *statusBarWidget = new QWidget(this);
 	statusBarWidget->setObjectName("systemStatusStrip");
-	statusBarWidget->setStyleSheet("#systemStatusStrip{background:#111827;border-top:1px solid #334155;}");
-	statusBarWidget->setFixedHeight(28);
+	statusBarWidget->setStyleSheet("#systemStatusStrip{background:#0b1220;border-top:1px solid #263449;}");
+	statusBarWidget->setFixedHeight(32);
 	QHBoxLayout *statusBarLayout = new QHBoxLayout(statusBarWidget);
 	statusBarLayout->setContentsMargins(4, 2, 4, 2);
 	statusBarLayout->setSpacing(6);	
 	
 	dbAreaLabel = new QLabel("DB:", statusBarWidget);
-	QString styleHeaderGrey("QLabel{font-size:14px;font-weight:bold;background-color:#f0f0f0;color:#000;padding:2px 6px;border-radius:2px;}");
+	QString styleHeaderGrey("QLabel{font-size:10px;font-weight:700;background:transparent;color:#94a3b8;padding:2px 3px;}");
 	dbAreaLabel->setStyleSheet(styleHeaderGrey);
 	dbAreaLabel->setAutoFillBackground(true);
 	statusBarLayout->addWidget(dbAreaLabel);
 	QStringList tableNames = QStringList() << "basket_details" << "basket_location" << "baskets" << "basketHistory"
 		<< "logCranePlc" << "logResetPlc" << "positions" << "temperTypes" << "toAssimakisExports" << "toOmavExports";
-	QString styleGrey("QLabel{font-size:11px;background-color:#808080;color:#fff;padding:2px 6px;border-radius:2px;}");
+	QString styleGrey("QLabel{font-size:10px;background-color:#1e293b;color:#94a3b8;border:1px solid #334155;padding:2px 6px;border-radius:5px;}");
 	for (int i = 0; i < tableNames.size(); ++i) {
 		QLabel *lbl = new QLabel(tableNames[i], statusBarWidget);
 		lbl->setStyleSheet(styleGrey);
@@ -134,11 +236,35 @@ mainWindowClass::mainWindowClass()
 	connect(autoModeTimerIdleTimer, &QTimer::timeout, this, &mainWindowClass::onAutoModeTimerIdleTimeout);
 
 	//
-	QWidget *plcWidgetTemp = new QWidget();
-	plcWidget = new plcWidgetClass(plcWidgetTemp);
+	plcStatusWidget = new QWidget();
+	plcWidget = new plcWidgetClass(plcStatusWidget);
 	openGLWidget = new openGLWidgetClass(plcWidget->getCranePlcTcpServer(), plcWidget->getConveyorsPlcTcpServer(), 0, 0);
 	mainLayout->addWidget(openGLWidget);
-	plcWidgetTemp->setParent(openGLWidget);
+	plcStatusWidget->setParent(openGLWidget);
+
+	QLabel *apexLogoLabel = new QLabel(openGLWidget);
+	apexLogoLabel->setObjectName("apexLogo");
+	apexLogoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
+	apexLogoLabel->setStyleSheet("#apexLogo{background:#111827;border:1px solid #334155;border-radius:6px;padding:6px;}");
+	const QPixmap apexLogo = loadApexLogo();
+	if (!apexLogo.isNull())
+	{
+		apexLogoLabel->setPixmap(apexLogo.scaled(260, 115, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+		apexLogoLabel->setFixedSize(apexLogoLabel->pixmap()->size() + QSize(14, 14));
+		apexLogoLabel->setToolTip(tr("APEX Aluminum Extrusions"));
+	}
+	else
+	{
+		apexLogoLabel->hide();
+	}
+
+	QHBoxLayout *apexLogoRow = new QHBoxLayout();
+	apexLogoRow->addStretch(1);
+	apexLogoRow->addWidget(apexLogoLabel);
+	QVBoxLayout *brandingOverlayLayout = new QVBoxLayout(openGLWidget);
+	brandingOverlayLayout->setContentsMargins(0, 0, 22, 18);
+	brandingOverlayLayout->addStretch(1);
+	brandingOverlayLayout->addLayout(apexLogoRow);
 
 #ifdef TUX_PLC_COMMS
 	// Show PLC networks as "connecting" (yellow) until first data or error
@@ -157,57 +283,48 @@ mainWindowClass::mainWindowClass()
 	connect(beforStackerQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(beforeStackerAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(beforStackerQCheckBox);
 	beforStackerQCheckBox->setChecked(false);
-	beforStackerQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa};");
 
 	QCheckBox	*afterStackerQCheckBox = new QCheckBox(tr("After stacker"), this);
 	connect(afterStackerQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(afterStackerAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(afterStackerQCheckBox);
 	afterStackerQCheckBox->setChecked(false);
-	afterStackerQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*beforeStacker2QCheckBox = new QCheckBox(tr("Before stacker 2"), this);
 	connect(beforeStacker2QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(beforeStacker2AutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(beforeStacker2QCheckBox);
 	beforeStacker2QCheckBox->setChecked(false);
-	beforeStacker2QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa};");
 
 	QCheckBox	*afterStacker2QCheckBox = new QCheckBox(tr("After stacker 2"), this);
 	connect(afterStacker2QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(afterStacker2AutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(afterStacker2QCheckBox);
 	afterStacker2QCheckBox->setChecked(false);
-	afterStacker2QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox *pressToOvenQCheckBox = new QCheckBox(tr("Press# to oven#"), this);
 	connect(pressToOvenQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(pressToOvenCheckBtnSlot(int)));
 	autoGroupBoxLayout->addWidget(pressToOvenQCheckBox);
 	pressToOvenQCheckBox->setChecked(false);
-	pressToOvenQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*unloadOvenQCheckBox = new QCheckBox(tr("Unload oven"), this);
 	connect(unloadOvenQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(unloadOvenAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(unloadOvenQCheckBox);
 	unloadOvenQCheckBox->setChecked(false);
 	unloadOvenQCheckBox->setEnabled(true);
-	unloadOvenQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*unloadOven2QCheckBox = new QCheckBox(tr("Unload oven 2"), this);
 	connect(unloadOven2QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(unloadOven2AutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(unloadOven2QCheckBox);
 	unloadOven2QCheckBox->setChecked(false);
 	unloadOven2QCheckBox->setEnabled(true);
-	unloadOven2QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*exportsQCheckBox=new QCheckBox(tr("Exports (full->out)"),this);
 	connect(exportsQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(exportsAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(exportsQCheckBox);
 	exportsQCheckBox->setChecked(false);
-	exportsQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*returningEmptyQCheckBox=new QCheckBox(tr("Imports (empty<-in)"),this);
 	connect(returningEmptyQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(returningEmptyAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(returningEmptyQCheckBox);
 	returningEmptyQCheckBox->setChecked(false);
-	returningEmptyQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	//QCheckBox	*scrapQCheckBox=new QCheckBox(tr("Scrap"),this);
 	//connect(scrapQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(scrapAutoModeSlot(int)));
@@ -219,18 +336,15 @@ mainWindowClass::mainWindowClass()
 	connect(fromBufferToOvenQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(fromBufferToOvenAutoModeSlot(int)));
 	autoGroupBoxLayout->addWidget(fromBufferToOvenQCheckBox);
 	fromBufferToOvenQCheckBox->setChecked(false);
-	fromBufferToOvenQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*exportsBeforeImportsQCheckBox = new QCheckBox(tr("Exports before imports"),this);
 	connect(exportsBeforeImportsQCheckBox,SIGNAL(stateChanged(int)),this,SLOT(exportsBeforeImportsCheckBtnSlot(int)));
 	autoGroupBoxLayout->addWidget(exportsBeforeImportsQCheckBox);
 	exportsBeforeImportsQCheckBox->setChecked(configuration.Operations().ExportsBeforeImports());
-	exportsBeforeImportsQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QHBoxLayout *numberOfEmptyPosInBufferSpinBoxLayout=new QHBoxLayout();
 	autoGroupBoxLayout->addLayout(numberOfEmptyPosInBufferSpinBoxLayout);
 	QLabel *numberOfEmptyPosInBufferSpinBoxLabel=new QLabel(tr("Empty buffer"));
-	numberOfEmptyPosInBufferSpinBoxLabel->setStyleSheet("QLabel{color:#aaaaaa;}");
 	numberOfEmptyPosInBufferSpinBoxLayout->addWidget(numberOfEmptyPosInBufferSpinBoxLabel);
 	QSpinBox *numberOfEmptyPosInBufferSpinBox=new QSpinBox();
 	numberOfEmptyPosInBufferSpinBox->setFixedWidth(64);
@@ -247,10 +361,8 @@ mainWindowClass::mainWindowClass()
 	connect(rearrangeBasketsQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(rearrangeBasketsCheckBtnSlot(int)));
 	autoGroupBoxLayout->addWidget(rearrangeBasketsQCheckBox);
 	rearrangeBasketsQCheckBox->setChecked(false);
-	rearrangeBasketsQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 	
-	QGroupBox *autoGroupBox = new QGroupBox(tr("Auto mode"),openGLWidget);
-	autoGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
+	QGroupBox *autoGroupBox = new QGroupBox(tr("Automation"),openGLWidget);
 	autoGroupBox->setGeometry(25, 20, 200, 310);
 	autoGroupBox->setLayout(autoGroupBoxLayout);
 	autoGroupBox->show();
@@ -264,7 +376,6 @@ mainWindowClass::mainWindowClass()
 	takeBasketsFromStackerOutQCheckBox->setGeometry(27, y, 170, 20);
 	takeBasketsFromStackerOutQCheckBox->show();
 	takeBasketsFromStackerOutQCheckBox->setChecked(false);
-	takeBasketsFromStackerOutQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa};");
 
 	////////////////////Use empty buffer
 	LOG("mW.cpp", "Use empty buffer");
@@ -273,19 +384,16 @@ mainWindowClass::mainWindowClass()
 	useEmptyBasketsPosCheckBox = new QCheckBox(tr("Use"), this);
 	useEmptyBasketsPosCheckBox->setChecked(false);
 	useEmptyBasketsPosCheckBox->setToolTip(tr("Use the empty buffer area to store 20 feet baskets if necessary."));
-	useEmptyBasketsPosCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa};");
 	emptyBasketsPosGroupBoxLayout->addWidget(useEmptyBasketsPosCheckBox);
 	connect(useEmptyBasketsPosCheckBox, SIGNAL(stateChanged(int)), this, SLOT(useEmptyBasketsPosCheckBoxSlot(int)));
 
 	emptyEmptyBasketsPosCheckBox = new QCheckBox(tr("Empty"), this);
 	emptyEmptyBasketsPosCheckBox->setChecked(false);
 	emptyEmptyBasketsPosCheckBox->setToolTip(tr("Empty the empty buffer area from 20 feet baskets when you have time."));
-	emptyEmptyBasketsPosCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa};");
 	emptyBasketsPosGroupBoxLayout->addWidget(emptyEmptyBasketsPosCheckBox);
 	connect(emptyEmptyBasketsPosCheckBox, SIGNAL(stateChanged(int)), this, SLOT(emptyEmptyBasketsPosCheckBoxSlot(int)));
 
-	QGroupBox *fullBasketsToEmptyPosGroupBox=new QGroupBox(tr("20feet in empty buffer "),openGLWidget);
-	fullBasketsToEmptyPosGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
+	QGroupBox *fullBasketsToEmptyPosGroupBox=new QGroupBox(tr("20 ft empty-basket buffer"),openGLWidget);
 	fullBasketsToEmptyPosGroupBox->setGeometry(25, y += 25 + m, 190, 90);
 	fullBasketsToEmptyPosGroupBox->setLayout(emptyBasketsPosGroupBoxLayout);
 	fullBasketsToEmptyPosGroupBox->show();
@@ -298,28 +406,23 @@ mainWindowClass::mainWindowClass()
 	connect(Oven1EnableQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven1EnableAutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven1EnableQCheckBox);
 	Oven1EnableQCheckBox->setChecked(configuration.Operations().Oven1Enabled());
-	Oven1EnableQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven2EnableQCheckBox = new QCheckBox(tr("Oven2 Enable"), this);
 	connect(Oven2EnableQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven2EnableAutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven2EnableQCheckBox);
 	Oven2EnableQCheckBox->setChecked(configuration.Operations().Oven2Enabled());
-	Oven2EnableQCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven1Not24QCheckBox = new QCheckBox(tr("Not longer than 24f in Oven1"), this);
 	connect(Oven1Not24QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven1Not24AutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven1Not24QCheckBox);
 	Oven1Not24QCheckBox->setChecked(configuration.Operations().Oven1Maximum24Feet());
-	Oven1Not24QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
 	QCheckBox	*Oven2Not24QCheckBox = new QCheckBox(tr("Just Longer than 24f in Oven2"), this);
 	connect(Oven2Not24QCheckBox, SIGNAL(stateChanged(int)), this, SLOT(Oven2Not24AutoModeSlot(int)));
 	OvenSelGroupBoxLayout->addWidget(Oven2Not24QCheckBox);
 	Oven2Not24QCheckBox->setChecked(configuration.Operations().Oven2OnlyOver24Feet());
-	Oven2Not24QCheckBox->setStyleSheet("QCheckBox{color:#aaaaaa;}");
 
-	QGroupBox *OvenSelGroupBox = new QGroupBox(tr("Ovens Selections"), openGLWidget);
-	OvenSelGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
+	QGroupBox *OvenSelGroupBox = new QGroupBox(tr("Oven routing"), openGLWidget);
 	OvenSelGroupBox->setGeometry(235, 20, 245, 115);
 	OvenSelGroupBox->setLayout(OvenSelGroupBoxLayout);
 	OvenSelGroupBox->show();
@@ -331,20 +434,17 @@ mainWindowClass::mainWindowClass()
 	QRadioButton *nextOvenCycle185RadioButton = new QRadioButton("185C 5 hours 30 minutes", this);
 	connect(nextOvenCycle185RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOvenCycle185RadioButtonSlot(bool)));
 	nextOvenCycleGroupBoxLayout->addWidget(nextOvenCycle185RadioButton);
-	nextOvenCycle185RadioButton->setStyleSheet("QRadioButton	{color:#aaaaaa;}");
 
 	QRadioButton *nextOvenCycle230RadioButton = new QRadioButton("230C 8 hours 50 minutes", this);
 	connect(nextOvenCycle230RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOvenCycle230RadioButtonSlot(bool)));
 	nextOvenCycleGroupBoxLayout->addWidget(nextOvenCycle230RadioButton);
-	nextOvenCycle230RadioButton->setStyleSheet("QRadioButton{color:#aaaaaa;}");
 
 	if (openGLWidget->getNextOvenLoadingCycleTemperEnum() == allPositionsClass::NEXT_OVEN_CYCLE_TEMPER_185)
 		nextOvenCycle185RadioButton->setChecked(true);
 	else
 		nextOvenCycle230RadioButton->setChecked(true);
 
-	QGroupBox *nextOvenCycleGroupBox = new QGroupBox(tr("Next Oven cycle"), openGLWidget);
-	nextOvenCycleGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
+	QGroupBox *nextOvenCycleGroupBox = new QGroupBox(tr("Oven 1 - next cycle"), openGLWidget);
 	nextOvenCycleGroupBox->setGeometry(235, 140, 285, 82);
 	nextOvenCycleGroupBox->setLayout(nextOvenCycleGroupBoxLayout);
 	nextOvenCycleGroupBox->show();
@@ -356,12 +456,10 @@ mainWindowClass::mainWindowClass()
 	QRadioButton *nextOven2Cycle185RadioButton = new QRadioButton("185C 5 hours 30 minutes", this);
 	connect(nextOven2Cycle185RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOven2Cycle185RadioButtonSlot(bool)));
 	nextOven2CycleGroupBoxLayout->addWidget(nextOven2Cycle185RadioButton);
-	nextOven2Cycle185RadioButton->setStyleSheet("QRadioButton	{color:#aaaaaa;}");
 
 	QRadioButton *nextOven2Cycle230RadioButton = new QRadioButton("230C 8 hours 50 minutes", this);
 	connect(nextOven2Cycle230RadioButton, SIGNAL(toggled(bool)), this, SLOT(nextOven2Cycle230RadioButtonSlot(bool)));
 	nextOven2CycleGroupBoxLayout->addWidget(nextOven2Cycle230RadioButton);
-	nextOven2Cycle230RadioButton->setStyleSheet("QRadioButton{color:#aaaaaa;}");
 
 	////////////////////////
 	//What is next Oven2 Cycle
@@ -374,8 +472,7 @@ mainWindowClass::mainWindowClass()
 	else
 		nextOven2Cycle230RadioButton->setChecked(true);
 
-	QGroupBox *nextOven2CycleGroupBox = new QGroupBox(tr("Next Oven2 cycle"), openGLWidget);
-	nextOven2CycleGroupBox->setStyleSheet("QGroupBox{color:#aaaaaa;}");
+	QGroupBox *nextOven2CycleGroupBox = new QGroupBox(tr("Oven 2 - next cycle"), openGLWidget);
 	nextOven2CycleGroupBox->setGeometry(235, 227, 285, 82);
 	nextOven2CycleGroupBox->setLayout(nextOven2CycleGroupBoxLayout);
 	nextOven2CycleGroupBox->show();
@@ -384,10 +481,12 @@ mainWindowClass::mainWindowClass()
 	//takeScrapBasketBtn=new QPushButton(tr("Take scrap basket"),openGLWidget);takeScrapBasketBtn->setGeometry(x,y+=95+m,w,h);  takeScrapBasketBtn 	->show();
 	y += 95 + m;
 	QPushButton *unlockBasketAfterStackerBtn = new QPushButton(tr("Unlock after stacker"), openGLWidget);
+	unlockBasketAfterStackerBtn->setProperty("warning", true);
 	unlockBasketAfterStackerBtn->setGeometry(x, y += h + m, w, h);
 	unlockBasketAfterStackerBtn->show();
 
 	QPushButton *unlockBasketReturningFromOvenBtn = new QPushButton(tr("Unlock from oven"), openGLWidget);
+	unlockBasketReturningFromOvenBtn->setProperty("warning", true);
 	unlockBasketReturningFromOvenBtn->setGeometry(x, y += h + m, w, h);
 	unlockBasketReturningFromOvenBtn->show();
 
@@ -397,8 +496,10 @@ mainWindowClass::mainWindowClass()
 	basketTrackerBtn->setToolTip(tr("Locate a basket and review its recent movement history."));
 	basketTrackerBtn->show();
 
-	plcWidgetTemp->setGeometry(x - 15, y += h + m + 50, 195, 330);
-	plcWidgetTemp->show();
+	plcStatusPreferredY = y += h + m + 8;
+	plcStatusWidget->setGeometry(x, plcStatusPreferredY, w, 310);
+	plcStatusWidget->show();
+	positionPlcStatusWidget();
 
 	//connect(takeScrapBasketBtn,SIGNAL(clicked()),this,SLOT(takeScrapBasketBtnSlot()));
 	LOG("mW.cpp", "connecting unlockBaset* SIGNAL(s)");
@@ -470,6 +571,25 @@ mainWindowClass::mainWindowClass()
 	basketTrackerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 	connect(basketTrackerAction, &QAction::triggered, this, &mainWindowClass::showBasketTrackerSlot);
 	addAction(basketTrackerAction);
+}
+
+void mainWindowClass::resizeEvent(QResizeEvent *event)
+{
+	QWidget::resizeEvent(event);
+	QTimer::singleShot(0, this, [this]() { positionPlcStatusWidget(); });
+}
+
+void mainWindowClass::positionPlcStatusWidget()
+{
+	if (!openGLWidget || !plcStatusWidget)
+		return;
+
+	const int panelHeight = 310;
+	const int bottomMargin = 8;
+	const int maximumY = qMax(0, openGLWidget->height() - panelHeight - bottomMargin);
+	const int panelY = qMin(plcStatusPreferredY, maximumY);
+	plcStatusWidget->setGeometry(plcStatusWidget->x(), panelY, plcStatusWidget->width(), panelHeight);
+	plcStatusWidget->raise();
 }
 
 mainWindowClass::~mainWindowClass()
@@ -787,7 +907,7 @@ void mainWindowClass::clearLogTable()
 #endif
 }
 
-static const QString s_dbTableStyleGrey("QLabel{font-size:11px;background-color:#808080;color:#fff;padding:2px 6px;border-radius:2px;}");
+static const QString s_dbTableStyleGrey("QLabel{font-size:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:2px 6px;border-radius:5px;}");
 
 void mainWindowClass::setDbTableActive(const QString& tableName, bool isRead)
 {
@@ -798,8 +918,8 @@ void mainWindowClass::setDbTableActive(const QString& tableName, bool isRead)
 	QMap<QString, QLabel*>::iterator it = dbTableStatusLabels.find(tableName);
 	if (it != dbTableStatusLabels.end()) {
 		QString style = isRead
-			? QString("QLabel{font-size:11px;background-color:#09c500;color:#000;padding:2px 6px;border-radius:2px;}")
-			: QString("QLabel{font-size:11px;background-color:#3399ff;color:#fff;padding:2px 6px;border-radius:2px;}");
+			? QString("QLabel{font-size:10px;background:#166534;color:#dcfce7;border:1px solid #22c55e;padding:2px 6px;border-radius:5px;}")
+			: QString("QLabel{font-size:10px;background:#075985;color:#e0f2fe;border:1px solid #38bdf8;padding:2px 6px;border-radius:5px;}");
 		(*it)->setStyleSheet(style);
 	}
 }
@@ -824,8 +944,8 @@ void mainWindowClass::setDbTableIdleNow(const QString& tableName)
 		(*it)->setStyleSheet(s_dbTableStyleGrey);
 }
 
-static const QString s_plcNetworkStyleYellow("QLabel{font-size:11px;background-color:#cc9900;color:#000;padding:2px 6px;border-radius:2px;}");
-static const QString s_plcNetworkStyleRed("QLabel{font-size:11px;background-color:#cc0000;color:#fff;padding:2px 6px;border-radius:2px;}");
+static const QString s_plcNetworkStyleYellow("QLabel{font-size:10px;background:#78350f;color:#fef3c7;border:1px solid #f59e0b;padding:2px 6px;border-radius:5px;}");
+static const QString s_plcNetworkStyleRed("QLabel{font-size:10px;background:#7f1d1d;color:#fee2e2;border:1px solid #ef4444;padding:2px 6px;border-radius:5px;}");
 
 void mainWindowClass::setPlcNetworkActive(const QString& networkName, bool isRead)
 {
@@ -848,8 +968,8 @@ void mainWindowClass::setPlcNetworkActive(const QString& networkName, bool isRea
 	if (it != plcNetworkStatusLabels.end()) {
 		LOG("mW.cpp", "INFO: Toggling read status LED " + networkName);
 		QString style = isRead
-			? QString("QLabel{font-size:11px;background-color:#09c500;color:#000;padding:2px 6px;border-radius:2px;}")
-			: QString("QLabel{font-size:11px;background-color:#3399ff;color:#fff;padding:2px 6px;border-radius:2px;}");
+			? QString("QLabel{font-size:10px;background:#166534;color:#dcfce7;border:1px solid #22c55e;padding:2px 6px;border-radius:5px;}")
+			: QString("QLabel{font-size:10px;background:#075985;color:#e0f2fe;border:1px solid #38bdf8;padding:2px 6px;border-radius:5px;}");
 		(*it)->setStyleSheet(style);
 		LOG("mW.cpp", "Done toggling read stauts LED " + networkName);
 	}
@@ -922,8 +1042,8 @@ void mainWindowClass::setPlcNetworkError(const QString& networkName)
 		(*it)->setStyleSheet(s_plcNetworkStyleRed);
 }
 
-static const QString s_timerStyleGrey("QLabel{font-size:11px;background-color:#808080;color:#fff;padding:2px 6px;border-radius:2px;}");
-static const QString s_timerStyleGreen("QLabel{font-size:11px;background-color:#09c500;color:#000;padding:2px 6px;border-radius:2px;}");
+static const QString s_timerStyleGrey("QLabel{font-size:10px;background:#1e293b;color:#94a3b8;border:1px solid #334155;padding:2px 6px;border-radius:5px;}");
+static const QString s_timerStyleGreen("QLabel{font-size:10px;background:#166534;color:#dcfce7;border:1px solid #22c55e;padding:2px 6px;border-radius:5px;}");
 
 void mainWindowClass::setMainTimerFiring()
 {
@@ -1686,6 +1806,8 @@ void mainWindowClass::initializeDatabase()
 	if (databaseSettings.CreateCatalogs())
 		execDBQuery(QString("if not exists(select * from sys.databases where name='%1') create database [%1]").arg(mainCatalog), MAIN_DB_CONNECTION);
 	execDBQuery(QString("USE [%1]").arg(mainCatalog), MAIN_DB_CONNECTION);
+	logDatabaseEndpoint(mainDb, mainProfile.Name(), mainCatalog,
+		"positions,baskets,basketHistory,toAssimakisExports,toOmavExports");
 
 	LOG("mW.cpp", QString("Opening Apex database profile '%1'").arg(apexProfile.Name()));
 	QSqlDatabase apexDb = QSqlDatabase::addDatabase(databaseSettings.Driver(), APEX_DB_CONNECTION);
@@ -1697,6 +1819,8 @@ void mainWindowClass::initializeDatabase()
 	if (databaseSettings.CreateCatalogs())
 		execDBQuery(QString("if not exists(select * from sys.databases where name='%1') create database [%1]").arg(apexCatalog), APEX_DB_CONNECTION);
 	execDBQuery(QString("USE [%1]").arg(apexCatalog), APEX_DB_CONNECTION);
+	logDatabaseEndpoint(apexDb, apexProfile.Name(), apexCatalog,
+		"basket_details,basket_location,temperTypes");
 
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////

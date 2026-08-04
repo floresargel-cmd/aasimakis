@@ -119,8 +119,7 @@ static void exit(QString title,QString mess)
 		
 	LOG("EXIT: " + title, mess);
 	closeOpenDatabases();
-	QString logFileName = QString("log.%1.txt").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd"));
-	ShellExecute(0, "open", logFileName.toLatin1(), NULL, NULL, SW_SHOWNORMAL);
+	QDesktopServices::openUrl(QUrl::fromLocalFile(applog_fullPath()));
 	exit(0);
 }
 #define EXIT(title,mess)       (exit(title,mess))

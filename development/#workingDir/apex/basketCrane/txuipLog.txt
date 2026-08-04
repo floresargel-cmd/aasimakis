@@ -1,0 +1,72 @@
+2026/07/31 14:20:52-error in 20.20.20.10 connection. Connection Id:141839063
+2026/07/31 14:20:52-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:20:52-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:20:52-error in 20.20.20.10 connection. Connection Id:141839063
+2026/07/31 14:20:52-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N20[0] no:25
+2026/07/31 14:20:57-error in 20.20.20.40 connection. Connection Id:141839382
+2026/07/31 14:20:57-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:20:57-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:20:57-error in 20.20.20.40 connection. Connection Id:141839382
+2026/07/31 14:20:57-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:50
+2026/07/31 14:21:02-error in 192.168.105.135 connection. Connection Id:141839588
+2026/07/31 14:21:02-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:21:02-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:21:02-error in 192.168.105.135 connection. Connection Id:141839588
+2026/07/31 14:21:02-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:10
+2026/07/31 14:36:11-error in 20.20.20.10 connection. Connection Id:143325024
+2026/07/31 14:36:11-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:36:11-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:36:11-error in 20.20.20.10 connection. Connection Id:143325024
+2026/07/31 14:36:11-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N20[0] no:25
+2026/07/31 14:36:16-error in 20.20.20.40 connection. Connection Id:143325410
+2026/07/31 14:36:16-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:36:16-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:36:16-error in 20.20.20.40 connection. Connection Id:143325410
+2026/07/31 14:36:16-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:50
+2026/07/31 14:36:21-error in 192.168.105.135 connection. Connection Id:143325719
+2026/07/31 14:36:21-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/07/31 14:36:21-error-	 -type:0,number:-41,external error number:0,message:error
+2026/07/31 14:36:21-error in 192.168.105.135 connection. Connection Id:143325719
+2026/07/31 14:36:21-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:10
+2026/08/04 09:51:52-error in 20.20.20.10 connection. Connection Id:95105396
+2026/08/04 09:51:52-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/08/04 09:51:52-error-	 -type:0,number:-41,external error number:0,message:error
+2026/08/04 09:51:52-error in 20.20.20.10 connection. Connection Id:95105396
+2026/08/04 09:51:52-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N20[0] no:25
+2026/08/04 09:51:57-error in 20.20.20.40 connection. Connection Id:95106154
+2026/08/04 09:51:57-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/08/04 09:51:57-error-	 -type:0,number:-41,external error number:0,message:error
+2026/08/04 09:51:57-error in 20.20.20.40 connection. Connection Id:95106154
+2026/08/04 09:51:57-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:50
+2026/08/04 09:52:02-error in 192.168.105.135 connection. Connection Id:95106552
+2026/08/04 09:52:02-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/08/04 09:52:02-error-	 -type:0,number:-41,external error number:0,message:error
+2026/08/04 09:52:02-error in 192.168.105.135 connection. Connection Id:95106552
+2026/08/04 09:52:02-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:10

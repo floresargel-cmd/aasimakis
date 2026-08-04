@@ -57,7 +57,7 @@
       <CompileAsWinRT>false</CompileAsWinRT>
       <WarningLevel>Level3</WarningLevel>
       <OmitFramePointers>false</OmitFramePointers>
-      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;UTILITIES_USE_APPLOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -71,7 +71,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
     <Link />
     <ClCompile>
-      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;UTILITIES_USE_APPLOGGER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <AdditionalIncludeDirectories>C:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include;C:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtCore;C:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtGui;C:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtWidgets;C:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtOpenGL;c:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtNetwork;c:\assimakis\development\libs\_deploy\includes\utilities;c:\assimakis\development\libs\#qt\qt.5.7.0.static.x32\qtbase\include\QtSql;c:\assimakis\development\libs\_deploy\builds\vlc\vlc-2.2.1\sdk\lib;c:\assimakis\development\libs\_deploy\includes\tuxeip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SuppressStartupBanner>true</SuppressStartupBanner>

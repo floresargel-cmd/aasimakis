@@ -13,13 +13,19 @@ bool isAppHostEnabled(const QString& hostname);
 void applog(QString title, QString mess);
 #define LOG(title, mess) (applog((title), (mess)))
 
+// Initialize once, after QApplication has been created. Logs are written to a
+// per-user, writable "logs" directory and retained for retentionDays.
+void applog_initialize(const QString& applicationName, int retentionDays = 30);
+void applog_shutdown();
+
 // ---- New: log status API for UI ----
 
 enum AppLogSeverity {
-    APPLOG_SEV_INFO = 0,
-    APPLOG_SEV_WARNING = 1,
-    APPLOG_SEV_ERROR = 2,
-	APPLOG_SEV_EXIT = 3
+    APPLOG_SEV_DEBUG = 0,
+    APPLOG_SEV_INFO = 1,
+    APPLOG_SEV_WARNING = 2,
+    APPLOG_SEV_ERROR = 3,
+	APPLOG_SEV_EXIT = 4
 };
 
 enum AppLogEventType {
@@ -53,3 +59,13 @@ QString applog_fullPath();
 // Optional: enable/disable actual file writing (callbacks still fire)
 void applog_setEnabled(bool enabled);
 bool applog_isEnabled();
+
+// Write with an explicit severity. Existing call sites can continue to use
+// LOG(); this API is for Qt and cross-cutting error handlers.
+void applog_write(AppLogSeverity severity, const QString& title, const QString& mess);
+
+// Send qDebug/qWarning/qCritical/qFatal output to the central log.
+void applog_installQtMessageHandler();
+
+// Opt-in hook for the shared utilities headers.
+void utilitiesAppLog(const QString& title, const QString& mess, bool fatal);

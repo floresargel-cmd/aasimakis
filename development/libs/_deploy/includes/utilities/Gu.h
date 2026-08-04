@@ -22,8 +22,16 @@
 #define infoStr QString("info")
 #define errorStr QString("error")
 
+#ifdef UTILITIES_USE_APPLOGGER
+// Implemented by applications that opt in to centralized utility logging.
+void utilitiesAppLog(const QString& title, const QString& mess, bool fatal);
+#endif
+
 static void uWarning(QString title,QString mess)
 {
+#ifdef UTILITIES_USE_APPLOGGER
+	utilitiesAppLog("WARNING: " + title, mess, false);
+#else
 	QString logFileName=QString("warning.txt");
 	QFile file(logFileName);
 	if (!file.open(QIODevice::Append|QIODevice::Text))
@@ -32,9 +40,13 @@ static void uWarning(QString title,QString mess)
 	out<<timeForLog<<"-"+title+"-\t -"+mess+"\n";
 	file.close();
 	QDesktopServices::openUrl(QUrl::fromLocalFile(logFileName));
+#endif
 }
 static void uExit(QString title,QString mess)
 {
+#ifdef UTILITIES_USE_APPLOGGER
+	utilitiesAppLog("EXIT: " + title, mess, true);
+#else
 	QDir::current().mkdir("errorLogs");
 	QString logFileName=QString("errorLogs/error.%1.txt").arg(timeForFile);
 	QFile file(logFileName);
@@ -44,6 +56,7 @@ static void uExit(QString title,QString mess)
 	out<<timeForLog<<"-"+title+"-\t -"+mess+"\n";
 	file.close();
 	QDesktopServices::openUrl(QUrl::fromLocalFile(logFileName));
+#endif
 	exit(0);
 }
 static bool uCheckPassword(QString pass)

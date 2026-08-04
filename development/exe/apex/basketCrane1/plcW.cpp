@@ -7,14 +7,22 @@ static QString readablePlcLabelStyle(QString style)
 	else if (style.contains("background-color:red", Qt::CaseInsensitive))
 		style.replace("background-color:red", "background-color:#b91c1c;color:#ffffff", Qt::CaseInsensitive);
 
-	style.replace("QLabel{", "QLabel{padding-left:6px;");
+	style.replace("QLabel{", "QLabel{padding-left:6px;border-bottom:1px solid #64748b;");
 	return style;
 }
 
 plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 {
-	p->setStyleSheet(QString("QLabel{font-size:%1px} QPushButton{font-size:%1px}  QCheckBox{font-size:%1px}").arg(12));
+	p->setObjectName("plcStatusPanel");
+	p->setAttribute(Qt::WA_StyledBackground, true);
+	p->setStyleSheet(QString(
+		"QWidget#plcStatusPanel{background:#0b1220;border:1px solid #475569;} "
+		"QWidget#plcStatusPanel QLabel{font-size:%1px;} "
+		"QWidget#plcStatusPanel QPushButton{font-size:%1px;} "
+		"QWidget#plcStatusPanel QCheckBox{font-size:%1px;}").arg(12));
 	QVBoxLayout *mainLayout=new QVBoxLayout();
+	mainLayout->setContentsMargins(1, 1, 1, 1);
+	mainLayout->setSpacing(0);
 
 	showPlcManualsBtn = new QPushButton(tr("PLC"));
 	showPlcManualsBtn->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum);
@@ -23,36 +31,36 @@ plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 	connect(showPlcManualsBtn, SIGNAL(clicked()), this, SLOT(onShowPlcManualsBtnSlot()));
 
 	fromPosLabel = new QLabel("...");
-	fromPosLabel->setStyleSheet("QLabel{color:#000099;background-color:transparent;background:white;}");
+	fromPosLabel->setStyleSheet("QLabel{color:#000099;background:#ffffff;padding-left:6px;border-bottom:1px solid #64748b;}");
 	fromPosLabel->setMinimumHeight(30); 
 	mainLayout->addWidget(fromPosLabel);
 
 	toPosLabel=new QLabel("...");		 
-	toPosLabel->setStyleSheet("QLabel{color:#000099;background-color:transparent;background:white;}");
+	toPosLabel->setStyleSheet("QLabel{color:#000099;background:#ffffff;padding-left:6px;border-bottom:1px solid #64748b;}");
 	toPosLabel->setMinimumHeight(30);
 	mainLayout->addWidget(toPosLabel);
 
-	stopLabel=new QLabel("...");		 stopLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");stopLabel->setMinimumHeight(30);mainLayout->addWidget(stopLabel); 
-	status0Label=new QLabel("...");  status0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");status0Label->setMinimumHeight(30);mainLayout->addWidget(status0Label); 
-	status1Label=new QLabel("...");  status1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}");status1Label->setMinimumHeight(30);mainLayout->addWidget(status1Label); 
+	stopLabel=new QLabel("...");		 stopLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");stopLabel->setMinimumHeight(30);mainLayout->addWidget(stopLabel);
+	status0Label=new QLabel("...");  status0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");status0Label->setMinimumHeight(30);mainLayout->addWidget(status0Label);
+	status1Label=new QLabel("...");  status1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");status1Label->setMinimumHeight(30);mainLayout->addWidget(status1Label);
 	
 	status2Label = new QLabel("...");  
-	status2Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
+	status2Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");
 	status2Label->setMinimumHeight(30); 
 	mainLayout->addWidget(status2Label);
 	
 	error0Label = new QLabel("...");   
-	error0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
+	error0Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");
 	error0Label->setMinimumHeight(30); 
 	mainLayout->addWidget(error0Label);
 
 	error1Label=new QLabel("...");   
-	error1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
+	error1Label->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");
 	error1Label->setMinimumHeight(30); 
 	mainLayout->addWidget(error1Label);  
 	
 	makeResetLabel=new QLabel("...");   
-	makeResetLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;}"); 
+	makeResetLabel->setStyleSheet("QLabel{color:#334155;background:#f8fafc;padding-left:6px;border-bottom:1px solid #64748b;}");
 	makeResetLabel->setMinimumHeight(25); 
 	mainLayout->addWidget(makeResetLabel);  
 

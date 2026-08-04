@@ -21,6 +21,8 @@ class mainWindowClass : public QWidget
 	openGLWidgetClass			*openGLWidget;
 	//QPushButton				*takeScrapBasketBtn;
 	plcWidgetClass				*plcWidget;
+	QWidget						*plcStatusWidget;
+	int							plcStatusPreferredY;
 
 	QCheckBox					*useEmptyBasketsPosCheckBox;
 	QCheckBox					*emptyEmptyBasketsPosCheckBox;
@@ -132,6 +134,9 @@ public slots:
 	void plcDlgSlot();
 	void qtAboutSlot();
 
+protected:
+	void resizeEvent(QResizeEvent *event) override;
+
 private slots:
 	void onMainTimerIdleTimeout();
 	void onAutoModeTimerIdleTimeout();
@@ -139,7 +144,8 @@ private slots:
 private:
 	void setDbTableIdleNow(const QString& tableName);
 	void setPlcNetworkIdleNow(const QString& networkName);
-};											
+	void positionPlcStatusWidget();
+};
 #endif
 
 
