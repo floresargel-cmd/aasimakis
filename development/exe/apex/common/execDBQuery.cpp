@@ -6,11 +6,14 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QRegExp>
 #include <QThread>
 
 namespace {
 const int DEFAULT_MAX_RETRIES = 3;
 const int INITIAL_RETRY_DELAY_MS = 200;
+bool g_databaseReadOnlyMode = false;
+int g_blockedStatementCount = 0;
 
 struct QueryResult
 {
@@ -63,6 +66,23 @@ bool isWriteStatement(const QString& statement)
         || firstWord == "update"
         || firstWord == "delete"
         || firstWord == "merge";
+}
+
+bool isObserverStatementAllowed(const QString& statement)
+{
+    const QString firstWord = statement.trimmed().section(QRegExp("\\s+"), 0, 0).toLower();
+    return firstWord == "select" || firstWord == "use";
+}
+
+void logObserverBlock(const QString& connection, const QString& operation)
+{
+    ++g_blockedStatementCount;
+    // Show enough detail to prove enforcement without flooding the bounded log
+    // from legacy polling loops. Continue emitting a periodic audit marker.
+    if (g_blockedStatementCount <= 20 || (g_blockedStatementCount % 100) == 0) {
+        LOG("WARNING: DATABASE", QString("LIVE OBSERVER blocked database mutation #%1 on connection '%2': %3")
+            .arg(g_blockedStatementCount).arg(connection).arg(operation));
+    }
 }
 
 void waitBeforeRetry(int retryNumber)
@@ -180,13 +200,33 @@ QueryResult executeWithRetry(const QString& statement, const QString& connection
 }
 }
 
+void setDatabaseReadOnlyMode(bool enabled)
+{
+    g_databaseReadOnlyMode = enabled;
+    LOG("CONFIGURATION", QString("Database read-only enforcement %1")
+        .arg(enabled ? "ENABLED" : "disabled"));
+}
+
+bool isDatabaseReadOnlyMode()
+{
+    return g_databaseReadOnlyMode;
+}
+
 QVector<QVariant> execDBQuery(QString stmnt, QString connection)
 {
+    if (g_databaseReadOnlyMode && !isObserverStatementAllowed(stmnt)) {
+        logObserverBlock(connection, stmnt);
+        return QVector<QVariant>();
+    }
     return executeWithRetry(stmnt, connection, false).values;
 }
 
 QVector<QVector<QVariant> > execDBTableQuery(QString stmnt, QString connection)
 {
+    if (g_databaseReadOnlyMode && !isObserverStatementAllowed(stmnt)) {
+        logObserverBlock(connection, stmnt);
+        return QVector<QVector<QVariant> >();
+    }
     return executeWithRetry(stmnt, connection, true).rows;
 }
 
@@ -194,6 +234,11 @@ bool execDBTransaction(const QStringList& statements, QString connection, int ma
 {
     if (statements.isEmpty())
         return true;
+
+    if (g_databaseReadOnlyMode) {
+        logObserverBlock(connection, "transaction");
+        return false;
+    }
 
     if (maxRetries < 0)
         maxRetries = 0;

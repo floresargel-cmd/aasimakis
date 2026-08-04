@@ -8,6 +8,9 @@ application.
 - `ConfigurationManager` loads, expands, and validates the INI file once.
 - `Settings` exposes immutable, typed configuration objects grouped by domain.
 - `DatabaseConfigurator` applies a typed database profile to `QSqlDatabase`.
+- `[Environment] mode` selects `Test`, `Live`, or `LiveObserver`. LiveObserver
+  reads Live profiles while centrally blocking SQL mutations and PLC output.
+  Both Live modes require the current computer in `liveEnabledHosts`.
 
 Application code consumes typed settings and does not read INI keys directly.
 Protocol constants and physical model definitions remain in the application

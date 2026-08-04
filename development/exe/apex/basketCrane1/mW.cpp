@@ -1,6 +1,7 @@
 #include "mW.h"
 #include "configuration/ConfigurationManager.h"
 #include "configuration/DatabaseConfigurator.h"
+#include "../common/execDBQuery.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
 #include "timerStatus.h"
@@ -119,8 +120,40 @@ mainWindowClass::mainWindowClass()
 
 	const BasketCrane::Configuration::ConfigurationManager& configuration =
 		BasketCrane::Configuration::ConfigurationManager::Instance();
-	// Lazy ass programming, just set the variable from the logger.h...
-	theOneBCToRuleThemAll = isAppHostEnabled(getAppHostname());
+	const QString currentHost = getAppHostname();
+	const QString environmentMode = configuration.Application().EnvironmentMode();
+	const bool observerExecutable = QFileInfo(QCoreApplication::applicationFilePath())
+		.baseName().contains("Observer", Qt::CaseInsensitive);
+	const bool liveRequested = environmentMode.compare("Live", Qt::CaseInsensitive) == 0
+		&& !observerExecutable;
+	const bool observerRequested = observerExecutable
+		|| environmentMode.compare("LiveObserver", Qt::CaseInsensitive) == 0;
+	bool liveHostAuthorized = false;
+	const QStringList liveEnabledHosts = configuration.Application().LiveEnabledHosts();
+	for (int i = 0; i < liveEnabledHosts.count(); ++i)
+	{
+		if (liveEnabledHosts[i].compare(currentHost, Qt::CaseInsensitive) == 0)
+		{
+			liveHostAuthorized = true;
+			break;
+		}
+	}
+#if defined(inMyLaptop) || defined(SEMILIVE) || defined(EMULATE)
+	theOneBCToRuleThemAll = false;
+	const bool observerMode = false;
+#else
+	theOneBCToRuleThemAll = liveRequested && liveHostAuthorized;
+	const bool observerMode = observerRequested && liveHostAuthorized;
+#endif
+	setDatabaseReadOnlyMode(observerMode);
+	const QString effectiveEnvironment = theOneBCToRuleThemAll
+		? "Live" : (observerMode ? "LiveObserver" : "Test");
+	LOG("CONFIGURATION", QString("environmentRequested='%1'; effectiveEnvironment='%2'; host='%3'; liveHostAuthorized=%4; file='%5'")
+		.arg(environmentMode)
+		.arg(effectiveEnvironment)
+		.arg(currentHost)
+		.arg(liveHostAuthorized ? "true" : "false")
+		.arg(configuration.FileName()));
 
 	setWindowIcon(QIcon(":/logo_16x16.png"));
 
@@ -161,10 +194,14 @@ mainWindowClass::mainWindowClass()
 	QLabel *hostIdentity = new QLabel(QString("HOST  %1").arg(appHostname.toUpper()), appHeader);
 	hostIdentity->setObjectName("hostIdentity");
 	appHeaderLayout->addWidget(hostIdentity);
-	QLabel *systemMode = new QLabel(theOneBCToRuleThemAll ? tr("LIVE SYSTEM") : tr("TEST SYSTEM"), appHeader);
+	QLabel *systemMode = new QLabel(theOneBCToRuleThemAll
+		? tr("LIVE SYSTEM") : (observerMode ? tr("LIVE OBSERVER") : tr("TEST SYSTEM")), appHeader);
 	systemMode->setObjectName("systemMode");
-	systemMode->setProperty("mode", theOneBCToRuleThemAll ? "live" : "test");
+	systemMode->setProperty("mode", theOneBCToRuleThemAll ? "live" : (observerMode ? "observer" : "test"));
 	systemMode->setAlignment(Qt::AlignCenter);
+	systemMode->setToolTip(observerMode
+		? tr("Reads Live databases. Database writes and PLC commands are blocked.")
+		: QString());
 	appHeaderLayout->addWidget(systemMode);
 	rootLayout->addWidget(appHeader);
 	rootLayout->addLayout(mainLayout, 1);
@@ -526,7 +563,8 @@ mainWindowClass::mainWindowClass()
 	LOG("mW.cpp", "Setting mainTimer (15s)");
 	connect(&mainTimer, SIGNAL(timeout()), this, SLOT(onMainTimer()));
 	mainTimer.start(configuration.Timers().MainWindowMilliseconds());
-	clearLogTable();
+	if (!observerMode)
+		clearLogTable();
 	scrapBasketPositionChangedSlot(openGLWidget->getBasketTableIdOfScrapBasketPos());
 
 #ifdef TUX_PLC_COMMS
@@ -571,6 +609,17 @@ mainWindowClass::mainWindowClass()
 	basketTrackerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 	connect(basketTrackerAction, &QAction::triggered, this, &mainWindowClass::showBasketTrackerSlot);
 	addAction(basketTrackerAction);
+
+	if (observerMode)
+	{
+		const QList<QAbstractButton*> controls = openGLWidget->findChildren<QAbstractButton*>();
+		for (int i = 0; i < controls.count(); ++i)
+			controls[i]->setEnabled(false);
+		const QList<QSpinBox*> spinBoxes = openGLWidget->findChildren<QSpinBox*>();
+		for (int i = 0; i < spinBoxes.count(); ++i)
+			spinBoxes[i]->setEnabled(false);
+		basketTrackerBtn->setEnabled(true);
+	}
 }
 
 void mainWindowClass::resizeEvent(QResizeEvent *event)
@@ -1785,11 +1834,15 @@ void mainWindowClass::initializeDatabase()
 #if defined(inMyLaptop) || defined(SEMILIVE) || defined(EMULATE)
 	const bool useLiveProfile = false;
 #else
-	const bool useLiveProfile = theOneBCToRuleThemAll;
+	const bool observerRequested = configuration.Application().EnvironmentMode().compare("LiveObserver", Qt::CaseInsensitive) == 0;
+	const bool useLiveProfile = theOneBCToRuleThemAll || isDatabaseReadOnlyMode();
 	if (!useLiveProfile)
 	{
+		const bool liveRequested = configuration.Application().EnvironmentMode().compare("Live", Qt::CaseInsensitive) == 0;
 		QMessageBox::warning(0, "Warning - " + appHostname,
-			"This version is not ENABLED - it will read/write to the configured TEST databases, and has limited PLC communications.");
+			(liveRequested || observerRequested)
+				? "LIVE was requested, but this host is not authorized. The application will use the configured TEST databases and limited PLC communications."
+				: "The application is configured for TEST databases and limited PLC communications.");
 	}
 #endif
 
@@ -1821,6 +1874,12 @@ void mainWindowClass::initializeDatabase()
 	execDBQuery(QString("USE [%1]").arg(apexCatalog), APEX_DB_CONNECTION);
 	logDatabaseEndpoint(apexDb, apexProfile.Name(), apexCatalog,
 		"basket_details,basket_location,temperTypes");
+
+	if (isDatabaseReadOnlyMode())
+	{
+		LOG("CONFIGURATION", "LIVE OBSERVER skipped database schema creation and maintenance");
+		return;
+	}
 
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////

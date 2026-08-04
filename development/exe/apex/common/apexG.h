@@ -4,6 +4,10 @@
 #include "applogger.h"
 #include "execDBQuery.h"
 
+// Route legacy basket-crane execQuery(...) calls through the centralized
+// retry/transaction/read-only enforcement layer.
+#define execQuery execDBQuery
+
 #define BASKET_BASKET_CONNECTION_ID 1
 #define BASKET_AGING_CONNECTION_ID 2
 #define AGING_AGING_CONNECTION_ID 3

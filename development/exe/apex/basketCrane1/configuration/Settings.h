@@ -19,6 +19,8 @@ public:
 	int WindowWidth() const { return m_windowWidth; }
 	int WindowHeight() const { return m_windowHeight; }
 	bool StartMaximized() const { return m_startMaximized; }
+	const QString& EnvironmentMode() const { return m_environmentMode; }
+	const QStringList& LiveEnabledHosts() const { return m_liveEnabledHosts; }
 
 private:
 	friend class ConfigurationManager;
@@ -34,6 +36,8 @@ private:
 	int m_windowWidth;
 	int m_windowHeight;
 	bool m_startMaximized;
+	QString m_environmentMode;
+	QStringList m_liveEnabledHosts;
 };
 
 class PathSettings

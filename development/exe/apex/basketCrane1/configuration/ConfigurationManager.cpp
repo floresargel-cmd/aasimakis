@@ -54,6 +54,11 @@ bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 	m_application.m_windowWidth = settings.value("Application/windowWidth").toInt();
 	m_application.m_windowHeight = settings.value("Application/windowHeight").toInt();
 	m_application.m_startMaximized = settings.value("Application/startMaximized").toBool();
+	m_application.m_environmentMode = ReadString(settings, "Environment/mode").trimmed();
+	m_application.m_liveEnabledHosts = ReadString(settings, "Environment/liveEnabledHosts")
+		.split('|', QString::SkipEmptyParts);
+	for (int i = 0; i < m_application.m_liveEnabledHosts.count(); ++i)
+		m_application.m_liveEnabledHosts[i] = m_application.m_liveEnabledHosts[i].trimmed();
 
 	m_paths.m_libraryPaths = ReadString(settings, "Paths/libraryPaths")
 		.split('|', QString::SkipEmptyParts);
@@ -124,6 +129,7 @@ bool ConfigurationManager::Validate(QSettings& settings, QString *errorMessage) 
 	requiredKeys
 		<< "Application/singleInstance" << "Application/style"
 		<< "Application/windowWidth" << "Application/windowHeight" << "Application/startMaximized"
+		<< "Environment/mode" << "Environment/liveEnabledHosts"
 		<< "Paths/libraryPaths"
 		<< "Database/driver" << "Database/mainLiveProfile" << "Database/mainTestProfile"
 		<< "Database/apexLiveProfile" << "Database/apexTestProfile"
@@ -177,6 +183,12 @@ bool ConfigurationManager::Validate(QSettings& settings, QString *errorMessage) 
 	}
 
 	QStringList invalidValues;
+	const QString environmentMode = settings.value("Environment/mode").toString().trimmed();
+	if (environmentMode.compare("Test", Qt::CaseInsensitive) != 0
+		&& environmentMode.compare("Live", Qt::CaseInsensitive) != 0
+		&& environmentMode.compare("LiveObserver", Qt::CaseInsensitive) != 0)
+		invalidValues << "Environment/mode must be Test, Live, or LiveObserver";
+
 	const QStringList positiveIntegerKeys = QStringList()
 		<< "Application/windowWidth" << "Application/windowHeight"
 		<< "PLC/enabledPollingMs" << "PLC/standbyPollingMs"
