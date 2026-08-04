@@ -34,8 +34,6 @@ craneClass::craneClass():QObject()
 
 	connect(&animateTimer, SIGNAL(timeout()), this, SLOT(animateTimerSlot()));
 	connect(&activeMissionTimer, SIGNAL(timeout()), this, SLOT(activeMissionTimerSlot()));
-	connect(&pickupBlinkTimer, SIGNAL(timeout()), this, SLOT(pickupBlinkTimerSlot()));
-	pickupBlinkTimer.setInterval(100);
 	//
 	plcXTime.start();
 	plcYTime.start();
@@ -229,14 +227,6 @@ void craneClass::animateTimerSlot()
 	emit openGlChangedSignal();
 }
 
-void craneClass::pickupBlinkTimerSlot()
-{
-	if (activeFromBasketPos && !isCarryingBasket)
-		emit openGlChangedSignal();
-	else
-		pickupBlinkTimer.stop();
-}
-
 void craneClass::setCranePlcTcpServer(tcpServerClass *cranePlcTcpServer_)
 {
 	cranePlcTcpServer = cranePlcTcpServer_;
@@ -359,9 +349,6 @@ void craneClass::setActivePositions(basketPositionClass* from, basketPositionCla
 		activeToBasketPos = to;
 		activeFromBasketPos->setLockedByCrane(true);
 		activeToBasketPos->setLockedByCrane(true);
-		if (!isCarryingBasket)
-			pickupBlinkTimer.start();
-		emit openGlChangedSignal();
 	}
 	else if (((!from) && (!to)) && (activeFromBasketPos && activeToBasketPos))
 	{
@@ -375,8 +362,6 @@ void craneClass::setActivePositions(basketPositionClass* from, basketPositionCla
 
 void craneClass::clearActivePositions()
 {
-	pickupBlinkTimer.stop();
-
 	if (activeFromBasketPos)
 	{
 		activeFromBasketPos->setLockedByCrane(false);
@@ -604,12 +589,6 @@ void craneClass::plcStatusN20_15Changed(int status)
 
 	const bool wasCarryingBasket = isCarryingBasket;
 	isCarryingBasket = statusBits[14] ? true : false;
-	if (isCarryingBasket)
-		pickupBlinkTimer.stop();
-	else if (activeFromBasketPos && !pickupBlinkTimer.isActive())
-		pickupBlinkTimer.start();
-	if (isCarryingBasket != wasCarryingBasket)
-		emit openGlChangedSignal();
 	if (isDatabaseReadOnlyMode())
 		synchronizeObserverMissionFromPlc();
 	if (hasActiveMission)

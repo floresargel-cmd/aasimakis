@@ -535,18 +535,12 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 	// LOG("bP.cpp", "Step 5: Draw position based on isFromPos and isToPos flags");
 	if (isFromPos)
 	{
-		// Pulse the source basket while the crane is approaching. This method is
-		// called by the normal OpenGL refresh loop, so no independent timer or
-		// cross-thread UI state is required.
-		const bool brightPhase = ((QDateTime::currentMSecsSinceEpoch() / 400) % 2) == 0;
+		// Show the source basket in purple while the crane is approaching it.
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
 		//		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		if (brightPhase)
-			glColor4f(0.72f, 0.15f, 1.0f, 0.95f);
-		else
-			glColor4f(0.36f, 0.05f, 0.55f, 0.25f);
+		glColor4f(0.72f, 0.15f, 1.0f, 0.95f);
 		basket.drawNormalBasketGeometry(false);
 		//if (basket.getTypeEnum()==BASKET_NORMAL)
 		//	basket.drawNormalBasketGeometry(false);
