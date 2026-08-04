@@ -259,6 +259,7 @@ public:
 
 	int getBasketTableIdOfScrapBasketPos();
 	void updateAfterStackerPositionContentsFromDatabase();
+	void recalculateBasketContentsFromCache();
 	void setScrapBasketIsReady(bool r);
 	//
 	void setNextBasketForExport(int basketId);  // gui only

@@ -18,6 +18,7 @@
 class mainWindowClass : public QWidget				
 {
 	QTimer						mainTimer;
+	QTimer						basketDataRefreshTimer;
 	openGLWidgetClass			*openGLWidget;
 	//QPushButton				*takeScrapBasketBtn;
 	plcWidgetClass				*plcWidget;
@@ -140,6 +141,7 @@ protected:
 private slots:
 	void onMainTimerIdleTimeout();
 	void onAutoModeTimerIdleTimeout();
+	void refreshBasketDataDisplay();
 
 private:
 	void setDbTableIdleNow(const QString& tableName);

@@ -14,6 +14,7 @@
 // Runtime entry points can refresh one basket without rebuilding the cache.
 bool loadBasketDataCache();
 bool refreshBasketDataCache(int basketId);
+bool refreshBasketDataCacheIfStale(int basketId, int maxAgeMilliseconds = 5000);
 
 class basketClass:public QObject			
 {

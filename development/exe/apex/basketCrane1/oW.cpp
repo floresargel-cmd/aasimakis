@@ -164,6 +164,14 @@ void openGLWidgetClass::setNextOven2LoadingCycleTemperEnum(int t)
 	return allPositions->setNextOven2LoadingCycleTemperEnum(t);
 }
 
+void openGLWidgetClass::recalculateBasketContentsFromCache()
+{
+	if (!allPositions)
+		return;
+	allPositions->recalculateBasketContentsFromCache();
+	updateGL();
+}
+
 void openGLWidgetClass::signalFromCranePlc(QString table, int index, QString value)
 {
 	if (table == "N20")

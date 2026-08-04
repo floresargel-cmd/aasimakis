@@ -20,6 +20,8 @@ struct CachedBasketDetail
 QHash<int, QVector<CachedBasketDetail> > basketDetailsCache;
 QHash<int, QVariant> basketAgedTimeCache;
 QHash<QString, int> temperTypeCache;
+QHash<int, QDateTime> basketCacheRefreshTimes;
+QDateTime basketDataCacheRefreshedAt;
 bool basketDataCacheLoaded = false;
 
 QVector<CachedBasketDetail> parseDetailRows(const QVector<QVector<QVariant> >& rows, int firstValueColumn, const QString& context)
@@ -113,6 +115,12 @@ bool loadBasketDataCache()
 	basketDetailsCache = newDetails;
 	basketAgedTimeCache = newAgedTimes;
 	temperTypeCache = newTemperTypes;
+	basketCacheRefreshTimes.clear();
+	const QDateTime refreshedAt = QDateTime::currentDateTimeUtc();
+	basketDataCacheRefreshedAt = refreshedAt;
+	QHash<int, QVector<CachedBasketDetail> >::const_iterator detailIterator = basketDetailsCache.constBegin();
+	for (; detailIterator != basketDetailsCache.constEnd(); ++detailIterator)
+		basketCacheRefreshTimes.insert(detailIterator.key(), refreshedAt);
 	basketDataCacheLoaded = true;
 	LOG("BASKET CACHE", QString("Bulk cache ready: detailRows=%1, basketsWithDetails=%2, agedBaskets=%3, temperTypes=%4")
 		.arg(detailRows.count()).arg(basketDetailsCache.count())
@@ -141,8 +149,25 @@ bool refreshBasketDataCache(int basketId)
 	basketAgedTimeCache.remove(basketId);
 	if (!agedRows.isEmpty() && !agedRows[0].isEmpty() && !agedRows[0][0].isNull())
 		basketAgedTimeCache.insert(basketId, agedRows[0][0]);
+	basketCacheRefreshTimes.insert(basketId, QDateTime::currentDateTimeUtc());
 	basketDataCacheLoaded = true;
 	LOG("BASKET CACHE", QString("Basket %1 cache refreshed: detailRows=%2").arg(basketId).arg(detailRows.count()));
+	return true;
+}
+
+bool refreshBasketDataCacheIfStale(int basketId, int maxAgeMilliseconds)
+{
+	if (basketId <= 0)
+		return false;
+	if (!basketDataCacheLoaded)
+		return loadBasketDataCache();
+
+	// An absent basket is also a valid result of the bulk snapshot, so use the
+	// full-cache timestamp when this basket had no detail rows at load time.
+	const QDateTime lastRefresh = basketCacheRefreshTimes.value(basketId, basketDataCacheRefreshedAt);
+	if (!lastRefresh.isValid()
+		|| lastRefresh.msecsTo(QDateTime::currentDateTimeUtc()) >= maxAgeMilliseconds)
+		return refreshBasketDataCache(basketId);
 	return true;
 }
 
@@ -213,6 +238,10 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 
 	if (tableId != 0)
 	{
+		// Position changes may be caused by another running application. Refresh
+		// this basket when its cached snapshot is no longer recent so the display
+		// cannot keep showing contents that have already been removed.
+		refreshBasketDataCacheIfStale(tableId);
 		toolTipText += QString("Basket number: %1\n").arg(tableId);
 		contentsEnum = BASKET_CONTENS_NONE;
 		temperEnum = BASKET_TEMPER_NULL;

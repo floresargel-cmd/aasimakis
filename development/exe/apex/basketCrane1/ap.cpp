@@ -744,6 +744,18 @@ void allPositionsClass::updateAfterStackerPositionContentsFromDatabase()
 	afterStackerPosition->loadContentFromDatabase();
 }
 
+void allPositionsClass::recalculateBasketContentsFromCache()
+{
+	LOG("BASKET CACHE", QString("Recalculating displayed contents for %1 position lists")
+		.arg(allPositionList.count()));
+	for (int i = 0; i < allPositionList.count(); ++i)
+	{
+		if (allPositionList[i])
+			allPositionList[i]->calculateBasketContentsTypeFromEpicsDatabase();
+	}
+	emit openGlChangedSignal();
+}
+
 //void allPositionsClass::updateAfterStacker2PositionContentsFromDatabase()
 //{
 //	afterStacker2Position->calculateBasketContentsTypeFromEpicsDatabase();

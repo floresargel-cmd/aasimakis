@@ -78,6 +78,7 @@ public:
 	void setNextOvenLoadingCycleTemperEnum(int t);
 	//Added by Vahid
 	void setNextOven2LoadingCycleTemperEnum(int t);
+	void recalculateBasketContentsFromCache();
 
 protected:
 	void paintGL();

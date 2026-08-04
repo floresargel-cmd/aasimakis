@@ -279,6 +279,15 @@ mainWindowClass::mainWindowClass()
 	mainLayout->addWidget(openGLWidget);
 	plcStatusWidget->setParent(openGLWidget);
 
+	// basket_details is also updated by other production applications. Keep the
+	// efficient bulk cache, but periodically replace the snapshot and recalculate
+	// the displayed state so empty/full baskets cannot remain stale indefinitely.
+	basketDataRefreshTimer.setInterval(15000);
+	connect(&basketDataRefreshTimer, &QTimer::timeout,
+		this, &mainWindowClass::refreshBasketDataDisplay);
+	basketDataRefreshTimer.start();
+	LOG("BASKET CACHE", "Automatic display refresh enabled: interval=15000ms");
+
 	QLabel *apexLogoLabel = new QLabel(openGLWidget);
 	apexLogoLabel->setObjectName("apexLogo");
 	apexLogoLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -1126,6 +1135,16 @@ void mainWindowClass::setAutoModeTimerIdle()
 void mainWindowClass::onAutoModeTimerIdleTimeout()
 {
 	if (autoModeTimerStatusLabel) autoModeTimerStatusLabel->setStyleSheet(s_timerStyleGrey);
+}
+
+void mainWindowClass::refreshBasketDataDisplay()
+{
+	if (!openGLWidget)
+		return;
+	LOG("BASKET CACHE", "Periodic basket data refresh started");
+	loadBasketDataCache();
+	openGLWidget->recalculateBasketContentsFromCache();
+	LOG("BASKET CACHE", "Periodic basket data refresh completed");
 }
 
 void mainWindowClass::takeScrapBasketBtnSlot()
