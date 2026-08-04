@@ -18,6 +18,7 @@ class craneClass:public QObject
 {
 	QTimer													activeMissionTimer;
 	QTimer													animateTimer;
+	QTimer													pickupBlinkTimer;
 
 	Q_OBJECT
 
@@ -122,6 +123,7 @@ public:
 public slots:								
 	void activeMissionTimerSlot();						
 	void animateTimerSlot();						
+	void pickupBlinkTimerSlot();
 	
 private:
 
