@@ -268,6 +268,9 @@ void craneClass::plcMemoryChanged(int index, int value)
 	if (index == 20)
 		my500BasketInPlc = value;
 
+	if (isDatabaseReadOnlyMode() && (index == 0 || index == 1 || index == 2))
+		synchronizeObserverMissionFromPlc();
+
 #ifndef EMULATE
 	if (activeFromBasketPos && activeToBasketPos)
 	{
@@ -581,7 +584,10 @@ void craneClass::plcStatusN20_15Changed(int status)
 {
 	QVector<bool> statusBits = deprecatedCalculateBits(status);
 
+	const bool wasCarryingBasket = isCarryingBasket;
 	isCarryingBasket = statusBits[14] ? true : false;
+	if (isDatabaseReadOnlyMode())
+		synchronizeObserverMissionFromPlc();
 	if (hasActiveMission)
 	{
 		if (isCarryingBasket)
@@ -593,6 +599,12 @@ void craneClass::plcStatusN20_15Changed(int status)
 			}
 		}
 	}
+	if (isCarryingBasket && !wasCarryingBasket)
+	{
+		LOG("BASKET CACHE", QString("PLC carrying flag enabled; refreshing crane basket %1")
+			.arg(myBasketPos ? myBasketPos->getBasketTableId() : 0));
+		recalculateCarriedBasketContentsFromCache();
+	}
 
 	if (statusBits[10])
 		plcModeEnum = MAINTENANCE_MODE;
@@ -602,6 +614,85 @@ void craneClass::plcStatusN20_15Changed(int status)
 
 	if (statusBits[11])
 		plcModeEnum = AUTO_MODE;
+}
+
+void craneClass::recalculateCarriedBasketContentsFromCache()
+{
+	if (!myBasketPos || !myBasketPos->hasBasket())
+	{
+		LOG("BASKET CACHE", "Crane basket refresh skipped: crane is not holding a basket");
+		return;
+	}
+
+	const int basketId = myBasketPos->getBasketTableId();
+	myBasketPos->calculateBasketContentsTypeFromEpicsDatabase();
+	LOG("BASKET CACHE", QString("Crane basket %1 refreshed: contentsEnum=%2")
+		.arg(basketId).arg(myBasketPos->getContentsEnum()));
+}
+
+void craneClass::synchronizeObserverMissionFromPlc()
+{
+	if (!isDatabaseReadOnlyMode())
+		return;
+
+	if (myStatusInPlc == 1 && myFromPosInPlc > 0 && myToPosInPlc > 0)
+	{
+		basketPositionClass* from = allPositions ? allPositions->getPositionByPlcId(myFromPosInPlc) : NULL;
+		basketPositionClass* to = allPositions ? allPositions->getPositionByPlcId(myToPosInPlc) : NULL;
+		if (!from || !to)
+		{
+			LOG("WARNING: BASKET CACHE", QString("Observer could not resolve PLC mission from=%1 to=%2")
+				.arg(myFromPosInPlc).arg(myToPosInPlc));
+			return;
+		}
+
+		if (activeFromBasketPos != from || activeToBasketPos != to)
+		{
+			clearActivePositions();
+			setActivePositions(from, to);
+			LOG("BASKET CACHE", QString("Observer mission synchronized: from=%1 to=%2")
+				.arg(myFromPosInPlc).arg(myToPosInPlc));
+		}
+		hasActiveMission = true;
+
+		if (isCarryingBasket && myBasketPos)
+		{
+			int basketId = myBasketPos->getBasketTableId();
+			if (basketId <= 0 && from->hasBasket())
+				basketId = from->getBasketTableId();
+			if (basketId <= 0)
+				basketId = GETONE("select basketTableId from positions where posNumber=1 and posIndex=1").toInt();
+			if (basketId > 0 && !myBasketPos->hasBasket())
+			{
+				myBasketPos->setBasketTableIdInMemory(basketId);
+				LOG("BASKET CACHE", QString("Observer attached basket %1 to crane from PLC position %2")
+					.arg(basketId).arg(myFromPosInPlc));
+			}
+			// A bulk positions refresh can briefly restore the source assignment
+			// before the live controller commits its move. PLC carrying state wins.
+			if (from->hasBasket())
+				from->setBasketTableIdInMemory(0);
+		}
+		else if (!isCarryingBasket && myBasketPos && myBasketPos->hasBasket())
+		{
+			LOG("BASKET CACHE", QString("Observer released crane basket %1 during PLC mission")
+				.arg(myBasketPos->getBasketTableId()));
+			myBasketPos->setBasketTableIdInMemory(0);
+		}
+		return;
+	}
+
+	if (!isCarryingBasket)
+	{
+		if (myBasketPos && myBasketPos->hasBasket())
+		{
+			LOG("BASKET CACHE", QString("Observer cleared crane basket %1 after PLC mission")
+				.arg(myBasketPos->getBasketTableId()));
+			myBasketPos->setBasketTableIdInMemory(0);
+		}
+		clearActivePositions();
+		hasActiveMission = false;
+	}
 }
 
 //void craneClass::plcStatusN2016Changed(int status)

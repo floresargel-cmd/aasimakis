@@ -4,6 +4,7 @@
 #include "plcNetworkStatus.h"
 #include "timerStatus.h"
 #include "../common/execDBQuery.h"
+#include <QHash>
 
 GLfloat	*triVertexesForNormalBasketArray;
 GLfloat	*triNormalsForNormalBasketArray;
@@ -756,6 +757,48 @@ void allPositionsClass::recalculateBasketContentsFromCache()
 	emit openGlChangedSignal();
 }
 
+void allPositionsClass::reloadBasketAssignmentsFromDatabase()
+{
+	if (!isDatabaseReadOnlyMode())
+		return;
+	setDbTableActive("positions", true);
+	const QVector<QVector<QVariant> > rows = execDBTableQuery(
+		"select posNumber, posIndex, basketTableId from positions order by posNumber, posIndex",
+		MAIN_DB_CONNECTION);
+	setDbTableIdle("positions");
+	QHash<QString, int> assignments;
+	for (int i = 0; i < rows.count(); ++i)
+	{
+		if (rows[i].count() >= 3)
+			assignments.insert(QString("%1:%2").arg(rows[i][0].toInt()).arg(rows[i][1].toInt()), rows[i][2].toInt());
+	}
+
+	int changed = 0;
+	for (int i = 0; i < allPositionList.count(); ++i)
+	{
+		if (!allPositionList[i])
+			continue;
+		const QVector<basketPositionClass*> positions = allPositionList[i]->getAllBasketPositions();
+		for (int j = 0; j < positions.count(); ++j)
+		{
+			basketPositionClass* position = positions[j];
+			if (!position)
+				continue;
+			const QString key = QString("%1:%2").arg(position->getNumber()).arg(position->getIndex());
+			if (!assignments.contains(key))
+				continue;
+			const int basketId = assignments.value(key);
+			if (position->getBasketTableId() != basketId)
+			{
+				position->setBasketTableIdInMemory(basketId);
+				++changed;
+			}
+		}
+	}
+	LOG("BASKET CACHE", QString("Position assignments refreshed: databaseRows=%1, changed=%2")
+		.arg(rows.count()).arg(changed));
+}
+
 //void allPositionsClass::updateAfterStacker2PositionContentsFromDatabase()
 //{
 //	afterStacker2Position->calculateBasketContentsTypeFromEpicsDatabase();
@@ -998,6 +1041,25 @@ basketPositionClass* allPositionsClass::getPosition(int number, int index)
 		}
 	}
 
+	return NULL;
+}
+
+basketPositionClass* allPositionsClass::getPositionByPlcId(int plcId)
+{
+	for (int i = 0; i < allPositionList.count(); ++i)
+	{
+		if (!allPositionList[i])
+			continue;
+		// A PLC mission may be in transit after its source DB slot has been
+		// cleared and before its destination DB slot has been filled. Search
+		// every physical position, not only positions that currently hold a basket.
+		const QVector<basketPositionClass*> positions = allPositionList[i]->getAllBasketPositions();
+		for (int j = 0; j < positions.count(); ++j)
+		{
+			if (positions[j] && positions[j]->getPlcId() == plcId)
+				return positions[j];
+		}
+	}
 	return NULL;
 }
 

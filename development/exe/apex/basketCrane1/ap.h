@@ -214,6 +214,7 @@ public:
 	void clearSelectedPositions();
 	bool hasSelectedFromBasketPos();
 	basketPositionClass *getPosition(int number,int index);
+	basketPositionClass *getPositionByPlcId(int plcId);
 
 	void addToAutoMode(int mode);
 	void setTakeBasketsFromStackerOut(bool s);
@@ -260,6 +261,7 @@ public:
 	int getBasketTableIdOfScrapBasketPos();
 	void updateAfterStackerPositionContentsFromDatabase();
 	void recalculateBasketContentsFromCache();
+	void reloadBasketAssignmentsFromDatabase();
 	void setScrapBasketIsReady(bool r);
 	//
 	void setNextBasketForExport(int basketId);  // gui only

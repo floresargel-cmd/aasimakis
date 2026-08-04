@@ -84,6 +84,7 @@ public:
 	basketPositionClass* getFreeToRecievePos(basketPositionClass* incomingPos);
 	basketPositionClass *getPosition(int index);
 	QVector<basketPositionClass*> getBasketPositions();
+	QVector<basketPositionClass*> getAllBasketPositions();
 	basketPositionClass* getBaskePositiontWithBasketId(int id);
 	basketPositionClass* getPositionWithAnagedBasket();
 	basketPositionClass* getTopBasketPosition();

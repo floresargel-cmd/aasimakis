@@ -85,6 +85,7 @@ public:
 	float getOpenGlZ();
 	//
 	void setBasketTableId(int b, bool contents = false);
+	void setBasketTableIdInMemory(int b);
 	void calculateBasketContentsTypeFromEpicsDatabase();
 	void loadContentFromDatabase();
 	int getBasketTableId();

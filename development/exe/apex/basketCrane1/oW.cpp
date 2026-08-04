@@ -168,7 +168,12 @@ void openGLWidgetClass::recalculateBasketContentsFromCache()
 {
 	if (!allPositions)
 		return;
+	allPositions->reloadBasketAssignmentsFromDatabase();
+	if (crane)
+		crane->synchronizeObserverMissionFromPlc();
 	allPositions->recalculateBasketContentsFromCache();
+	if (crane)
+		crane->recalculateCarriedBasketContentsFromCache();
 	updateGL();
 }
 

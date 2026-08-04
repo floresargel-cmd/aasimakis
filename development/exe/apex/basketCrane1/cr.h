@@ -111,6 +111,8 @@ public:
 	void plcStatusChanged(int status);
 	void plcMemoryChanged(int index,int value);
 	void plcStatusN20_15Changed(int status);
+	void recalculateCarriedBasketContentsFromCache();
+	void synchronizeObserverMissionFromPlc();
 	//void plcStatusN2016Changed(int status);
 	bool closeMission();
 	bool abortMission();

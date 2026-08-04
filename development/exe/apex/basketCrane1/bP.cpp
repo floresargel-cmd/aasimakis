@@ -116,6 +116,14 @@ void basketPositionClass::setBasketTableId(int b, bool contents)
 //update [PEManager_tmp].[dbo].[basket_location] set audittime=CONVERT(datetime,CURRENT_TIMESTAMP) where basketnum=1 and basketlocation=3
 }
 
+void basketPositionClass::setBasketTableIdInMemory(int b)
+{
+	if (basket.getTableId() == b)
+		return;
+	basket.setTableId(b);
+	loadContentFromDatabase();
+}
+
 void basketPositionClass::calculateBasketContentsTypeFromEpicsDatabase()
 {
 	if (hasBasket()) {

@@ -185,6 +185,13 @@ QVector<basketPositionClass*> positionListClass::getBasketPositions()
 	return ans;
 }
 
+QVector<basketPositionClass*> positionListClass::getAllBasketPositions()
+{
+	// Mission endpoints must remain discoverable while both slots are empty.
+	// getBasketPositions() intentionally returns occupied positions only.
+	return basketPositions;
+}
+
 basketPositionClass* positionListClass::getBaskePositiontWithBasketId(int id)
 {
 	if (id > 0)
