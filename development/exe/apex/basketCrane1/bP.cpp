@@ -544,9 +544,9 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		if (brightPhase)
-			glColor4f(1.0f, 0.72f, 0.05f, 0.95f);
+			glColor4f(0.72f, 0.15f, 1.0f, 0.95f);
 		else
-			glColor4f(1.0f, 0.92f, 0.35f, 0.20f);
+			glColor4f(0.36f, 0.05f, 0.55f, 0.25f);
 		basket.drawNormalBasketGeometry(false);
 		//if (basket.getTypeEnum()==BASKET_NORMAL)
 		//	basket.drawNormalBasketGeometry(false);
