@@ -539,17 +539,17 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 	{
 		// LOG("bP.cpp", "Drawing from position with semi-transparent overlay");
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
-		//		glDepthMask(GL_FALSE);
+		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0.5f, 1.0f, 0.5f, 0.20f);
+		glColor4f(0.0f, 0.45f, 0.10f, 0.55f);
 		basket.drawNormalBasketGeometry(false);
 		//if (basket.getTypeEnum()==BASKET_NORMAL)
 		//	basket.drawNormalBasketGeometry(false);
 		//else if (basket.getTypeEnum()==BASKET_SCRAP)
 		//	basket.drawScrapBasketGeometry(false);
 		glDisable(GL_BLEND);
-		//		glDepthMask(GL_TRUE);	
+		glDepthMask(GL_TRUE);
 		glPopAttrib();
 	}
 	else if (isToPos)

@@ -96,6 +96,7 @@ public:
 	float	getPlcZ();	
 
 	void openGlDraw();
+	void openGlDrawMissionMarkers();
 	void openGlDrawForPicking();
 	bool mouseOver(QColor pickedColor);
 	bool mouseClicked(QColor pickedColor);

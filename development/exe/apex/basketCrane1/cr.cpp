@@ -71,8 +71,10 @@ void craneClass::openGlDraw()
 	verticalOpenGl->draw();
 	glPopAttrib();
 
-	// The legacy display keeps the source marker translucent green throughout
-	// the active mission, including before the basket has been picked up.
+	}
+
+void craneClass::openGlDrawMissionMarkers()
+{
 	if (activeFromBasketPos)
 		activeFromBasketPos->draw(false,true,false);
 

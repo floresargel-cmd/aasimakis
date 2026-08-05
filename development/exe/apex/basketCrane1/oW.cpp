@@ -341,8 +341,9 @@ void openGLWidgetClass::paintGLMine(bool forPicking, bool forHighliting)
 	}
 	else
 	{
-		crane->openGlDraw();
 		allPositions->draw(false, forHighliting);
+		crane->openGlDraw();
+		crane->openGlDrawMissionMarkers();
 		
 		glPushAttrib(GL_COLOR_BUFFER_BIT|GL_CURRENT_BIT);
 		glColor3ub(100, 116, 139);
