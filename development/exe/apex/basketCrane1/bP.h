@@ -41,7 +41,6 @@ class basketPositionClass:public QObject
 
 	QString							errorString;
 	bool							isLockedByCrane;//on movment only
-	QColor							basketDisplayColor();
 
 	Q_OBJECT
 

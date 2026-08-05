@@ -458,36 +458,9 @@ int basketPositionClass::getContentsEnum()
 	return BASKET_CONTENS_NONE;
 }
 
-QColor basketPositionClass::basketDisplayColor()
-{
-	if (basket.getTypeEnum() == BASKET_SCRAP)
-		return QColor(255, 255, 0);
-
-	if (basket.getTypeEnum() == BASKET_NORMAL)
-	{
-		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
-			return QColor(0, 125, 150);
-		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)
-			return QColor(255, 170, 39);
-		return QColor(255, 255, 255);
-	}
-
-	return QColor(0, 0, 0);
-}
-
 void basketPositionClass::drawBasket(bool drawTexture)
 {
-	// The crane calls this path directly. Apply the same basket color used by
-	// stationary positions so pickup cannot inherit an unrelated OpenGL color.
-	const QColor color = basketDisplayColor();
-	if (color != QColor(0, 0, 0))
-	{
-		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
-		glColor3ub(color.red(), color.green(), color.blue());
-	}
 	basket.drawGeometry(drawTexture);
-	if (color != QColor(0, 0, 0))
-		glPopAttrib();
 }
 
 #include "uglyfont.h"
@@ -513,8 +486,16 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 		color = QColor(0, 0, 255);
 	else if (isActive)
 		color = QColor(255, 0, 255);
-	else
-		color = basketDisplayColor();
+	else if (basket.getTypeEnum() == BASKET_SCRAP)
+		color = QColor(255, 255, 0);
+	else if (basket.getTypeEnum() == BASKET_NORMAL)
+	{
+		color = QColor(255, 255, 255);
+		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
+			color = QColor(0, 125, 150);
+		else if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)
+			color = QColor(255, 170, 39);
+	}
 
 	// LOG("bP.cpp", "Step 2: Check for error state and override color if necessary");
 	if ((getErrorString().length() > 0) && (!forPicking) && (!isMouseOver))
@@ -535,12 +516,12 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 	// LOG("bP.cpp", "Step 5: Draw position based on isFromPos and isToPos flags");
 	if (isFromPos)
 	{
-		// Show the source basket in purple while the crane is approaching it.
+		// LOG("bP.cpp", "Drawing from position with semi-transparent overlay");
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
 		//		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0.72f, 0.15f, 1.0f, 0.95f);
+		glColor4f(0.5f, 1.0f, 0.5f, 0.20f);
 		basket.drawNormalBasketGeometry(false);
 		//if (basket.getTypeEnum()==BASKET_NORMAL)
 		//	basket.drawNormalBasketGeometry(false);

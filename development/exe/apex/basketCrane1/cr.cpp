@@ -65,10 +65,9 @@ void craneClass::openGlDraw()
 	verticalOpenGl->draw();
 	glPopAttrib();
 
-	// Blink the pickup basket only while the crane is approaching it. The PLC
-	// carrying flag is authoritative and stops the warning as soon as pickup
-	// has completed.
-	if (activeFromBasketPos && !isCarryingBasket)
+	// Preserve the legacy mission visualization for observer mode: both mission
+	// endpoints remain visible for the full mission, including while carrying.
+	if (activeFromBasketPos)
 		activeFromBasketPos->draw(false,true,false);
 
 	if (activeToBasketPos)
@@ -591,6 +590,8 @@ void craneClass::plcStatusN20_15Changed(int status)
 	isCarryingBasket = statusBits[14] ? true : false;
 	if (isDatabaseReadOnlyMode())
 		synchronizeObserverMissionFromPlc();
+	if (isCarryingBasket != wasCarryingBasket)
+		emit openGlChangedSignal();
 	if (hasActiveMission)
 	{
 		if (isCarryingBasket)
@@ -671,10 +672,18 @@ void craneClass::synchronizeObserverMissionFromPlc()
 				LOG("BASKET CACHE", QString("Observer attached basket %1 to crane from PLC position %2")
 					.arg(basketId).arg(myFromPosInPlc));
 			}
-			// A bulk positions refresh can briefly restore the source assignment
-			// before the live controller commits its move. PLC carrying state wins.
+			// A bulk positions refresh can briefly restore the source assignment or
+			// publish the destination assignment before the crane has released the
+			// basket. While the PLC carrying bit is set, the crane owns the basket
+			// exclusively and neither endpoint should render another copy.
 			if (from->hasBasket())
 				from->setBasketTableIdInMemory(0);
+			if (to->hasBasket())
+			{
+				LOG("BASKET CACHE", QString("Observer hid destination basket %1 at PLC position %2 while crane is carrying")
+					.arg(to->getBasketTableId()).arg(myToPosInPlc));
+				to->setBasketTableIdInMemory(0);
+			}
 		}
 		else if (!isCarryingBasket && myBasketPos && myBasketPos->hasBasket())
 		{
