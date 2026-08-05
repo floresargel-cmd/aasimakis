@@ -1440,6 +1440,8 @@ void allPositionsClass::moveBaskets(positionListClass* from, positionListClass* 
 	for (int i = 0; i < from->getNumberOfPositions(); i++)
 	{
 		to->getPosition(i)->setBasketTableId(from->getPosition(i)->getBasketTableId(), from->getPosition(i)->hasContents());
+		if (to->getPosition(i)->hasBasket())
+			to->getPosition(i)->showConveyorMovement();
 		from->getPosition(i)->setBasketTableId(0);
 	}
 }

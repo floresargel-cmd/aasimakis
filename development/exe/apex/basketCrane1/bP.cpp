@@ -20,7 +20,7 @@ basketPositionClass::basketPositionClass(positionListClass *parentPositionList_,
 	openGlY = openGlY_;
 	openGlZ = openGlZ_;
 	pickingColor = getColorForPicking();
-	isMouseOver = isHighlighted = isSelected = isActive = false;
+	isMouseOver = isHighlighted = isSelected = isActive = isConveyorMoving = false;
 	isLockedByCrane = false;
 	isNextBasketForExport = false;
 	isNextBasketForOmavDestacker = isNextBasketForAssimakisDestacker = false;
@@ -370,6 +370,11 @@ void basketPositionClass::setActive(bool a)
 	isHighlighted = false;
 }
 
+void basketPositionClass::showConveyorMovement()
+{
+	isConveyorMoving = true;
+}
+
 void basketPositionClass::setNextBasketForExport(int basketId)//gui only
 {
 	if (basket.getTableId() == basketId)
@@ -561,6 +566,17 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 			// LOG("bP.cpp", "No basket, drawing base geometry");
 			drawBaseGeometry(drawTexture);
 		}
+	}
+
+	if (isConveyorMoving && hasBasket() && (!isFromPos) && (!isToPos))
+	{
+		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(0.5f, 1.0f, 0.5f, 0.60f);
+		basket.drawNormalBasketGeometry(false);
+		glDisable(GL_BLEND);
+		glPopAttrib();
 	}
 
 	// LOG("bP.cpp", "Step 6: Draw error string if present and not picking");
