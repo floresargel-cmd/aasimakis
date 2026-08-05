@@ -1,6 +1,17 @@
 #include "bp.h"
 #include "dbTableStatus.h"
+#include "configuration/ConfigurationManager.h"
 #include "../common/execDBQuery.h"
+
+namespace
+{
+QGLWidget *basketLabelWidget = NULL;
+}
+
+void basketPositionClass::setLabelWidget(QGLWidget *widget)
+{
+	basketLabelWidget = widget;
+}
 
 basketPositionClass::basketPositionClass(positionListClass *parentPositionList_, QString description_, int number_, int index_, int positionEnumForEpics_, GLfloat openGlX_, GLfloat openGlY_, GLfloat openGlZ_) :QObject()
 {
@@ -570,6 +581,28 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 		else {
 			// LOG("bP.cpp", "No basket, drawing base geometry");
 			drawBaseGeometry(drawTexture);
+		}
+	}
+
+	if (hasBasket() && (!forPicking) && (!isFromPos) && (!isToPos))
+	{
+		const BasketCrane::Configuration::VisualizationSettings& visualization =
+			BasketCrane::Configuration::ConfigurationManager::Instance().Visualization();
+		if (basketLabelWidget)
+		{
+			if (visualization.ShowBasketNumbers())
+			{
+				QFont basketLabelFont("Segoe UI", visualization.BasketLabelFontPointSize());
+				basketLabelFont.setBold(true);
+				glColor3f(1.0f, 1.0f, 0.0f);
+				basketLabelWidget->renderText(0.0, 0.0, 0.55, QString("Basket # %1").arg(basket.getNumber()), basketLabelFont);
+			}
+			if (visualization.ShowLocationLabels())
+			{
+				QFont locationLabelFont("Segoe UI", visualization.LocationLabelFontPointSize());
+				glColor3f(1.0f, 1.0f, 1.0f);
+				basketLabelWidget->renderText(0.0, 0.0, 0.30, QString("Location %1").arg(number + index), locationLabelFont);
+			}
 		}
 	}
 

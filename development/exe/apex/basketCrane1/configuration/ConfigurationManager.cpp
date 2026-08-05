@@ -111,6 +111,11 @@ bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 	m_operations.m_oven2OnlyOver24Feet = settings.value("Operations/oven2OnlyOver24Feet").toBool();
 	m_operations.m_exportsBeforeImports = settings.value("Operations/exportsBeforeImports").toBool();
 
+	m_visualization.m_showBasketNumbers = settings.value("Visualization/showBasketNumbers").toBool();
+	m_visualization.m_showLocationLabels = settings.value("Visualization/showLocationLabels").toBool();
+	m_visualization.m_basketLabelFontPointSize = settings.value("Visualization/basketLabelFontPointSize").toInt();
+	m_visualization.m_locationLabelFontPointSize = settings.value("Visualization/locationLabelFontPointSize").toInt();
+
 	m_emulation.m_forceDemoFillTables = settings.value("Emulation/forceDemoFillTables").toBool();
 	m_emulation.m_ovenStayMinimumSeconds = settings.value("Emulation/ovenStayMinimumSeconds").toInt();
 	m_emulation.m_ovenStayMaximumSeconds = settings.value("Emulation/ovenStayMaximumSeconds").toInt();
@@ -150,6 +155,8 @@ bool ConfigurationManager::Validate(QSettings& settings, QString *errorMessage) 
 		<< "Operations/emptyBufferDefault" << "Operations/oven1Enabled"
 		<< "Operations/oven2Enabled" << "Operations/oven1Maximum24Feet"
 		<< "Operations/oven2OnlyOver24Feet" << "Operations/exportsBeforeImports"
+		<< "Visualization/showBasketNumbers" << "Visualization/showLocationLabels"
+		<< "Visualization/basketLabelFontPointSize" << "Visualization/locationLabelFontPointSize"
 		<< "Emulation/forceDemoFillTables" << "Emulation/ovenStayMinimumSeconds"
 		<< "Emulation/ovenStayMaximumSeconds" << "Emulation/ovenStayDefaultSeconds"
 		<< "Security/initialAdminUser" << "Security/initialAdminPassword";
@@ -197,7 +204,8 @@ bool ConfigurationManager::Validate(QSettings& settings, QString *errorMessage) 
 		<< "Timers/emulationMainMs" << "Timers/emulationCraneMainMs"
 		<< "Timers/emulationMovingZStepMs" << "Timers/emulationStepMs"
 		<< "Timers/emulationAnimationMs" << "Timers/emulationConveyorMainMs"
-		<< "Timers/emulationConveyorPropagationMs";
+		<< "Timers/emulationConveyorPropagationMs"
+		<< "Visualization/basketLabelFontPointSize" << "Visualization/locationLabelFontPointSize";
 	for (int i = 0; i < positiveIntegerKeys.count(); ++i)
 	{
 		if (settings.value(positiveIntegerKeys[i]).toInt() <= 0)

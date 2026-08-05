@@ -28,6 +28,7 @@ static QGLFormat modernOpenGlFormat()
 
 openGLWidgetClass::openGLWidgetClass(tcpServerClass *cranePlcTcpServer_,tcpServerClass *conveyorsPlcTcpServer_,tcpServerClass *newOvenConveyorsPlcTcpServer_,QWidget *parent, QGLWidget *shareWidget,GLfloat zoomMin_,GLfloat zoomMax_,GLfloat zRotMin_,GLfloat zRotMax_,GLfloat elevateMin_,GLfloat elevateMax_):QGLWidget(modernOpenGlFormat(), parent, shareWidget)
 {
+	basketPositionClass::setLabelWidget(this);
 	cranePlcTcpServer = cranePlcTcpServer_;
 	conveyorsPlcTcpServer = conveyorsPlcTcpServer_;
 	newOvenConveyorsPlcTcpServer = newOvenConveyorsPlcTcpServer_;
@@ -62,8 +63,9 @@ openGLWidgetClass::openGLWidgetClass(tcpServerClass *cranePlcTcpServer_,tcpServe
 	crane->loadFromDatabase();
 }
 
-openGLWidgetClass::~openGLWidgetClass()                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+openGLWidgetClass::~openGLWidgetClass()
 {
+	basketPositionClass::setLabelWidget(NULL);
 	delete crane;
 	delete area;
 	delete allPositions;

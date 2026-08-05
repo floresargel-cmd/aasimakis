@@ -25,6 +25,7 @@ public:
 	const PlcSettings& Plc() const { return m_plc; }
 	const TimerSettings& Timers() const { return m_timers; }
 	const OperationSettings& Operations() const { return m_operations; }
+	const VisualizationSettings& Visualization() const { return m_visualization; }
 	const EmulationSettings& Emulation() const { return m_emulation; }
 	const SecuritySettings& Security() const { return m_security; }
 
@@ -46,6 +47,7 @@ private:
 	PlcSettings m_plc;
 	TimerSettings m_timers;
 	OperationSettings m_operations;
+	VisualizationSettings m_visualization;
 	EmulationSettings m_emulation;
 	SecuritySettings m_security;
 };

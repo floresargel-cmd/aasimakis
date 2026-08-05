@@ -74,6 +74,7 @@ public:
 	basketPositionClass(positionListClass *parentPositionList_, QString description_, int number_, int index_, int positionEnumForEpics_, GLfloat openGlX_, GLfloat openGlY_, GLfloat openGlZ_);
 	//basketPositionClass(basketPositionClass *p);
 	~basketPositionClass();
+	static void setLabelWidget(QGLWidget *widget);
 	//
 	void setNextBasketForExport(int basketId); // gui only
 	void setNextBasketForOmavDestacker(int basketId); //gui only

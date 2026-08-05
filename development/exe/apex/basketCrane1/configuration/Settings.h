@@ -227,6 +227,29 @@ private:
 	bool m_exportsBeforeImports;
 };
 
+class VisualizationSettings
+{
+public:
+	bool ShowBasketNumbers() const { return m_showBasketNumbers; }
+	bool ShowLocationLabels() const { return m_showLocationLabels; }
+	int BasketLabelFontPointSize() const { return m_basketLabelFontPointSize; }
+	int LocationLabelFontPointSize() const { return m_locationLabelFontPointSize; }
+
+private:
+	friend class ConfigurationManager;
+	VisualizationSettings()
+		: m_showBasketNumbers(false),
+		  m_showLocationLabels(false),
+		  m_basketLabelFontPointSize(0),
+		  m_locationLabelFontPointSize(0)
+	{
+	}
+	bool m_showBasketNumbers;
+	bool m_showLocationLabels;
+	int m_basketLabelFontPointSize;
+	int m_locationLabelFontPointSize;
+};
+
 class EmulationSettings
 {
 public:
