@@ -53,11 +53,11 @@ void craneClass::openGlDraw()
 {
 	if (myBasketPos->hasBasket())
 	{
-		// The legacy renderer displayed the crane-held basket in yellow because
-		// drawBasket() inherited the current OpenGL color.  Set it explicitly so
-		// the observer renderer keeps the same visual regardless of draw order.
+		// The legacy renderer displayed the crane-held basket with the neutral
+		// white material tint. Set it explicitly so its appearance no longer
+		// depends on whichever OpenGL color was left by the previous draw.
 		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
-		glColor3ub(255, 255, 0);
+		glColor3ub(255, 255, 255);
 		glPushMatrix();
 		glTranslatef(openGlX - 3.5f, openGlY + 0.60f, 2.75 + openGlZ);
 		myBasketPos->drawBasket(true);
@@ -71,6 +71,8 @@ void craneClass::openGlDraw()
 	verticalOpenGl->draw();
 	glPopAttrib();
 
+	// The legacy display keeps the source marker translucent green throughout
+	// the active mission, including before the basket has been picked up.
 	if (activeFromBasketPos)
 		activeFromBasketPos->draw(false,true,false);
 
@@ -676,12 +678,10 @@ void craneClass::synchronizeObserverMissionFromPlc()
 				LOG("BASKET CACHE", QString("Observer attached basket %1 to crane from PLC position %2")
 					.arg(basketId).arg(myFromPosInPlc));
 			}
-			// A bulk positions refresh can briefly restore the source assignment or
-			// publish the destination assignment before the crane has released the
-			// basket. While the PLC carrying bit is set, the crane owns the basket
-			// exclusively and neither endpoint should render another copy.
-			if (from->hasBasket())
-				from->setBasketTableIdInMemory(0);
+			// Keep the source assignment visible while carrying. The legacy display
+			// draws the real source basket beneath its translucent mission marker;
+			// clearing it here leaves only the green overlay in observer mode.
+			// Continue hiding an early destination assignment until release.
 			if (to->hasBasket())
 			{
 				LOG("BASKET CACHE", QString("Observer hid destination basket %1 at PLC position %2 while crane is carrying")
