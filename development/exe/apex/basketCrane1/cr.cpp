@@ -53,10 +53,16 @@ void craneClass::openGlDraw()
 {
 	if (myBasketPos->hasBasket())
 	{
+		// The legacy renderer displayed the crane-held basket in yellow because
+		// drawBasket() inherited the current OpenGL color.  Set it explicitly so
+		// the observer renderer keeps the same visual regardless of draw order.
+		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
+		glColor3ub(255, 255, 0);
 		glPushMatrix();
 		glTranslatef(openGlX - 3.5f, openGlY + 0.60f, 2.75 + openGlZ);
 		myBasketPos->drawBasket(true);
 		glPopMatrix();
+		glPopAttrib();
 	}
 	glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
 	glColor3ub(255, 200, 200);
@@ -65,8 +71,6 @@ void craneClass::openGlDraw()
 	verticalOpenGl->draw();
 	glPopAttrib();
 
-	// Preserve the legacy mission visualization for observer mode: both mission
-	// endpoints remain visible for the full mission, including while carrying.
 	if (activeFromBasketPos)
 		activeFromBasketPos->draw(false,true,false);
 
