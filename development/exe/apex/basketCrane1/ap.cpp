@@ -1437,11 +1437,23 @@ void allPositionsClass::moveBaskets(positionListClass* from, positionListClass* 
 	if (from->getNumberOfPositions() != to->getNumberOfPositions())
 		return;
 
+	for (int i = 0; i < conveyorSourceMarkers.count(); i++)
+		conveyorSourceMarkers[i]->setConveyorSource(false);
+	for (int i = 0; i < conveyorTargetMarkers.count(); i++)
+		conveyorTargetMarkers[i]->setConveyorTarget(false);
+	conveyorSourceMarkers.clear();
+	conveyorTargetMarkers.clear();
+
 	for (int i = 0; i < from->getNumberOfPositions(); i++)
 	{
+		from->getPosition(i)->setConveyorSource(true);
+		conveyorSourceMarkers << from->getPosition(i);
 		to->getPosition(i)->setBasketTableId(from->getPosition(i)->getBasketTableId(), from->getPosition(i)->hasContents());
 		if (to->getPosition(i)->hasBasket())
-			to->getPosition(i)->showConveyorMovement();
+		{
+			to->getPosition(i)->setConveyorTarget(true);
+			conveyorTargetMarkers << to->getPosition(i);
+		}
 		from->getPosition(i)->setBasketTableId(0);
 	}
 }

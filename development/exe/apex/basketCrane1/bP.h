@@ -37,7 +37,8 @@ class basketPositionClass:public QObject
 	bool							isHighlighted;
 	bool							isSelected;
 	bool							isActive;
-	bool							isConveyorMoving;
+	bool							isConveyorSource;
+	bool							isConveyorTarget;
 //	bool							isLocked;
 
 	QString							errorString;
@@ -95,7 +96,8 @@ public:
 	bool hasContents();
 	bool getIsActive();
 	void setActive(bool a);
-	void showConveyorMovement();
+	void setConveyorSource(bool source);
+	void setConveyorTarget(bool target);
 	int getTypeEnum();
 	int getContentsEnum();
 	int getTemperEnum();

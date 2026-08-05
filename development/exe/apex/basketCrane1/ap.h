@@ -60,6 +60,8 @@ class allPositionsClass:public QObject
 
 	basketPositionClass											*selectedFromBasketPos;
 	basketPositionClass											*selectedToBasketPos;
+	QVector<basketPositionClass*>								conveyorSourceMarkers;
+	QVector<basketPositionClass*>								conveyorTargetMarkers;
 
 	QVector<positionListClass*>									allPositionList;
 	QVector<positionListClass*>									allActivePositionList;
