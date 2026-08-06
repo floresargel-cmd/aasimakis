@@ -479,9 +479,34 @@ int basketPositionClass::getContentsEnum()
 	return BASKET_CONTENS_NONE;
 }
 
+QColor basketPositionClass::basketDisplayColor()
+{
+	if (basket.getTypeEnum() == BASKET_SCRAP)
+		return QColor(255, 255, 0);
+
+	if (basket.getTypeEnum() == BASKET_NORMAL)
+	{
+		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
+			return QColor(0, 125, 150);
+		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)
+			return QColor(255, 170, 39);
+		return QColor(255, 255, 255);
+	}
+
+	return QColor(0, 0, 0);
+}
+
 void basketPositionClass::drawBasket(bool drawTexture)
 {
+	const QColor color = basketDisplayColor();
+	if (color != QColor(0, 0, 0))
+	{
+		glPushAttrib(GL_COLOR_BUFFER_BIT | GL_CURRENT_BIT);
+		glColor3ub(color.red(), color.green(), color.blue());
+	}
 	basket.drawGeometry(drawTexture);
+	if (color != QColor(0, 0, 0))
+		glPopAttrib();
 }
 
 #include "uglyfont.h"

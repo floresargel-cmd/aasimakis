@@ -1,3 +1,3 @@
 #pragma once
 
-#define APEX_BASKET_CRANE_VERSION "5.5.58"
+#define APEX_BASKET_CRANE_VERSION "5.5.60"
