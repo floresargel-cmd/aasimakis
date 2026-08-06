@@ -559,7 +559,7 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 		//glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(0.5f, 0.5f, 1.0f, 0.20f);
+		glColor4f(0.5f, 0.0f, 0.5f, 0.55f);
 		drawBaseGeometry(false);
 		basket.drawNormalBasketGeometry(false);
 		//if (basket.getTypeEnum()==BASKET_NORMAL)
