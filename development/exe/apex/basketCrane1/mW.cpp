@@ -807,7 +807,7 @@ void mainWindowClass::showBasketTrackerSlot()
 			setTableText(positionsTable, row, 0, row < positionDescriptions.count() ? positionDescriptions[row].toString() : QString());
 			setTableText(positionsTable, row, 1, positionNumbers[row].toString());
 			setTableText(positionsTable, row, 2, row < positionIndexes.count() ? positionIndexes[row].toString() : QString());
-			setTableText(positionsTable, row, 3, row < positionLocks.count() && positionLocks[row].toInt() != 0 ? tr("Yes") : tr("No"));
+			setTableText(positionsTable, row, 3, row < positionLocks.count() && positionLocks[row].toInt() == basketPositionClass::LOCKED ? tr("Yes") : tr("No"));
 			setTableText(positionsTable, row, 4, row < targetNumbers.count() && targetNumbers[row].toInt() != 0 ? targetNumbers[row].toString() : QString());
 			setTableText(positionsTable, row, 5, row < targetIndexes.count() && targetIndexes[row].toInt() != 0 ? targetIndexes[row].toString() : QString());
 		}
