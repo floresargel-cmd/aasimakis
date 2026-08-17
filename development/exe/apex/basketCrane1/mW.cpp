@@ -117,6 +117,9 @@ mainWindowClass::mainWindowClass()
 	openGLWidget = 0;
 	plcWidget = 0;
 	plcStatusWidget = 0;
+	ovenSelectionGroupBox = 0;
+	oven1CycleGroupBox = 0;
+	oven2CycleGroupBox = 0;
 	plcStatusPreferredY = 0;
 
 	const BasketCrane::Configuration::ConfigurationManager& configuration =
@@ -305,7 +308,7 @@ mainWindowClass::mainWindowClass()
 	versionLabel->setObjectName("buildVersion");
 	versionLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
 	versionLabel->setAlignment(Qt::AlignCenter);
-	versionLabel->setStyleSheet("#buildVersion{color:#cbd5e1;background:#111827;border:1px solid #334155;border-radius:6px;padding:7px 12px;font-size:9pt;font-weight:600;}");
+	versionLabel->setStyleSheet("#buildVersion{color:#cbd5e1;background:#111827;border:1px solid #334155;border-radius:6px;padding:7px 12px;font-size:12px;font-weight:600;}");
 	versionLabel->setToolTip(tr("Application and installer version"));
 
 	QHBoxLayout *versionRow = new QHBoxLayout();
@@ -419,11 +422,11 @@ mainWindowClass::mainWindowClass()
 	// End auto flags
 
 	//
-	int w = 185; int h = 27; int m = 5; int x = 25; int y = 340;
+	int w = 185; int h = 34; int m = 5; int x = 25; int y = 340;
 
 	QCheckBox *takeBasketsFromStackerOutQCheckBox = new QCheckBox(tr("New baskets out"), openGLWidget);
 	connect(takeBasketsFromStackerOutQCheckBox, SIGNAL(stateChanged(int)), this, SLOT(takeBasketsFromStackerOutSlot(int)));
-	takeBasketsFromStackerOutQCheckBox->setGeometry(27, y, 170, 20);
+	takeBasketsFromStackerOutQCheckBox->setGeometry(27, y, 190, 24);
 	takeBasketsFromStackerOutQCheckBox->show();
 	takeBasketsFromStackerOutQCheckBox->setChecked(false);
 
@@ -444,7 +447,7 @@ mainWindowClass::mainWindowClass()
 	connect(emptyEmptyBasketsPosCheckBox, SIGNAL(stateChanged(int)), this, SLOT(emptyEmptyBasketsPosCheckBoxSlot(int)));
 
 	QGroupBox *fullBasketsToEmptyPosGroupBox=new QGroupBox(tr("20 ft empty-basket buffer"),openGLWidget);
-	fullBasketsToEmptyPosGroupBox->setGeometry(25, y += 25 + m, 190, 90);
+	fullBasketsToEmptyPosGroupBox->setGeometry(25, y += 24 + 10, 190, 90);
 	fullBasketsToEmptyPosGroupBox->setLayout(emptyBasketsPosGroupBoxLayout);
 	fullBasketsToEmptyPosGroupBox->show();
 
@@ -472,10 +475,10 @@ mainWindowClass::mainWindowClass()
 	OvenSelGroupBoxLayout->addWidget(Oven2Not24QCheckBox);
 	Oven2Not24QCheckBox->setChecked(configuration.Operations().Oven2OnlyOver24Feet());
 
-	QGroupBox *OvenSelGroupBox = new QGroupBox(tr("Oven routing"), openGLWidget);
-	OvenSelGroupBox->setGeometry(235, 20, 245, 115);
-	OvenSelGroupBox->setLayout(OvenSelGroupBoxLayout);
-	OvenSelGroupBox->show();
+	ovenSelectionGroupBox = new QGroupBox(tr("Oven routing"), openGLWidget);
+	ovenSelectionGroupBox->setGeometry(235, 20, 245, 115);
+	ovenSelectionGroupBox->setLayout(OvenSelGroupBoxLayout);
+	ovenSelectionGroupBox->show();
 
 	// Next oven 1 cycle
 	LOG("mW.cpp", "Next oven 1 cycle");
@@ -494,10 +497,10 @@ mainWindowClass::mainWindowClass()
 	else
 		nextOvenCycle230RadioButton->setChecked(true);
 
-	QGroupBox *nextOvenCycleGroupBox = new QGroupBox(tr("Oven 1 - next cycle"), openGLWidget);
-	nextOvenCycleGroupBox->setGeometry(235, 140, 285, 82);
-	nextOvenCycleGroupBox->setLayout(nextOvenCycleGroupBoxLayout);
-	nextOvenCycleGroupBox->show();
+	oven1CycleGroupBox = new QGroupBox(tr("Oven 1 - next cycle"), openGLWidget);
+	oven1CycleGroupBox->setGeometry(235, 140, 285, 82);
+	oven1CycleGroupBox->setLayout(nextOvenCycleGroupBoxLayout);
+	oven1CycleGroupBox->show();
 
 	// Mext oven 2 cycle
 	LOG("mW.cpp", "Next oven 2 cycle");
@@ -522,14 +525,15 @@ mainWindowClass::mainWindowClass()
 	else
 		nextOven2Cycle230RadioButton->setChecked(true);
 
-	QGroupBox *nextOven2CycleGroupBox = new QGroupBox(tr("Oven 2 - next cycle"), openGLWidget);
-	nextOven2CycleGroupBox->setGeometry(235, 227, 285, 82);
-	nextOven2CycleGroupBox->setLayout(nextOven2CycleGroupBoxLayout);
-	nextOven2CycleGroupBox->show();
+	oven2CycleGroupBox = new QGroupBox(tr("Oven 2 - next cycle"), openGLWidget);
+	oven2CycleGroupBox->setGeometry(235, 227, 285, 82);
+	oven2CycleGroupBox->setLayout(nextOven2CycleGroupBoxLayout);
+	oven2CycleGroupBox->show();
 
 	//
 	//takeScrapBasketBtn=new QPushButton(tr("Take scrap basket"),openGLWidget);takeScrapBasketBtn->setGeometry(x,y+=95+m,w,h);  takeScrapBasketBtn 	->show();
-	y += 95 + m;
+	// Place the first action button 10 px below the empty-basket group.
+	y += 90 + 10 - (h + m);
 	QPushButton *unlockBasketAfterStackerBtn = new QPushButton(tr("Unlock after stacker"), openGLWidget);
 	unlockBasketAfterStackerBtn->setProperty("warning", true);
 	unlockBasketAfterStackerBtn->setGeometry(x, y += h + m, w, h);
@@ -547,7 +551,7 @@ mainWindowClass::mainWindowClass()
 	basketTrackerBtn->show();
 
 	plcStatusPreferredY = y += h + m + 8;
-	plcStatusWidget->setGeometry(x, plcStatusPreferredY, w, 310);
+	plcStatusWidget->setGeometry(x, plcStatusPreferredY, w, 370);
 	plcStatusWidget->show();
 	positionPlcStatusWidget();
 
@@ -643,14 +647,33 @@ void mainWindowClass::resizeEvent(QResizeEvent *event)
 
 void mainWindowClass::positionPlcStatusWidget()
 {
-	if (!openGLWidget || !plcStatusWidget)
+	if (!openGLWidget || !plcStatusWidget || !ovenSelectionGroupBox
+		|| !oven1CycleGroupBox || !oven2CycleGroupBox)
 		return;
 
-	const int panelHeight = 310;
+	const int panelHeight = 370;
 	const int bottomMargin = 8;
-	const int maximumY = qMax(0, openGLWidget->height() - panelHeight - bottomMargin);
-	const int panelY = qMin(plcStatusPreferredY, maximumY);
-	plcStatusWidget->setGeometry(plcStatusWidget->x(), panelY, plcStatusWidget->width(), panelHeight);
+	const bool fitsBelowControls =
+		plcStatusPreferredY + panelHeight + bottomMargin <= openGLWidget->height();
+	const bool hasThirdColumn = openGLWidget->width() >= 725;
+	const bool hasCompactColumn = openGLWidget->width() >= 440;
+
+	// On short displays, interchange the oven and PLC columns: PLC uses the
+	// second column and the three oven controls move together to the third.
+	const bool interchangeColumns = !fitsBelowControls && hasThirdColumn;
+	const int ovenColumnX = interchangeColumns ? 430 : 235;
+	ovenSelectionGroupBox->move(ovenColumnX, 20);
+	oven1CycleGroupBox->move(ovenColumnX, 140);
+	oven2CycleGroupBox->move(ovenColumnX, 227);
+
+	// Retain the stacked second-column fallback for unusually narrow windows.
+	const int panelX = !fitsBelowControls
+		? (hasCompactColumn ? 235 : 25)
+		: 25;
+	const int panelY = !fitsBelowControls
+		? (hasThirdColumn ? 20 : (hasCompactColumn ? 317 : plcStatusPreferredY))
+		: plcStatusPreferredY;
+	plcStatusWidget->setGeometry(panelX, panelY, plcStatusWidget->width(), panelHeight);
 	plcStatusWidget->raise();
 }
 

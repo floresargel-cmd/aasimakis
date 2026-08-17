@@ -30,6 +30,8 @@ class plcWidgetClass : public QWidget
 	QLabel						*error0Label;
 	QLabel						*error1Label;
 	QLabel						*makeResetLabel;
+	QLabel						*laserEncoderAlarmLabel;
+	QLabel						*overCraneSafetySensorAlarmLabel;
 
 	Q_OBJECT
 
@@ -46,6 +48,8 @@ public:
 	void setError0LabelText(QString str, QString style);
 	void setError1LabelText(QString str,QString style);
 	void setMakeResetLabelText(QString str,QString style);
+	void setLaserEncoderError(bool active);
+	void setOverCraneSafetySensorError(bool active);
 
 #ifdef TUX_PLC_COMMS
 	tuxipClass *getCraneTuxClass();

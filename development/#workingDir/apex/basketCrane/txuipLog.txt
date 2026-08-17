@@ -70,3 +70,54 @@ Error code:0
 2026/08/04 09:52:02-error in 192.168.105.135 connection. Connection Id:95106552
 2026/08/04 09:52:02-tuxipReadInt-	 -Could not ReadLgxData to plc
 variable:N11[0] no:10
+2026/08/11 16:32:17-error-	 -type:2,number:0,external error number:0,message:error
+2026/08/11 16:32:17-error in 20.20.20.10 connection. Connection Id:133237839
+2026/08/11 16:32:18-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N20[0] no:25
+2026/08/11 16:32:19-error-	 -type:2,number:0,external error number:0,message:error
+2026/08/11 16:32:19-error in 20.20.20.40 connection. Connection Id:133238401
+2026/08/11 16:32:19-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:50
+2026/08/11 16:32:492026/08/11 16:32:49-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:32:49-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:32:492026/08/11 16:32:49-error-	 -Could not open plc communication session
+2026/08/11 16:33:102026/08/11 16:33:10-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:33:10-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:33:102026/08/11 16:33:10-error-	 -Could not open plc communication session
+2026/08/11 16:33:402026/08/11 16:33:40-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:33:40-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:33:402026/08/11 16:33:40-error-	 -Could not open plc communication session
+2026/08/11 16:34:012026/08/11 16:34:01-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:34:01-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:34:012026/08/11 16:34:01-error-	 -Could not open plc communication session
+2026/08/11 16:34:312026/08/11 16:34:31-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:34:31-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:34:312026/08/11 16:34:31-error-	 -Could not open plc communication session
+2026/08/11 16:34:522026/08/11 16:34:52-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:34:52-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:34:522026/08/11 16:34:52-error-	 -Could not open plc communication session
+2026/08/11 16:35:04-error in 192.168.105.135 connection. Connection Id:133238695
+2026/08/11 16:35:04-Internal_Error-	 -Receive TimeOut
+Error no:4294967255
+Error code:0
+2026/08/11 16:35:04-error-	 -type:0,number:-41,external error number:0,message:error
+2026/08/11 16:35:04-error in 192.168.105.135 connection. Connection Id:133238695
+2026/08/11 16:35:04-tuxipReadInt-	 -Could not ReadLgxData to plc
+variable:N11[0] no:10
+2026/08/11 16:35:262026/08/11 16:35:26-Internal_Error-	 -Connection Failed
+Error no:4294967290
+Error code:0
+2026/08/11 16:35:26-error-	 -type:0,number:-6,external error number:0,message:error
+2026/08/11 16:35:262026/08/11 16:35:26-error-	 -Could not open plc communication session

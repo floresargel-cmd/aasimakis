@@ -23,6 +23,9 @@ class mainWindowClass : public QWidget
 	//QPushButton				*takeScrapBasketBtn;
 	plcWidgetClass				*plcWidget;
 	QWidget						*plcStatusWidget;
+	QGroupBox					*ovenSelectionGroupBox;
+	QGroupBox					*oven1CycleGroupBox;
+	QGroupBox					*oven2CycleGroupBox;
 	int							plcStatusPreferredY;
 
 	QCheckBox					*useEmptyBasketsPosCheckBox;

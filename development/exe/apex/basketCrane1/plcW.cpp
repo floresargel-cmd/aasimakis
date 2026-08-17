@@ -64,6 +64,16 @@ plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 	makeResetLabel->setMinimumHeight(25); 
 	mainLayout->addWidget(makeResetLabel);  
 
+	laserEncoderAlarmLabel = new QLabel(tr("  Laser Encoder OK"));
+	laserEncoderAlarmLabel->setMinimumHeight(30);
+	laserEncoderAlarmLabel->setStyleSheet(readablePlcLabelStyle("QLabel{background-color:white}"));
+	mainLayout->addWidget(laserEncoderAlarmLabel);
+
+	overCraneSafetySensorAlarmLabel = new QLabel(tr("  Over Crane Safety Sensor OK"));
+	overCraneSafetySensorAlarmLabel->setMinimumHeight(30);
+	overCraneSafetySensorAlarmLabel->setStyleSheet(readablePlcLabelStyle("QLabel{background-color:white}"));
+	mainLayout->addWidget(overCraneSafetySensorAlarmLabel);
+
 	mainLayout->addStretch(1);
 	p->setLayout(mainLayout);
 
@@ -173,8 +183,32 @@ void plcWidgetClass::setMakeResetLabelText(QString str,QString style)
 	makeResetLabel->setStyleSheet(readablePlcLabelStyle(style));
 }
 
+void plcWidgetClass::setLaserEncoderError(bool active)
+{
+	laserEncoderAlarmLabel->setText(active ? tr("  Laser Encoder Error") : tr("  Laser Encoder OK"));
+	laserEncoderAlarmLabel->setStyleSheet(readablePlcLabelStyle(
+		active ? "QLabel{background-color:red}" : "QLabel{background-color:white}"));
+}
+
+void plcWidgetClass::setOverCraneSafetySensorError(bool active)
+{
+	overCraneSafetySensorAlarmLabel->setText(active
+		? tr("  Over Crane Safety Sensor Error")
+		: tr("  Over Crane Safety Sensor OK"));
+	overCraneSafetySensorAlarmLabel->setStyleSheet(readablePlcLabelStyle(
+		active ? "QLabel{background-color:red}" : "QLabel{background-color:white}"));
+}
+
 void plcWidgetClass::signalFromCranePlc(QString table, int index, QString value)
 {
+	if (table == "B25" && index == 28)
+	{
+		const quint32 alarmBits = static_cast<quint32>(value.toInt());
+		// These PLC bits are healthy-state signals: 1 = OK, 0 = alarm.
+		setLaserEncoderError((alarmBits & (1u << 17)) == 0);
+		setOverCraneSafetySensorError((alarmBits & (1u << 18)) == 0);
+	}
+
 	if (table == "N20")
 		plcDialog->plcStatusChanged(index, value.toInt());
 

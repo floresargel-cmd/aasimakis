@@ -179,12 +179,14 @@ void plcDialogClass::addTables()
 	if (theOneBCToRuleThemAll) {
 		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, pollingMs);
 		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, pollingMs);
+		tuxIpCrane->addTable("B25", plcTableClass::TYPE_INT, 28, 28, pollingMs);
 		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, pollingMs);
 		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, pollingMs);
 	}
 	else {
 		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, pollingMs);
 		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, pollingMs);
+		tuxIpCrane->addTable("B25", plcTableClass::TYPE_INT, 28, 28, pollingMs);
 		tuxIpConveyors->addTable("N11", plcTableClass::TYPE_INT, 0, 49, pollingMs);
 		tuxIpNewOven->addTable("N11", plcTableClass::TYPE_INT, 0, 9, pollingMs);
 	}
