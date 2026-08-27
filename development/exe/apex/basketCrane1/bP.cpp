@@ -512,12 +512,8 @@ QColor basketPositionClass::basketDisplayColor()
 	if (basket.getTypeEnum() == BASKET_NORMAL)
 	{
 		const int nonAgeableTempers = basket.getNonAgeableTemperMask();
-		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_T1)
-			return QColor(167, 139, 250);
-		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_T4)
-			return QColor(244, 114, 182);
-		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_F)
-			return QColor(96, 165, 250);
+		if (nonAgeableTempers != basketClass::NON_AGEABLE_TEMPER_NONE)
+			return QColor(255, 20, 147); // Bright pink identifies all no-age material (F, T1, T4).
 		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
 			return QColor(0, 125, 150);
 		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)

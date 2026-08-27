@@ -372,9 +372,7 @@ mainWindowClass::mainWindowClass()
 	basketLegendSection->setObjectName("basketLegendSection");
 	basketLegendLayout->addWidget(basketLegendSection);
 	addColorLegendRow("#ffffff", tr("Empty"), QString());
-	addColorLegendRow("#a78bfa", tr("T1 temper"), nonAgeableTemperToolTip);
-	addColorLegendRow("#f472b6", tr("T4 temper"), nonAgeableTemperToolTip);
-	addColorLegendRow("#60a5fa", tr("F temper"), nonAgeableTemperToolTip);
+	addColorLegendRow("#ff1493", tr("No-age temper (F/T1/T4)"), nonAgeableTemperToolTip);
 	addColorLegendRow("#007d96", tr("185 C"), QString());
 	addColorLegendRow("#ffaa27", tr("230 C"), QString());
 	addColorLegendRow("#ffff00", tr("Scrap"), QString());
