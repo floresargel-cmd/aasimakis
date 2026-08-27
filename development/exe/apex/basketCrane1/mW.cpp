@@ -311,12 +311,93 @@ mainWindowClass::mainWindowClass()
 	versionLabel->setStyleSheet("#buildVersion{color:#cbd5e1;background:#111827;border:1px solid #334155;border-radius:6px;padding:7px 12px;font-size:12px;font-weight:600;}");
 	versionLabel->setToolTip(tr("Application and installer version"));
 
+	QWidget *basketColorLegend = new QWidget(openGLWidget);
+	basketColorLegend->setObjectName("basketColorLegend");
+	basketColorLegend->setMinimumWidth(176);
+	basketColorLegend->setStyleSheet(
+		"#basketColorLegend{background:rgba(12,21,35,242);border:1px solid #40516a;border-radius:8px;}"
+		"#basketColorLegend QLabel{background:transparent;border:none;}"
+		"#basketColorLegend QLabel#basketLegendTitle{color:#f8fafc;font-size:12px;font-weight:700;}"
+		"#basketColorLegend QLabel#basketLegendSubtitle{color:#7f91aa;font-size:9px;}"
+		"#basketColorLegend QLabel#basketLegendSection{color:#38bdf8;font-size:9px;font-weight:700;}"
+		"#basketColorLegend QLabel#basketLegendDescription{color:#d8e1ee;font-size:10px;}"
+		"#basketColorLegend QWidget#basketLegendItem:hover{background:#1d2b3f;border-radius:4px;}"
+	);
+	QVBoxLayout *basketLegendLayout = new QVBoxLayout(basketColorLegend);
+	basketLegendLayout->setContentsMargins(12, 10, 12, 11);
+	basketLegendLayout->setSpacing(3);
+	QLabel *basketLegendTitle = new QLabel(tr("COLOR LEGEND"), basketColorLegend);
+	basketLegendTitle->setObjectName("basketLegendTitle");
+	basketLegendLayout->addWidget(basketLegendTitle);
+	QLabel *basketLegendSubtitle = new QLabel(tr("Basket and die status"), basketColorLegend);
+	basketLegendSubtitle->setObjectName("basketLegendSubtitle");
+	basketLegendLayout->addWidget(basketLegendSubtitle);
+	QFrame *basketLegendDivider = new QFrame(basketColorLegend);
+	basketLegendDivider->setFixedHeight(1);
+	basketLegendDivider->setStyleSheet("background:#2c3d55;border:none;");
+	basketLegendLayout->addSpacing(4);
+	basketLegendLayout->addWidget(basketLegendDivider);
+	basketLegendLayout->addSpacing(3);
+
+	const auto addColorLegendRow = [basketColorLegend, basketLegendLayout](const QString& color, const QString& text, const QString& toolTip)
+	{
+		QWidget *rowWidget = new QWidget(basketColorLegend);
+		rowWidget->setObjectName("basketLegendItem");
+		rowWidget->setMinimumHeight(20);
+		QHBoxLayout *row = new QHBoxLayout(rowWidget);
+		row->setContentsMargins(4, 1, 4, 1);
+		row->setSpacing(8);
+		QLabel *swatch = new QLabel(basketColorLegend);
+		swatch->setFixedSize(12, 12);
+		swatch->setStyleSheet(QString("QLabel{background:%1;border:1px solid #8291a7;border-radius:2px;}").arg(color));
+		QLabel *description = new QLabel(text, basketColorLegend);
+		description->setObjectName("basketLegendDescription");
+		if (!toolTip.isEmpty())
+		{
+			rowWidget->setToolTip(toolTip);
+			swatch->setToolTip(toolTip);
+			description->setToolTip(toolTip);
+		}
+		row->addWidget(swatch);
+		row->addWidget(description);
+		row->addStretch(1);
+		basketLegendLayout->addWidget(rowWidget);
+	};
+	const QString nonAgeableTemperToolTip = tr(
+		"<b>Age oven restriction</b><br>"
+		"Baskets containing T1, T4, or F temper material cannot move to age oven load positions:<br>"
+		"<b>100, 110, 120, 130, 220, 280, 290</b>");
+
+	QLabel *basketLegendSection = new QLabel(tr("BASKET"), basketColorLegend);
+	basketLegendSection->setObjectName("basketLegendSection");
+	basketLegendLayout->addWidget(basketLegendSection);
+	addColorLegendRow("#ffffff", tr("Empty"), QString());
+	addColorLegendRow("#a78bfa", tr("T1 temper"), nonAgeableTemperToolTip);
+	addColorLegendRow("#f472b6", tr("T4 temper"), nonAgeableTemperToolTip);
+	addColorLegendRow("#60a5fa", tr("F temper"), nonAgeableTemperToolTip);
+	addColorLegendRow("#007d96", tr("185 C"), QString());
+	addColorLegendRow("#ffaa27", tr("230 C"), QString());
+	addColorLegendRow("#ffff00", tr("Scrap"), QString());
+	addColorLegendRow("#ff0000", tr("Error"), QString());
+
+	basketLegendLayout->addSpacing(5);
+	QLabel *dieLegendSection = new QLabel(tr("DIE / PROFILE"), basketColorLegend);
+	dieLegendSection->setObjectName("basketLegendSection");
+	basketLegendLayout->addWidget(dieLegendSection);
+	addColorLegendRow("#c8ffc8", tr("Fresh"), QString());
+	addColorLegendRow("#c89b64", tr("Aged"), QString());
+
+	QHBoxLayout *basketLegendRow = new QHBoxLayout();
+	basketLegendRow->addStretch(1);
+	basketLegendRow->addWidget(basketColorLegend);
 	QHBoxLayout *versionRow = new QHBoxLayout();
 	versionRow->addStretch(1);
 	versionRow->addWidget(versionLabel);
 	QVBoxLayout *brandingOverlayLayout = new QVBoxLayout(openGLWidget);
 	brandingOverlayLayout->setContentsMargins(0, 0, 22, 18);
+	brandingOverlayLayout->setSpacing(8);
 	brandingOverlayLayout->addStretch(1);
+	brandingOverlayLayout->addLayout(basketLegendRow);
 	brandingOverlayLayout->addLayout(versionRow);
 
 #ifdef TUX_PLC_COMMS

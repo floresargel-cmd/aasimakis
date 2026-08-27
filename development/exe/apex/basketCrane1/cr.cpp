@@ -386,7 +386,19 @@ bool craneClass::move(basketPositionClass *from, basketPositionClass *to)
 {
 	if ((!hasActiveMission) && (from&&to) && (plcStatus == 0))
 	{
-		if ((!from->isFreeToMove()) || (!to->canRecieve(from)))
+		if (!from->isFreeToMove())
+			return false;
+
+		// Defense in depth for direct/manual moves. Automatic destination selection
+		// applies the same rule in positionListClass::getFreeToRecievePos().
+		if (!from->canMoveToPosition(to->getNumber()))
+		{
+			LOG("CRANE MOVE", QString("Blocked basket %1 with T1/T4/F material from age oven load position %2")
+				.arg(from->getBasketTableId()).arg(to->getNumber()));
+			return false;
+		}
+
+		if (!to->canRecieve(from))
 			return false;
 
 		allPositions->getBeforeStackerPosition()->getPosition(0)->setErrorString("");

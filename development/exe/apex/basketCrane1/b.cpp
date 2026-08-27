@@ -181,6 +181,7 @@ basketClass::basketClass():QObject()
 	}
 	tableId = number = 0;
 	areContentsAged = false;
+	nonAgeableTemperMask = NON_AGEABLE_TEMPER_NONE;
 	temperEnum = BASKET_TEMPER_NULL;
 	maxLengthOfContents = 0.;
 }
@@ -227,6 +228,16 @@ bool basketClass::getAreContentsAged()
 	return areContentsAged;
 }
 
+bool basketClass::hasNonAgeableTemperMaterial()
+{
+	return nonAgeableTemperMask != NON_AGEABLE_TEMPER_NONE;
+}
+
+int basketClass::getNonAgeableTemperMask()
+{
+	return nonAgeableTemperMask;
+}
+
 QString basketClass::getToolTipText()
 {
 	return toolTipText;
@@ -246,6 +257,7 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 		contentsEnum = BASKET_CONTENS_NONE;
 		temperEnum = BASKET_TEMPER_NULL;
 		areContentsAged = false;
+		nonAgeableTemperMask = NON_AGEABLE_TEMPER_NONE;
 
 		const QVector<CachedBasketDetail> detailRows = cachedDetailsForBasket(tableId);
 
@@ -272,7 +284,16 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 
 			double tLength = detailRows[i].length.toDouble();
 			if (tpa != "N/A")
+			{
+				const QString normalizedTemper = tpa.trimmed().toUpper();
 				uniqueTempers.insert(tpa);
+				if (normalizedTemper == "T1")
+					nonAgeableTemperMask |= NON_AGEABLE_TEMPER_T1;
+				else if (normalizedTemper == "T4")
+					nonAgeableTemperMask |= NON_AGEABLE_TEMPER_T4;
+				else if (normalizedTemper == "F")
+					nonAgeableTemperMask |= NON_AGEABLE_TEMPER_F;
+			}
 			const bool doubleBatched = tLength < 3601;
 			if (doubleBatched)
 				tLength = 2 * tLength + 200.;
@@ -369,12 +390,30 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 			}
 			toolTipText += QString("Temper into account:%1\n").arg(validTemper);
 		}
+
+		if (hasNonAgeableTemperMaterial())
+		{
+			QStringList restrictedTempers;
+			if (nonAgeableTemperMask & NON_AGEABLE_TEMPER_T1)
+				restrictedTempers << "T1";
+			if (nonAgeableTemperMask & NON_AGEABLE_TEMPER_T4)
+				restrictedTempers << "T4";
+			if (nonAgeableTemperMask & NON_AGEABLE_TEMPER_F)
+				restrictedTempers << "F";
+
+			toolTipText += tr("\nAGE OVEN RESTRICTION\n"
+				"Contains %1 temper material.\n"
+				"Not allowed at load positions:\n"
+				"100, 110, 120, 130, 220, 280, 290\n")
+				.arg(restrictedTempers.join(", "));
+		}
 	}
 	else
 	{
 		contentsEnum = BASKET_CONTENS_NONE;
 		temperEnum = BASKET_TEMPER_NULL;
 		areContentsAged = false;
+		nonAgeableTemperMask = NON_AGEABLE_TEMPER_NONE;
 	}
 }
 

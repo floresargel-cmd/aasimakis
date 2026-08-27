@@ -31,6 +31,7 @@ class basketClass:public QObject
 	int						typeEnum;
 	int						contentsEnum;
 	bool					areContentsAged;
+	int						nonAgeableTemperMask;
 	float					maxLengthOfContents;
 	QString					toolTipText;
 	//
@@ -45,6 +46,12 @@ public:
 		BASKET_TEMPER_185,
 		BASKET_TEMPER_230,
 	};
+	enum {
+		NON_AGEABLE_TEMPER_NONE = 0x00,
+		NON_AGEABLE_TEMPER_T1 = 0x01,
+		NON_AGEABLE_TEMPER_T4 = 0x02,
+		NON_AGEABLE_TEMPER_F = 0x04,
+	};
 
 public:
 	basketClass &operator=(const basketClass& t)
@@ -53,6 +60,7 @@ public:
 		number=t.number;
 		typeEnum=t.typeEnum;
 		contentsEnum=t.contentsEnum;
+		nonAgeableTemperMask=t.nonAgeableTemperMask;
 		return *this;
 	}
 
@@ -71,6 +79,8 @@ public:
 	int getContentsEnum();
 	int getTemperEnum();
 	bool getAreContentsAged();
+	bool hasNonAgeableTemperMaterial();
+	int getNonAgeableTemperMask();
 	bool hasContents();
 	QString getToolTipText();
 	//

@@ -351,6 +351,12 @@ basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass*
 
 	if (isBasketPositionYours(incomingPos))
 		return NULL;
+
+	// T1, T4 and F material must bypass all aging-oven load positions.
+	// Apply this while selecting a destination so automatic routing continues
+	// looking for a valid buffer instead of repeatedly proposing a blocked move.
+	if (!incomingPos->canMoveToPosition(mainPosId))
+		return NULL;
 	
 	basketPositionClass* ans = NULL;
 	

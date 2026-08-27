@@ -231,6 +231,31 @@ bool basketPositionClass::getAreContentsAged()
 	return basket.getAreContentsAged();
 }
 
+bool basketPositionClass::hasNonAgeableTemperMaterial()
+{
+	return hasBasket() && basket.hasNonAgeableTemperMaterial();
+}
+
+bool basketPositionClass::canMoveToPosition(int destinationNumber)
+{
+	if (!hasNonAgeableTemperMaterial())
+		return true;
+
+	switch (destinationNumber)
+	{
+	case 100:
+	case 110:
+	case 120:
+	case 130:
+	case 220:
+	case 280:
+	case 290:
+		return false;
+	default:
+		return true;
+	}
+}
+
 int basketPositionClass::getPlcId()
 {
 	return number + index;
@@ -486,6 +511,13 @@ QColor basketPositionClass::basketDisplayColor()
 
 	if (basket.getTypeEnum() == BASKET_NORMAL)
 	{
+		const int nonAgeableTempers = basket.getNonAgeableTemperMask();
+		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_T1)
+			return QColor(167, 139, 250);
+		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_T4)
+			return QColor(244, 114, 182);
+		if (nonAgeableTempers & basketClass::NON_AGEABLE_TEMPER_F)
+			return QColor(96, 165, 250);
 		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
 			return QColor(0, 125, 150);
 		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)
@@ -532,16 +564,8 @@ void basketPositionClass::draw(bool forPicking, bool isFromPos, bool isToPos)
 		color = QColor(0, 0, 255);
 	else if (isActive)
 		color = QColor(255, 0, 255);
-	else if (basket.getTypeEnum() == BASKET_SCRAP)
-		color = QColor(255, 255, 0);
-	else if (basket.getTypeEnum() == BASKET_NORMAL)
-	{
-		color = QColor(255, 255, 255);
-		if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_185)
-			color = QColor(0, 125, 150);
-		else if (basket.getTemperEnum() == basketClass::BASKET_TEMPER_230)
-			color = QColor(255, 170, 39);
-	}
+	else
+		color = basketDisplayColor();
 
 	// LOG("bP.cpp", "Step 2: Check for error state and override color if necessary");
 	if ((getErrorString().length() > 0) && (!forPicking) && (!isMouseOver))

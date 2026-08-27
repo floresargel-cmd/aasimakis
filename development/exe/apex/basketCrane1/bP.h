@@ -126,6 +126,8 @@ public:
 	//
 	int getPositionEnumForEpics();
 	bool getAreContentsAged();
+	bool hasNonAgeableTemperMaterial();
+	bool canMoveToPosition(int destinationNumber);
 	//
 	void draw(bool forPicking,bool isFromPos,bool isToPos);
 	void mouseOver(QColor pickedColor);
