@@ -40,6 +40,8 @@
           Name="Apex Basket Crane"
           Description="Apex Basket Crane control application"
           WorkingDirectory="INSTALLFOLDER"
+          Icon="ProductIcon.ico"
+          IconIndex="0"
           Advertise="yes" />
         <Shortcut
           Id="DesktopShortcut"
@@ -47,6 +49,8 @@
           Name="Apex Basket Crane"
           Description="Apex Basket Crane control application"
           WorkingDirectory="INSTALLFOLDER"
+          Icon="ProductIcon.ico"
+          IconIndex="0"
           Advertise="yes" />
       </File>
     </Component>
