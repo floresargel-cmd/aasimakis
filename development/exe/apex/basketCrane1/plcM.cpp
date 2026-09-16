@@ -7,7 +7,7 @@ float plcSetZVelocityForOpenGl;
 
 plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServerClass *cranePlcTcpServer_, tcpServerClass *conveyorsPlcTcpServer_) :QWidget()
 {
-		p->setStyleSheet(QString("QLabel{font-size:%1px} QPushButton{font-size:%1px}  QCheckBox{font-size:%1px}").arg(12));
+		p->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{font-size:13px;color:#ffffff;} QPushButton,QPushButton:disabled,QCheckBox,QCheckBox:disabled,QRadioButton,QRadioButton:disabled{font-size:13px;color:#ffffff;} QGroupBox::title{font-size:13px;}");
 		plcWidget = plcWidget_;
 		cranePlcTcpServer = cranePlcTcpServer_;
 		conveyorsPlcTcpServer = conveyorsPlcTcpServer_;
@@ -15,9 +15,11 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		QHBoxLayout *topLayout = new QHBoxLayout();
 		p->setLayout(topLayout);
 		QScrollArea *mainScrollArea = new QScrollArea();
-		mainScrollArea->setBackgroundRole(QPalette::Dark);
+		mainScrollArea->setBackgroundRole(QPalette::Window);
 		topLayout->addWidget(mainScrollArea);
 		QWidget *mainScrollAreaWidget = new QWidget();
+		mainScrollAreaWidget->setObjectName("plcManualContent");
+		mainScrollAreaWidget->setStyleSheet("QWidget#plcManualContent{background-color:#0b1220;}");
 		//
 		QVBoxLayout *mainLayout = new QVBoxLayout(); mainLayout->setMargin(2); mainScrollAreaWidget->setLayout(mainLayout);
 		QHBoxLayout *upLayout = new QHBoxLayout(); mainLayout->addLayout(upLayout);
@@ -33,29 +35,29 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		fromToLayout->addWidget(new QLabel(tr("From PC position")), 0, 0);
 		fromPcLabel = new QLabel("...");
 		fromPcLabel->setMinimumWidth(50);
-		fromPcLabel->setStyleSheet("QLabel{color:#0000aa;text-align:center;font-size:16px;}");
+		fromPcLabel->setStyleSheet("QLabel{color:#7dd3fc;text-align:center;font-size:16px;}");
 		fromToLayout->addWidget(fromPcLabel, 0, 1);
 
 		fromToLayout->addWidget(new QLabel(tr("To PC position")), 0, 2);
 		toPcLabel = new QLabel("...");
 		toPcLabel->setMinimumWidth(50);
-		toPcLabel->setStyleSheet("QLabel{color:#0000aa;text-align:center;font-size:16px;}");
+		toPcLabel->setStyleSheet("QLabel{color:#7dd3fc;text-align:center;font-size:16px;}");
 		fromToLayout->addWidget(toPcLabel, 0, 3);
 
 		fromToLayout->addWidget(new QLabel(tr("From Plc pos")), 1, 0);
 		fromPlcLabel = new QLabel("...");
 		fromPlcLabel->setMinimumWidth(50);
-		fromPlcLabel->setStyleSheet("QLabel{color:#0000aa;text-align:center;font-size:16px;}");
+		fromPlcLabel->setStyleSheet("QLabel{color:#7dd3fc;text-align:center;font-size:16px;}");
 		fromToLayout->addWidget(fromPlcLabel, 1, 1);
 
 		fromToLayout->addWidget(new QLabel(tr("To Plc pos")), 1, 2);
 		toPlcLabel = new QLabel("...");
 		toPlcLabel->setMinimumWidth(50);
-		toPlcLabel->setStyleSheet("QLabel{color:#0000aa;text-align:center;font-size:16px;}");
+		toPlcLabel->setStyleSheet("QLabel{color:#7dd3fc;text-align:center;font-size:16px;}");
 		fromToLayout->addWidget(toPlcLabel, 1, 3);
 
 		fromToPlcStatus = new QLabel("...");
-		fromToPlcStatus->setStyleSheet("QLabel{color:#0000aa;text-align:center;font-size:12px;}");
+		fromToPlcStatus->setStyleSheet("QLabel{color:#7dd3fc;text-align:center;font-size:13px;}");
 		fromToLayout->addWidget(fromToPlcStatus, 2, 0, 1, 4, Qt::AlignHCenter);
 		//state group
 		QGroupBox *stateGroupBox = new QGroupBox(tr("PLC states")); layout0->addWidget(stateGroupBox);
@@ -291,6 +293,11 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		imageLabel->setAlignment(Qt::AlignCenter);
 		downLayout->addWidget(imageLabel);
 		mainScrollArea->setWidget(mainScrollAreaWidget);
+
+		// QLabel otherwise derives its text role from the inherited background role.
+		// A Dark background selects Light, which QSS tints from each status color.
+		foreach (QLabel *label, mainScrollAreaWidget->findChildren<QLabel*>())
+			label->setForegroundRole(QPalette::WindowText);
 }
 plcManualClass::~plcManualClass()
 {
@@ -366,103 +373,103 @@ void plcManualClass::plcStatusChanged(int index, int value)
 	{
 		if (bitsVector[0]) {
 			okLabel->setText(tr("System Ok"));
-			okLabel->setStyleSheet("QLabel{background-color:green}");
-			plcWidget->setStatus1LabelText(tr("  Plc ok"), "QLabel{background-color:white}");
+			okLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setStatus1LabelText(tr("  Plc"), "QLabel{background-color:white}");
 		}
 		else {
 			okLabel->setText(tr("System Not Ok (recall stop)"));
-			okLabel->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setStatus1LabelText(tr("  Plc not ok"), "QLabel{background-color:red}");		
+			okLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setStatus1LabelText(tr("  Plc not ok"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 
 		if (!bitsVector[16]) {
 			CollisionLabel->setText(tr("Collision Ok"));
-			CollisionLabel->setStyleSheet("QLabel{background-color:green}");
+			CollisionLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 			plcWidget->setStatus2LabelText(tr("  No Collision"), "QLabel{background-color:white}");
 		}
 		else {
 			CollisionLabel->setText(tr("Collision Not Ok (recall stop)"));
-			CollisionLabel->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setStatus2LabelText(tr("  Basket Collision Alarm"), "QLabel{background-color:red}");
+			CollisionLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setStatus2LabelText(tr("  Basket Collision Alarm"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 
 		if (bitsVector[1]) {
 			alarm_13_1Label->setText(tr("Alarm of basket crane\ninverter U1 or U2"));
-			alarm_13_1Label->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setError0LabelText(tr("  Alarm of basket crane\n  inverter U1 or U2"), "QLabel{background-color:red}");
+			alarm_13_1Label->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setError0LabelText(tr("  Alarm of basket crane\n  inverter U1 or U2"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else {
 			alarm_13_1Label->setText(tr("Basket crane\ninverter U1 and U2 Ok"));
-			alarm_13_1Label->setStyleSheet("QLabel{background-color:green}");
-			plcWidget->setError0LabelText(tr("  Basket crane\n  inverter U1 and U2 Ok"), "QLabel{background-color:white}");
+			alarm_13_1Label->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setError0LabelText(tr("  Basket crane\n  inverter U1 and U2"), "QLabel{background-color:white}");
 		}
 
 		if (bitsVector[2]) {
 			alarm_13_2Label->setText(tr("Alarm of basket crane\nmotors(X,Y or Z axis)"));
-			alarm_13_2Label->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setError1LabelText(tr(" Alarm basket crane\n motors (X,Y or Z axis)"), "QLabel{background-color:red}");
+			alarm_13_2Label->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setError1LabelText(tr(" Alarm basket crane\n motors (X,Y or Z axis)"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else {
 			alarm_13_2Label->setText(tr("Basket crane motors\n(X,Y and Z axis) Ok"));
-			alarm_13_2Label->setStyleSheet("QLabel{background-color:green}");
-			plcWidget->setError1LabelText(tr("  Basket crane motors\n  (X,Y and Z axis) Ok"), "QLabel{background-color:white}");
+			alarm_13_2Label->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setError1LabelText(tr("  Basket crane motors\n  (X,Y and Z axis)"), "QLabel{background-color:white}");
 		}
 
 		//////signals
-		if (bitsVector[3])   signal_13_03->setStyleSheet("QLabel{background-color:green}");  else	signal_13_03->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[4])	 signal_13_04->setStyleSheet("QLabel{background-color:green}");  else	signal_13_04->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[5])   signal_13_05->setStyleSheet("QLabel{background-color:green}");  else	signal_13_05->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[6])   signal_13_06->setStyleSheet("QLabel{background-color:green}");  else	signal_13_06->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[7])   signal_13_07->setStyleSheet("QLabel{background-color:green}");  else	signal_13_07->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[8])   signal_13_08->setStyleSheet("QLabel{background-color:green}");  else	signal_13_08->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[9])   signal_13_09->setStyleSheet("QLabel{background-color:green}");  else	signal_13_09->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[10])  signal_13_10->setStyleSheet("QLabel{background-color:green}");  else	signal_13_10->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[11])  signal_13_11->setStyleSheet("QLabel{background-color:green}");  else	signal_13_11->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[12])  signal_13_12->setStyleSheet("QLabel{background-color:green}");  else	signal_13_12->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[13])  signal_13_13->setStyleSheet("QLabel{background-color:green}");  else	signal_13_13->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[14])  signal_13_14->setStyleSheet("QLabel{background-color:green}");  else	signal_13_14->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[15])  signal_13_15->setStyleSheet("QLabel{background-color:green}");  else	signal_13_15->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[3])   signal_13_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[4])	 signal_13_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[5])   signal_13_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[6])   signal_13_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[7])   signal_13_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[8])   signal_13_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[9])   signal_13_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[10])  signal_13_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[11])  signal_13_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[12])  signal_13_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[13])  signal_13_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[14])  signal_13_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[15])  signal_13_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_13_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 	}
 
 	if (index == 14)
 	{
-		if (bitsVector[0])   signal_14_00->setStyleSheet("QLabel{background-color:green}");  else	signal_14_00->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[1])   signal_14_01->setStyleSheet("QLabel{background-color:green}");  else	signal_14_01->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[2])   signal_14_02->setStyleSheet("QLabel{background-color:green}");  else	signal_14_02->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[3])   signal_14_03->setStyleSheet("QLabel{background-color:green}");  else	signal_14_03->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[4])   signal_14_04->setStyleSheet("QLabel{background-color:green}");  else	signal_14_04->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[5])   signal_14_05->setStyleSheet("QLabel{background-color:green}");  else	signal_14_05->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[6])   signal_14_06->setStyleSheet("QLabel{background-color:green}");  else	signal_14_06->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[7])   signal_14_07->setStyleSheet("QLabel{background-color:green}");  else	signal_14_07->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[8])   signal_14_08->setStyleSheet("QLabel{background-color:green}");  else	signal_14_08->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[9])   signal_14_09->setStyleSheet("QLabel{background-color:green}");  else	signal_14_09->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[10])  signal_14_10->setStyleSheet("QLabel{background-color:green}");  else	signal_14_10->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[11])  signal_14_11->setStyleSheet("QLabel{background-color:green}");  else	signal_14_11->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[12])  signal_14_12->setStyleSheet("QLabel{background-color:green}");  else	signal_14_12->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[13])  signal_14_13->setStyleSheet("QLabel{background-color:green}");  else	signal_14_13->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[0])   signal_14_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[1])   signal_14_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[2])   signal_14_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[3])   signal_14_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[4])   signal_14_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[5])   signal_14_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[6])   signal_14_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[7])   signal_14_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[8])   signal_14_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[9])   signal_14_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[10])  signal_14_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[11])  signal_14_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[12])  signal_14_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[13])  signal_14_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else	signal_14_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 
-		if (bitsVector[14])  plcStatusLabel_14_14->setStyleSheet("QLabel{background-color:green}");  else  plcStatusLabel_14_14->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[15])  plcStatusLabel_14_15->setStyleSheet("QLabel{background-color:red}");    else  plcStatusLabel_14_15->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[14])  plcStatusLabel_14_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");  else  plcStatusLabel_14_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[15])  plcStatusLabel_14_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");    else  plcStatusLabel_14_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 	}
 
 	if (index == 15)
 	{
-		if (bitsVector[0])	plcStatusLabel_15_00->setStyleSheet("QLabel{background-color:red}"); else plcStatusLabel_15_00->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[0])	plcStatusLabel_15_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); else plcStatusLabel_15_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 
-		if (bitsVector[1])	resetingZLabel->setStyleSheet("QLabel{background-color:green}"); else resetingZLabel->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[2])	resetingXLabel->setStyleSheet("QLabel{background-color:green}"); else resetingXLabel->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[3])	resetingYLabel->setStyleSheet("QLabel{background-color:green}"); else resetingYLabel->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[1])	resetingZLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else resetingZLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[2])	resetingXLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else resetingXLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[3])	resetingYLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else resetingYLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 
-		if (bitsVector[4])	switch_15_04->setStyleSheet("QLabel{background-color:green}"); else switch_15_04->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[5])	switch_15_05->setStyleSheet("QLabel{background-color:green}"); else switch_15_05->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[6])	switch_15_06->setStyleSheet("QLabel{background-color:green}"); else switch_15_06->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[7])	switch_15_07->setStyleSheet("QLabel{background-color:green}"); else switch_15_07->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[8])	switch_15_08->setStyleSheet("QLabel{background-color:green}"); else switch_15_08->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[9])	switch_15_09->setStyleSheet("QLabel{background-color:green}"); else switch_15_09->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[4])	switch_15_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[5])	switch_15_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[6])	switch_15_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[7])	switch_15_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[8])	switch_15_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[9])	switch_15_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else switch_15_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 
-		if (bitsVector[13])	stateLabel_15_13->setStyleSheet("QLabel{background-color:green}"); else stateLabel_15_13->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[14])	stateLabel_15_14->setStyleSheet("QLabel{background-color:green}"); else stateLabel_15_14->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[15])	stateLabel_15_15->setStyleSheet("QLabel{background-color:green}"); else stateLabel_15_15->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[13])	stateLabel_15_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else stateLabel_15_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[14])	stateLabel_15_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else stateLabel_15_14->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[15])	stateLabel_15_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else stateLabel_15_15->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 		//
 
 		plcModeEnum = NO_MODE;
@@ -532,51 +539,51 @@ void plcManualClass::plcStatusChanged(int index, int value)
 		if (bitsVector[4])
 		{
 			stopLabel->setText(tr("STOPPED"));
-			stopLabel->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setStopLabelText(tr("  STOPPED"), "QLabel{background-color:red}");
+			stopLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setStopLabelText(tr("  STOPPED"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 			execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(4).arg("Stop").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION);
 		}
 		else
 		{
 			stopLabel->setText(tr("No active stop"));
-			stopLabel->setStyleSheet("QLabel{background-color:green}");
+			stopLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 			plcWidget->setStopLabelText(tr("  No active stop"), "QLabel{background-color:white}");
 		}
-		if (bitsVector[12])signal_16_12->setStyleSheet("QLabel{background-color:green}"); else signal_16_12->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[0])valve_16_00->setStyleSheet("QLabel{background-color:green}"); else valve_16_00->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[1])valve_16_01->setStyleSheet("QLabel{background-color:green}"); else valve_16_01->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[2])valve_16_02->setStyleSheet("QLabel{background-color:green}"); else valve_16_02->setStyleSheet("QLabel{background-color:gray}");
-		if (bitsVector[3])valve_16_03->setStyleSheet("QLabel{background-color:green}"); else valve_16_03->setStyleSheet("QLabel{background-color:gray}");
+		if (bitsVector[12])signal_16_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else signal_16_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[0])valve_16_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else valve_16_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[1])valve_16_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else valve_16_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[2])valve_16_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else valve_16_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
+		if (bitsVector[3])valve_16_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}"); else valve_16_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#475569;color:#ffffff;padding:2px 4px;}");
 
-		if (bitsVector[5]){ alarmLabel_16_05->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(5).arg("Overweight basket").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_05->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[6]){ alarmLabel_16_06->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(6).arg("Axis Z overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_06->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[7]){ alarmLabel_16_07->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(7).arg("Axis Z underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_07->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[8]){ alarmLabel_16_08->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(8).arg("Axis X overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_08->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[9]){ alarmLabel_16_09->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(9).arg("Axis X underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_09->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[10]){ alarmLabel_16_10->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(10).arg("Axis Y overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_10->setStyleSheet("QLabel{background-color:green}");
-		if (bitsVector[11]){ alarmLabel_16_11->setStyleSheet("QLabel{background-color:red}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(11).arg("Axis Y underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
-		else alarmLabel_16_11->setStyleSheet("QLabel{background-color:green}");
+		if (bitsVector[5]){ alarmLabel_16_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(5).arg("Overweight basket").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[6]){ alarmLabel_16_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(6).arg("Axis Z overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[7]){ alarmLabel_16_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(7).arg("Axis Z underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[8]){ alarmLabel_16_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(8).arg("Axis X overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[9]){ alarmLabel_16_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(9).arg("Axis X underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[10]){ alarmLabel_16_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(10).arg("Axis Y overspeed ").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
+		if (bitsVector[11]){ alarmLabel_16_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}"); execDBQuery(QString("insert into logErrorPlc (type,bit,description,date,sec) values('craneError','N22[16].%1','%2','%3',%4)").arg(11).arg("Axis Y underspeed").arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t()), MAIN_DB_CONNECTION); }
+		else alarmLabel_16_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		if (bitsVector[5])
-			plcWidget->setError1LabelText(tr(" Overweight basket\n   press 'Stop recall'."), "QLabel{background-color:red}");
+			plcWidget->setError1LabelText(tr(" Overweight basket\n   press 'Stop recall'."), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		else
 			plcWidget->setError1LabelText(tr(" Not overweight basket"), "QLabel{background-color:white}");
 
 		if (bitsVector[15])
 		{
 			makeResetLabel->setText(tr("Reset all axis"));
-			makeResetLabel->setStyleSheet("QLabel{background-color:red}");
-			plcWidget->setMakeResetLabelText(tr("  Reset all axis"), "QLabel{background-color:red}");
+			makeResetLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
+			plcWidget->setMakeResetLabelText(tr("  Reset all axis"), "QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			makeResetLabel->setText(tr("No reset needed"));
-			makeResetLabel->setStyleSheet("QLabel{background-color:green}");
+			makeResetLabel->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 			plcWidget->setMakeResetLabelText(tr("  No reset needed"), "QLabel{background-color:white}");
 		}
 	}
@@ -586,155 +593,155 @@ void plcManualClass::plcStatusChanged(int index, int value)
 		if (bitsVector[0])
 		{
 			plcStatusLabel_21_00->setText(tr("  1769-HSC/B BC_axisZ_axisX\n  module Ok"));
-			plcStatusLabel_21_00->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_00->setText(tr("  1769-HSC/B BC_axisZ_axisX\n  module fault"));
-			plcStatusLabel_21_00->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_00->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[1])
 		{
 			plcStatusLabel_21_01->setText(tr("  1769-HSC/B BC_axisY_PC_axisZ\n  module Ok"));
-			plcStatusLabel_21_01->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_01->setText(tr("  1769-HSC/B BC_axisY_PC_axisZ\n  module fault"));
-			plcStatusLabel_21_01->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_01->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[2])
 		{
 			plcStatusLabel_21_02->setText(tr("  1769-HSC/B PC_axisX_axisY\n  module Ok"));
-			plcStatusLabel_21_02->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_02->setText(tr("  1769-HSC/B PC_axisX_axisY\n  module fault"));
-			plcStatusLabel_21_02->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_02->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[3])
 		{
 			plcStatusLabel_21_03->setText(tr("  1769-IQ32T/A DIG_Input_Mod_400\n  module Ok"));
-			plcStatusLabel_21_03->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_03->setText(tr("  1769-IQ32T/A DIG_Input_Mod_400\n  module fault"));
-			plcStatusLabel_21_03->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_03->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[4])
 		{
 			plcStatusLabel_21_04->setText(tr("  1769-IQ32T/A DIG_Input_Mod_500\n  module Ok"));
-			plcStatusLabel_21_04->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_04->setText(tr("   1769-IQ32T/A DIG_Input_Mod_500\n  module fault"));
-			plcStatusLabel_21_04->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_04->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[5])
 		{
 			plcStatusLabel_21_05->setText(tr("  1769-IF4I/A ANL_Input_600\n  module Ok"));
-			plcStatusLabel_21_05->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_05->setText(tr("  1769-IF4I/A ANL_Input_600\n  module fault"));
-			plcStatusLabel_21_05->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_05->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[6])
 		{
 			plcStatusLabel_21_06->setText(tr("  1769-OF4/A ANL_Output_700\n  module Ok"));
-			plcStatusLabel_21_06->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_06->setText(tr("  1769-OF4/A ANL_Output_700\n  module fault"));
-			plcStatusLabel_21_06->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_06->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[7])
 		{
 			plcStatusLabel_21_07->setText(tr("  1769-OW16/A DIG_Output_800\n  module Ok"));
-			plcStatusLabel_21_07->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_07->setText(tr("  1769-OW16/A DIG_Output_800\n  module fault"));
-			plcStatusLabel_21_07->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_07->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[8])
 		{
 			plcStatusLabel_21_08->setText(tr("  1769-OW16/A DIG_Output_900\n  module Ok"));
-			plcStatusLabel_21_08->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_08->setText(tr("  1769-OW16/A DIG_Output_900\n  module fault"));
-			plcStatusLabel_21_08->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_08->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[9])
 		{
 			plcStatusLabel_21_09->setText(tr("  1769-OW16/A DIG_Output_1000\n  module Ok"));
-			plcStatusLabel_21_09->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_09->setText(tr("  1769-OW16/A DIG_Output_1000\n  module fault"));
-			plcStatusLabel_21_09->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_09->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[10])
 		{
 			plcStatusLabel_21_10->setText(tr("  1769-OW16/A DIG_Output_1100\n  module Ok"));
-			plcStatusLabel_21_10->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_10->setText(tr("  1769-OW16/A DIG_Output_1100\n  module fault"));
-			plcStatusLabel_21_10->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_10->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[11])
 		{
 			plcStatusLabel_21_11->setText(tr("  1769-OW16/A DIG_Output_1200\n  module Ok"));
-			plcStatusLabel_21_11->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_11->setText(tr("  1769-OW16/A DIG_Output_1200\n  module fault"));
-			plcStatusLabel_21_11->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_11->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (bitsVector[12])
 		{
 			plcStatusLabel_21_12->setText(tr("  Communication with pack lgx Ok"));
-			plcStatusLabel_21_12->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_12->setText(tr("  Communication with pack lgx fault"));
-			plcStatusLabel_21_12->setStyleSheet("QLabel{background-color:red}");
+			plcStatusLabel_21_12->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#b91c1c;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		/////
 		if (!bitsVector[13])
 		{
 			plcStatusLabel_21_13->setText(tr("  PLC Battery Ok"));
-			plcStatusLabel_21_13->setStyleSheet("QLabel{background-color:green}");
+			plcStatusLabel_21_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#166534;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 		else
 		{
 			plcStatusLabel_21_13->setText(tr("  PLC Low Battery minor fault"));
-			plcStatusLabel_21_13->setStyleSheet("QLabel{background-color:orange}");
+			plcStatusLabel_21_13->setStyleSheet("QLabel,QLabel:enabled,QLabel:disabled{background-color:#92400e;color:#ffffff;font-weight:600;padding:2px 4px;}");
 		}
 	}
 }

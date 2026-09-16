@@ -64,12 +64,12 @@ plcWidgetClass::plcWidgetClass(QWidget *p):QWidget()
 	makeResetLabel->setMinimumHeight(25); 
 	mainLayout->addWidget(makeResetLabel);  
 
-	laserEncoderAlarmLabel = new QLabel(tr("  Laser Encoder OK"));
+	laserEncoderAlarmLabel = new QLabel(tr("  Laser Encoder"));
 	laserEncoderAlarmLabel->setMinimumHeight(30);
 	laserEncoderAlarmLabel->setStyleSheet(readablePlcLabelStyle("QLabel{background-color:white}"));
 	mainLayout->addWidget(laserEncoderAlarmLabel);
 
-	overCraneSafetySensorAlarmLabel = new QLabel(tr("  Over Crane Safety Sensor OK"));
+	overCraneSafetySensorAlarmLabel = new QLabel(tr("  Over Crane Safety Sensor"));
 	overCraneSafetySensorAlarmLabel->setMinimumHeight(30);
 	overCraneSafetySensorAlarmLabel->setStyleSheet(readablePlcLabelStyle("QLabel{background-color:white}"));
 	mainLayout->addWidget(overCraneSafetySensorAlarmLabel);
@@ -185,7 +185,7 @@ void plcWidgetClass::setMakeResetLabelText(QString str,QString style)
 
 void plcWidgetClass::setLaserEncoderError(bool active)
 {
-	laserEncoderAlarmLabel->setText(active ? tr("  Laser Encoder Error") : tr("  Laser Encoder OK"));
+	laserEncoderAlarmLabel->setText(active ? tr("  Laser Encoder Error") : tr("  Laser Encoder"));
 	laserEncoderAlarmLabel->setStyleSheet(readablePlcLabelStyle(
 		active ? "QLabel{background-color:red}" : "QLabel{background-color:white}"));
 }
@@ -194,7 +194,7 @@ void plcWidgetClass::setOverCraneSafetySensorError(bool active)
 {
 	overCraneSafetySensorAlarmLabel->setText(active
 		? tr("  Over Crane Safety Sensor Error")
-		: tr("  Over Crane Safety Sensor OK"));
+		: tr("  Over Crane Safety Sensor"));
 	overCraneSafetySensorAlarmLabel->setStyleSheet(readablePlcLabelStyle(
 		active ? "QLabel{background-color:red}" : "QLabel{background-color:white}"));
 }
