@@ -19,10 +19,43 @@ ConfigurationManager& ConfigurationManager::Instance()
 }
 
 ConfigurationManager::ConfigurationManager()
-	: m_isLoaded(false)
+	: m_isLoaded(false), m_restrictedBasketLocations(DefaultRestrictedBasketLocations())
 {
 }
 
+QStringList ConfigurationManager::DefaultRestrictedBasketLocations()
+{
+	return QString("100,110,120,130,140,150,220,280,290").split(',');
+}
+
+QStringList ConfigurationManager::AvailableBasketRestrictionLocations()
+{
+	// Crane-accessible lists in ap.cpp (including the packaging in/out location).
+	// Internal oven, stacker and conveyor-only positions are not crane destinations.
+	return QString("100,110,120,130,140,150,160,200,210,220,230,240,250,260,270,280,290,300,310,320,330,340,350,360,370,380,390,400,410,450,460,500,800,820,840,860,880").split(',');
+}
+bool ConfigurationManager::SaveRestrictedBasketLocations(const QStringList& locations, QString *errorMessage)
+{
+	const QStringList supported = AvailableBasketRestrictionLocations();
+	foreach (const QString& location, locations)
+		if (!supported.contains(location)) {
+			if (errorMessage) *errorMessage = "Unsupported restriction location: " + location;
+			return false;
+		}
+	if (!m_isLoaded || m_fileName.isEmpty()) {
+		if (errorMessage) *errorMessage = "The application configuration is not loaded.";
+		return false;
+	}
+	QSettings settings(m_fileName, QSettings::IniFormat);
+	settings.setValue("BasketRestrictions/locations", locations.join("|"));
+	settings.sync();
+	if (settings.status() != QSettings::NoError) {
+		if (errorMessage) *errorMessage = "Could not save configuration:\n" + m_fileName;
+		return false;
+	}
+	m_restrictedBasketLocations = locations;
+	return true;
+}
 bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 {
     m_emailAlerts = EmailAlertSettings();
@@ -52,11 +85,27 @@ bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 		return false;
 	}
 
+	const QStringList defaults = DefaultRestrictedBasketLocations();
+	m_restrictedBasketLocations = defaults;
+	if (settings.contains("BasketRestrictions/locations")) {
+		const QStringList entries = settings.value("BasketRestrictions/locations").toString().split('|', QString::SkipEmptyParts);
+		QStringList validated;
+		foreach (const QString& entry, entries) {
+			const QString location = entry.trimmed();
+			if (!AvailableBasketRestrictionLocations().contains(location)) {
+				if (errorMessage) *errorMessage = "Invalid BasketRestrictions/locations value: " + location;
+				return false;
+			}
+			if (!validated.contains(location)) validated << location;
+		}
+		m_restrictedBasketLocations = validated;
+	}
 	m_application.m_singleInstance = settings.value("Application/singleInstance").toBool();
 	m_application.m_style = ReadString(settings, "Application/style");
 	m_application.m_windowWidth = settings.value("Application/windowWidth").toInt();
 	m_application.m_windowHeight = settings.value("Application/windowHeight").toInt();
 	m_application.m_startMaximized = settings.value("Application/startMaximized").toBool();
+	m_application.m_showSettingsButton = settings.value("Application/showSettingsButton", true).toBool();
 	m_application.m_environmentMode = ReadString(settings, "Environment/mode").trimmed();
 	m_application.m_liveEnabledHosts = ReadString(settings, "Environment/liveEnabledHosts")
 		.split('|', QString::SkipEmptyParts);

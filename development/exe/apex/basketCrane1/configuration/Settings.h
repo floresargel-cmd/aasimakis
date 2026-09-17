@@ -49,6 +49,7 @@ public:
 	int WindowWidth() const { return m_windowWidth; }
 	int WindowHeight() const { return m_windowHeight; }
 	bool StartMaximized() const { return m_startMaximized; }
+	bool ShowSettingsButton() const { return m_showSettingsButton; }
 	const QString& EnvironmentMode() const { return m_environmentMode; }
 	const QStringList& LiveEnabledHosts() const { return m_liveEnabledHosts; }
 
@@ -58,7 +59,7 @@ private:
 		: m_singleInstance(false),
 		  m_windowWidth(0),
 		  m_windowHeight(0),
-		  m_startMaximized(false)
+		  m_startMaximized(false), m_showSettingsButton(true)
 	{
 	}
 	bool m_singleInstance;
@@ -66,6 +67,7 @@ private:
 	int m_windowWidth;
 	int m_windowHeight;
 	bool m_startMaximized;
+	bool m_showSettingsButton;
 	QString m_environmentMode;
 	QStringList m_liveEnabledHosts;
 };

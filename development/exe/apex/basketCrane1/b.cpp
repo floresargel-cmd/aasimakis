@@ -1,3 +1,4 @@
+#include "configuration/ConfigurationManager.h"
 #include "b.h"
 #include "dbTableStatus.h"
 
@@ -403,9 +404,10 @@ void basketClass::calculateBasketContentsTypeFromEpicsDatabase()
 
 			toolTipText += tr("\nAGE OVEN RESTRICTION\n"
 				"Contains %1 temper material.\n"
-				"Not allowed at load positions:\n"
-				"100, 110, 120, 130, 220, 280, 290\n")
-				.arg(restrictedTempers.join(", "));
+				"Not allowed at locations:\n"
+				"%2\n")
+				.arg(restrictedTempers.join(", "))
+				.arg(BasketCrane::Configuration::ConfigurationManager::Instance().RestrictedBasketLocations().join(", "));
 		}
 	}
 	else

@@ -241,19 +241,8 @@ bool basketPositionClass::canMoveToPosition(int destinationNumber)
 	if (!hasNonAgeableTemperMaterial())
 		return true;
 
-	switch (destinationNumber)
-	{
-	case 100:
-	case 110:
-	case 120:
-	case 130:
-	case 220:
-	case 280:
-	case 290:
-		return false;
-	default:
-		return true;
-	}
+	return !BasketCrane::Configuration::ConfigurationManager::Instance()
+		.RestrictedBasketLocations().contains(QString::number(destinationNumber));
 }
 
 int basketPositionClass::getPlcId()

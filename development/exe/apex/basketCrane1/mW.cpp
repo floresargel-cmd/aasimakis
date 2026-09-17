@@ -22,6 +22,7 @@
 #include <QIntValidator>
 #include <QLineEdit>
 #include <QTableWidget>
+#include <QScrollArea>
 #include <windows.h>
 
 
@@ -219,6 +220,80 @@ mainWindowClass::mainWindowClass()
 		? tr("Reads Live databases. Database writes and PLC commands are blocked.")
 		: QString());
 	appHeaderLayout->addWidget(systemMode);
+	QPushButton *settingsButton = new QPushButton(tr("Settings"), appHeader);
+	settingsButton->setObjectName("basketRestrictionSettingsButton");
+	settingsButton->setToolTip(tr("Configure bright pink basket location restrictions"));
+	appHeaderLayout->addWidget(settingsButton);
+	settingsButton->setVisible(configuration.Application().ShowSettingsButton());
+	connect(settingsButton, &QPushButton::clicked, this, [this]()
+	{
+		using BasketCrane::Configuration::ConfigurationManager;
+		QDialog dialog(this);
+		dialog.setWindowTitle(tr("Settings - Bright Pink Basket Restrictions"));
+		dialog.setMinimumWidth(600);
+		QVBoxLayout *layout = new QVBoxLayout(&dialog);
+		QLabel *description = new QLabel(tr("Baskets containing T1, T4, or F temper material are shown in bright pink.\nSelect the locations these baskets must not enter."), &dialog);
+		description->setWordWrap(true);
+		layout->addWidget(description);
+		const QStringList defaults = ConfigurationManager::DefaultRestrictedBasketLocations();
+		QStringList locations = defaults;
+		foreach (const QString& location, ConfigurationManager::AvailableBasketRestrictionLocations())
+			if (!defaults.contains(location)) locations << location;
+		const QStringList selected = ConfigurationManager::Instance().RestrictedBasketLocations();
+		QLabel *defaultSummary = new QLabel(tr("Defaults: %1").arg(defaults.join(", ")), &dialog);
+		defaultSummary->setWordWrap(true);
+		layout->addWidget(defaultSummary);
+		QLabel *selectionHint = new QLabel(tr("Checked = restricted. Unchecked = no pink basket restriction. Other movement rules still apply."), &dialog);
+		selectionHint->setWordWrap(true);
+		layout->addWidget(selectionHint);
+		QScrollArea *scroll = new QScrollArea(&dialog);
+		scroll->setWidgetResizable(true);
+		scroll->setMinimumHeight(320);
+		QWidget *content = new QWidget(scroll);
+		QVBoxLayout *groups = new QVBoxLayout(content);
+		QGroupBox *defaultGroup = new QGroupBox(tr("Default restricted locations"), content);
+		QGroupBox *additionalGroup = new QGroupBox(tr("Additional available locations"), content);
+		QGridLayout *defaultGrid = new QGridLayout(defaultGroup);
+		QGridLayout *additionalGrid = new QGridLayout(additionalGroup);
+		QList<QCheckBox*> checks;
+		for (int i = 0; i < locations.size(); ++i) {
+			const bool isDefault = defaults.contains(locations[i]);
+			QCheckBox *check = new QCheckBox(tr("Location %1").arg(locations[i]), content);
+			check->setChecked(selected.contains(locations[i]));
+			check->setToolTip(isDefault ? tr("Restricted by default") : tr("Optional additional restriction"));
+			checks << check;
+			const int rowIndex = isDefault ? i : i - defaults.size();
+			(isDefault ? defaultGrid : additionalGrid)->addWidget(check, rowIndex / 4, rowIndex % 4);
+		}
+		groups->addWidget(defaultGroup);
+		groups->addWidget(additionalGroup);
+		groups->addStretch();
+		scroll->setWidget(content);
+		layout->addWidget(scroll);
+		QLabel *note = new QLabel(tr("Save applies immediately to new move requests and keeps the settings after restart.\nMoves already dispatched to the crane are not changed."), &dialog);
+		note->setWordWrap(true);
+		layout->addWidget(note);
+		QDialogButtonBox *buttons = new QDialogButtonBox(QDialogButtonBox::Save | QDialogButtonBox::Cancel | QDialogButtonBox::RestoreDefaults, &dialog);
+		layout->addWidget(buttons);
+		connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+		connect(buttons->button(QDialogButtonBox::RestoreDefaults), &QPushButton::clicked, &dialog, [checks, locations, defaults]() {
+			for (int i = 0; i < checks.size(); ++i) checks[i]->setChecked(defaults.contains(locations[i]));
+		});
+		connect(buttons, &QDialogButtonBox::accepted, &dialog, [this, &dialog, checks, locations]() {
+			QStringList selected;
+			for (int i = 0; i < checks.size(); ++i)
+				if (checks[i]->isChecked()) selected << locations[i];
+			QString error;
+			if (!ConfigurationManager::Instance().SaveRestrictedBasketLocations(selected, &error)) {
+				QMessageBox::warning(&dialog, tr("Settings not saved"), error);
+				return;
+			}
+			LOG("BASKET RESTRICTIONS", QString("Restricted locations saved: %1").arg(selected.join(", ")));
+			refreshBasketDataDisplay();
+			dialog.accept();
+		});
+		dialog.exec();
+	});
 	rootLayout->addWidget(appHeader);
 	rootLayout->addLayout(mainLayout, 1);
 	// Status bar: database table activity indicators (green=read, blue=write, grey=idle)
@@ -366,7 +441,7 @@ mainWindowClass::mainWindowClass()
 	const QString nonAgeableTemperToolTip = tr(
 		"<b>Age oven restriction</b><br>"
 		"Baskets containing T1, T4, or F temper material cannot move to age oven load positions:<br>"
-		"<b>100, 110, 120, 130, 220, 280, 290</b>");
+		"<b>See Settings for the current restricted locations.</b>");
 
 	QLabel *basketLegendSection = new QLabel(tr("BASKET"), basketColorLegend);
 	basketLegendSection->setObjectName("basketLegendSection");

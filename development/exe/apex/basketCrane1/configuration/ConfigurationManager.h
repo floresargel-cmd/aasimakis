@@ -17,6 +17,10 @@ public:
 
 	bool Load(const QString& fileName, QString *errorMessage = 0);
 	bool IsLoaded() const { return m_isLoaded; }
+	static QStringList DefaultRestrictedBasketLocations();
+	static QStringList AvailableBasketRestrictionLocations();
+	QStringList RestrictedBasketLocations() const { return m_restrictedBasketLocations; }
+	bool SaveRestrictedBasketLocations(const QStringList& locations, QString *errorMessage);
 	const QString& FileName() const { return m_fileName; }
 
 	const ApplicationSettings& Application() const { return m_application; }
@@ -42,6 +46,7 @@ private:
 	DatabaseProfile ReadDatabaseProfile(QSettings& settings, const QString& section) const;
 
 	bool m_isLoaded;
+	QStringList m_restrictedBasketLocations;
 	QString m_fileName;
 	ApplicationSettings m_application;
 	PathSettings m_paths;
