@@ -19,6 +19,7 @@
     <ClCompile Include="..\emulate.cr.cpp" />
     <ClCompile Include="..\emulate.mW.cpp" />
     <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\emailAlerts.cpp" />
     <ClCompile Include="..\mW.cpp" />
     <ClCompile Include="..\oP.cpp" />
     <ClCompile Include="..\oW.cpp" />
@@ -100,6 +101,7 @@
     <ClInclude Include="..\emulate.G.h" />
     <ClInclude Include="..\emulate.mW.h" />
     <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\emailAlerts.h" />
     <ClInclude Include="..\oP.h" />
     <ClInclude Include="..\oW.h" />
     <ClInclude Include="..\pass.h" />

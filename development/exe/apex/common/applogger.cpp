@@ -38,6 +38,7 @@ struct AppLoggerState {
     int maxBackupFiles;
     AppLogSeverity minimumSeverity;
     AppLogStatusCallback cb;
+    AppLogStatusCallback errorCb;
 
     AppLoggerState()
         : file()
@@ -50,6 +51,7 @@ struct AppLoggerState {
         , maxBackupFiles(5)
         , minimumSeverity(APPLOG_SEV_INFO)
         , cb(0)
+        , errorCb(0)
     {
     }
 };
@@ -329,6 +331,13 @@ bool applog_isOpen()
     return s.isOpen;
 }
 
+void applog_setErrorCallback(AppLogStatusCallback cb)
+{
+    AppLoggerState& s = loggerState();
+    QMutexLocker locker(&s.mutex);
+    s.errorCb = cb;
+}
+
 QString applog_fullPath()
 {
     AppLoggerState& s = loggerState();
@@ -359,6 +368,7 @@ void applog_write(AppLogSeverity severity, const QString& title, const QString& 
 {
     AppLoggerState& s = loggerState();
     AppLogStatusCallback cb = 0;
+    AppLogStatusCallback errorCb = 0;
     QString path;
     QString openFailReason;
     bool openedNow = false;
@@ -369,6 +379,7 @@ void applog_write(AppLogSeverity severity, const QString& title, const QString& 
         if (severity < s.minimumSeverity)
             return;
         cb = s.cb;
+        errorCb = s.errorCb;
         if (!s.isOpen || s.openDate != QDate::currentDate()) {
             if (s.enabled) {
                 openedNow = ensureLogFileOpen_locked(s, &openFailReason);
@@ -400,6 +411,8 @@ void applog_write(AppLogSeverity severity, const QString& title, const QString& 
 
     if (openFailed)
         reportOpenFailure(path, openFailReason);
+    if (errorCb && severity >= APPLOG_SEV_ERROR)
+        errorCb(APPLOG_EVENT_WRITE, severity, path, title, mess);
     if (cb) {
         if (openFailed) {
             cb(APPLOG_EVENT_OPEN_FAILED, APPLOG_SEV_ERROR, path, title, mess);

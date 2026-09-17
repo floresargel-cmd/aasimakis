@@ -2,6 +2,7 @@
 #include "configuration/ConfigurationManager.h"
 #include "generated/build_version.h"
 #include "../common/applogger.h"
+#include "emailAlerts.h"
 #include <QtPlugin>
 #include <QtGlobal>
 #include <cstdlib>
@@ -47,10 +48,13 @@ int main(int argc, char *argv[])
 	}
 
 	QString configError;
-	if (!configuration.Load(configFileName, &configError))
+    const bool configurationLoaded = configuration.Load(configFileName, &configError);
+    EmailAlerts emailAlerts(configuration.EmailAlerts());
+	if (!configurationLoaded)
 	{
 		applog_write(APPLOG_SEV_ERROR, "CONFIGURATION", configError);
 		QMessageBox::critical(0, "Configuration error", configError);
+		emailAlerts.stop();
 		applog_shutdown();
 		return 2;
 	}
@@ -292,6 +296,7 @@ int main(int argc, char *argv[])
 			result = 1;
 		}
 	}
+	emailAlerts.stop();
 	applog_shutdown();
 	return result;
 }

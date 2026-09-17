@@ -11,6 +11,36 @@ namespace Configuration
 
 class ConfigurationManager;
 
+class EmailAlertSettings
+{
+public:
+    EmailAlertSettings() : m_enabled(false), m_smtpPort(587), m_startTls(true),
+        m_cooldownSeconds(3600), m_timeoutSeconds(20) {}
+    bool Enabled() const { return m_enabled; }
+    const QString& SmtpHost() const { return m_smtpHost; }
+    int SmtpPort() const { return m_smtpPort; }
+    bool StartTls() const { return m_startTls; }
+    const QString& Username() const { return m_username; }
+    const QString& Password() const { return m_password; }
+    const QString& From() const { return m_from; }
+    const QString& To() const { return m_to; }
+    QString Subject() const { return m_subjectPrefix.isEmpty() ? "Basket Crane 1 Application Error" : m_subjectPrefix + "Application Error"; }
+    int CooldownSeconds() const { return m_cooldownSeconds; }
+    int TimeoutSeconds() const { return m_timeoutSeconds; }
+    const QString& ValidationError() const { return m_validationError; }
+
+private:
+    friend class ConfigurationManager;
+    bool m_enabled;
+    QString m_smtpHost;
+    int m_smtpPort;
+    bool m_startTls;
+    QString m_username, m_password, m_from, m_to;
+    QString m_subjectPrefix;
+    int m_cooldownSeconds, m_timeoutSeconds;
+    QString m_validationError;
+};
+
 class ApplicationSettings
 {
 public:

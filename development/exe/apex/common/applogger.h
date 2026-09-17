@@ -52,6 +52,10 @@ typedef void (*AppLogStatusCallback)(
 // Keep the callback fast (update a label, set flags, enqueue UI update, etc.).
 void applog_setStatusCallback(AppLogStatusCallback cb);
 
+// Independent notification sink; called outside the logger lock for errors and
+// fatal entries even when file logging is disabled/unavailable. Must not block.
+void applog_setErrorCallback(AppLogStatusCallback cb);
+
 // Query helpers (safe to call anytime)
 bool applog_isOpen();
 QString applog_fullPath();

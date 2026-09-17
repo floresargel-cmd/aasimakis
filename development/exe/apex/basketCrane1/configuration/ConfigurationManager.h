@@ -28,6 +28,7 @@ public:
 	const VisualizationSettings& Visualization() const { return m_visualization; }
 	const EmulationSettings& Emulation() const { return m_emulation; }
 	const SecuritySettings& Security() const { return m_security; }
+    const EmailAlertSettings& EmailAlerts() const { return m_emailAlerts; }
 
 private:
 	ConfigurationManager();
@@ -35,6 +36,7 @@ private:
 	ConfigurationManager& operator=(const ConfigurationManager&);
 
 	bool Validate(QSettings& settings, QString *errorMessage) const;
+    void ReadEmailAlerts(QSettings& settings);
 	QString ReadString(QSettings& settings, const QString& key) const;
 	QString Expand(const QString& value) const;
 	DatabaseProfile ReadDatabaseProfile(QSettings& settings, const QString& section) const;
@@ -50,6 +52,7 @@ private:
 	VisualizationSettings m_visualization;
 	EmulationSettings m_emulation;
 	SecuritySettings m_security;
+    EmailAlertSettings m_emailAlerts;
 };
 
 }

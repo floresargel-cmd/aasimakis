@@ -45,9 +45,15 @@ try {
     $major = [int]$Matches[1]
     $minor = [int]$Matches[2]
     $build = [int]$Matches[3] + 1
-    if ($build -gt 65535) {
+    if ($build -gt 99) {
         $minor++
         $build = 0
+    }
+
+    # Both rightmost components range from 0 to 99, carrying to the left.
+    if ($minor -gt 99) {
+        $major++
+        $minor = 0
     }
 
     $nextVersion = '{0}.{1}.{2}' -f $major, $minor, $build

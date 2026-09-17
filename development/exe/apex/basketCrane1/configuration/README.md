@@ -7,6 +7,9 @@ application.
 
 - `ConfigurationManager` loads, expands, and validates the INI file once.
 - `Settings` exposes immutable, typed configuration objects grouped by domain.
+- `[EmailAlerts]` configures error notifications independently of crane operation.
+  Invalid mail settings disable email with a log warning. See `../LOGGING.md` for
+  the supported SMTP settings, batching interval and subject prefix.
 - `DatabaseConfigurator` applies a typed database profile to `QSqlDatabase`.
 - `[Environment] mode` selects `Test`, `Live`, or `LiveObserver`. LiveObserver
   reads Live profiles while centrally blocking SQL mutations and PLC output.

@@ -1,5 +1,6 @@
 #include "plcM.h"
 #include "plcNetworkStatus.h"
+#include <QPainter>
 #include "../common/execDBQuery.h"
 float plcSetXVelocityForOpenGl;
 float plcSetYVelocityForOpenGl;
@@ -169,12 +170,12 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		//commands group
 		QGroupBox *commandsGroupBox = new QGroupBox(tr("PLC commands")); layout1->addWidget(commandsGroupBox);
 		QVBoxLayout *commandsGroupBoxLayout = new QVBoxLayout(); commandsGroupBox->setLayout(commandsGroupBoxLayout);
-		command10PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|10", "N20|3|0", tr("Move axis z up "), this); commandsGroupBoxLayout->addWidget(command10PushButton);
-		command11PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|11", "N20|3|0", tr("Move axis z down"), this); commandsGroupBoxLayout->addWidget(command11PushButton);
-		command12PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|12", "N20|3|0", tr("Move axis x to ageing oven"), this); commandsGroupBoxLayout->addWidget(command12PushButton);
-		command13PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|13", "N20|3|0", tr("Move axis x to empty buffer"), this); commandsGroupBoxLayout->addWidget(command13PushButton);
-		command14PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|14", "N20|3|0", tr("Move axis y to Press 1"), this); commandsGroupBoxLayout->addWidget(command14PushButton);
-		command15PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|15", "N20|3|0", tr("Move axis y to Press 2"), this); commandsGroupBoxLayout->addWidget(command15PushButton);
+		command10PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|10", "N20|3|0", tr("Move axis Z up "), this); commandsGroupBoxLayout->addWidget(command10PushButton);
+		command11PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|11", "N20|3|0", tr("Move axis Z down"), this); commandsGroupBoxLayout->addWidget(command11PushButton);
+		command12PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|12", "N20|3|0", tr("Move axis X East"), this); commandsGroupBoxLayout->addWidget(command12PushButton);
+		command13PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|13", "N20|3|0", tr("Move axis X West"), this); commandsGroupBoxLayout->addWidget(command13PushButton);
+		command14PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|14", "N20|3|0", tr("Move axis Y North"), this); commandsGroupBoxLayout->addWidget(command14PushButton);
+		command15PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|15", "N20|3|0", tr("Move axis Y South"), this); commandsGroupBoxLayout->addWidget(command15PushButton);
 		command16PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|16", "N20|3|0", tr("Basket pins out"), this); commandsGroupBoxLayout->addWidget(command16PushButton);
 		command17PushButton = new myQPushButton(cranePlcTcpServer, "", "N20|3|0", tr("Basket pins in"), this); commandsGroupBoxLayout->addWidget(command17PushButton);
 		command18PushButton = new myQPushButton(cranePlcTcpServer, "N20|3|18", "N20|3|0", tr("Lock basket in upper position"), this); commandsGroupBoxLayout->addWidget(command18PushButton);
@@ -286,6 +287,27 @@ plcManualClass::plcManualClass(QWidget *p, plcWidgetClass *plcWidget_, tcpServer
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		//downLayout
 		QImage image(":/plcPos.png");
+		// Annotate the existing 1281 x 401 layout without covering its axis labels.
+		if (!image.isNull())
+		{
+			image = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+			QPainter painter(&image);
+			painter.setRenderHint(QPainter::TextAntialiasing);
+			painter.scale(image.width() / 1281.0, image.height() / 401.0);
+			painter.setPen(QColor("#ffff00"));
+			QFont directionFont("Arial");
+			directionFont.setPixelSize(18);
+			directionFont.setBold(true);
+			painter.setFont(directionFont);
+			painter.drawText(QRect(1046, 256, 26, 24), Qt::AlignCenter, tr("N"));
+			painter.drawText(QRect(1013, 361, 26, 24), Qt::AlignCenter, tr("S"));
+			painter.drawText(QRect(1098, 303, 26, 24), Qt::AlignCenter, tr("E"));
+			painter.drawText(QRect(980, 288, 26, 24), Qt::AlignCenter, tr("W"));
+			directionFont.setPixelSize(16);
+			painter.setFont(directionFont);
+			painter.drawText(QRect(900, 348, 40, 24), Qt::AlignCenter, tr("up"));
+			painter.drawText(QRect(937, 263, 60, 24), Qt::AlignCenter, tr("down"));
+		}
 		QLabel *imageLabel = new QLabel;
 		imageLabel->setMinimumWidth(1281);
 		imageLabel->setMinimumHeight(401);

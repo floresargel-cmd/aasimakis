@@ -25,6 +25,7 @@ ConfigurationManager::ConfigurationManager()
 
 bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 {
+    m_emailAlerts = EmailAlertSettings();
 	QFileInfo fileInfo(fileName);
 	if (!fileInfo.exists() || !fileInfo.isFile())
 	{
@@ -43,6 +44,8 @@ bool ConfigurationManager::Load(const QString& fileName, QString *errorMessage)
 		return false;
 	}
 
+    // Load independently so valid email settings can report other startup errors.
+    ReadEmailAlerts(settings);
 	if (!Validate(settings, errorMessage))
 	{
 		m_fileName.clear();
@@ -248,6 +251,56 @@ bool ConfigurationManager::Validate(QSettings& settings, QString *errorMessage) 
 		return false;
 	}
 	return true;
+}
+
+void ConfigurationManager::ReadEmailAlerts(QSettings& settings)
+{
+    const QString enabled = settings.value("EmailAlerts/EnableErrorEmailNotification", "false").toString().trimmed().toLower();
+    m_emailAlerts.m_enabled = enabled != "false";
+    if (!m_emailAlerts.m_enabled)
+        return;
+    m_emailAlerts.m_smtpHost = ReadString(settings, "EmailAlerts/SmtpHost").trimmed();
+    bool portOk, cooldownOk, timeoutOk;
+    m_emailAlerts.m_smtpPort = settings.value("EmailAlerts/SmtpPort", 587).toInt(&portOk);
+    const QString tls = settings.value("EmailAlerts/SmtpEnableSsl", "true").toString().trimmed().toLower();
+    m_emailAlerts.m_startTls = tls == "true";
+    m_emailAlerts.m_username = ReadString(settings, "EmailAlerts/SmtpUsername");
+    m_emailAlerts.m_password = ReadString(settings, "EmailAlerts/SmtpPassword");
+    m_emailAlerts.m_from = ReadString(settings, "EmailAlerts/SmtpFrom").trimmed();
+    m_emailAlerts.m_to = ReadString(settings, "EmailAlerts/SmtpTo").trimmed();
+    const int intervalMinutes = settings.value("EmailAlerts/ErrorEmailIntervalMinutes", 60).toInt(&cooldownOk);
+    m_emailAlerts.m_cooldownSeconds = (intervalMinutes >= 1 && intervalMinutes <= 1440) ? intervalMinutes * 60 : 0;
+    m_emailAlerts.m_subjectPrefix = ReadString(settings, "EmailAlerts/SmtpSubjectPrefix");
+    m_emailAlerts.m_timeoutSeconds = settings.value("EmailAlerts/SmtpTimeoutSeconds", 20).toInt(&timeoutOk);
+    QStringList invalid;
+    if (enabled != "true" && enabled != "false")
+        invalid << "EnableErrorEmailNotification (true or false)";
+    if (m_emailAlerts.m_smtpHost.isEmpty() || m_emailAlerts.m_smtpHost.contains(QRegExp("[\\s]")))
+        invalid << "SmtpHost";
+    if (!portOk || m_emailAlerts.m_smtpPort < 1 || m_emailAlerts.m_smtpPort > 65535 || m_emailAlerts.m_smtpPort == 465)
+        invalid << "SmtpPort (1-65535; implicit TLS/465 is unsupported)";
+    if (tls != "true" && tls != "false")
+        invalid << "SmtpEnableSsl (true or false)";
+    if (!m_emailAlerts.m_username.isEmpty() && (!m_emailAlerts.m_startTls || m_emailAlerts.m_password.isEmpty()))
+        invalid << "SmtpUsername requires SmtpEnableSsl=true and SmtpPassword";
+    const QRegExp address("[^\\s<>@;,]+@[^\\s<>@;,]+");
+    if (!address.exactMatch(m_emailAlerts.m_from))
+        invalid << "SmtpFrom (one email address)";
+    const QStringList recipients = m_emailAlerts.m_to.split(';', QString::KeepEmptyParts);
+    foreach (const QString& recipient, recipients) {
+        if (!address.exactMatch(recipient.trimmed())) {
+            invalid << "SmtpTo (email addresses separated by semicolons)";
+            break;
+        }
+    }
+    if (!cooldownOk || m_emailAlerts.m_cooldownSeconds == 0)
+        invalid << "ErrorEmailIntervalMinutes (1-1440)";
+    if (m_emailAlerts.m_subjectPrefix.contains('\r') || m_emailAlerts.m_subjectPrefix.contains('\n'))
+        invalid << "SmtpSubjectPrefix (one line)";
+    if (!timeoutOk || m_emailAlerts.m_timeoutSeconds < 1 || m_emailAlerts.m_timeoutSeconds > 60)
+        invalid << "SmtpTimeoutSeconds (1-60)";
+    if (!invalid.isEmpty())
+        m_emailAlerts.m_validationError = "Email alerts disabled: invalid [EmailAlerts] settings: " + invalid.join(", ");
 }
 
 QString ConfigurationManager::ReadString(QSettings& settings, const QString& key) const
