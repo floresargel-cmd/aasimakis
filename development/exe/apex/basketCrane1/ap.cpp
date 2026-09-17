@@ -1,3 +1,5 @@
+#include <QMessageBox>
+#include <QApplication>
 #include "ap.h"
 #include "configuration/ConfigurationManager.h"
 #include "dbTableStatus.h"
@@ -1067,11 +1069,32 @@ void allPositionsClass::positionSelectedSlot(basketPositionClass* b)
 {
 	if (selectedFromBasketPos)
 	{
+		basketPositionClass* from = selectedFromBasketPos;
 		selectedToBasketPos = b;
-		crane->move(selectedFromBasketPos, selectedToBasketPos);
-		selectedFromBasketPos->setSelected(false);
-		selectedToBasketPos->setSelected(false);
-		selectedFromBasketPos = selectedToBasketPos = NULL;
+		// Finish selection before move() can invoke callbacks or repaint the view.
+		clearSelectedPositions();
+		if (!b || !crane)
+		{
+			LOG("ERROR: CRANE MOVE", "Destination selection has no destination or crane");
+			return;
+		}
+		LOG("CRANE MOVE", QString("Destination clicked: from=%1/%2 to=%3/%4")
+			.arg(from->getNumber()).arg(from->getIndex()).arg(b->getNumber()).arg(b->getIndex()));
+		QString rejectionReason;
+		const bool accepted = crane->move(from, b, &rejectionReason);
+		LOG("CRANE MOVE", QString("Destination click completed: accepted=%1").arg(accepted));
+		if (!accepted)
+		{
+			QMessageBox* alert = new QMessageBox(QMessageBox::Warning, tr("Basket move rejected"),
+				QString(), QMessageBox::Ok, QApplication::activeWindow());
+			alert->setAttribute(Qt::WA_DeleteOnClose);
+			alert->setTextFormat(Qt::PlainText);
+			alert->setText(tr("Basket %1 could not be moved from position %2 to %3.")
+				.arg(from->getBasketTableId()).arg(from->getNumber()).arg(b->getNumber()));
+			alert->setInformativeText(rejectionReason + tr("\n\nThe move was not started. Check the basket contents and destination before trying again."));
+			// Return to the event loop so PLC/status updates continue normally.
+			alert->open();
+		}
 	}
 	else
 	{

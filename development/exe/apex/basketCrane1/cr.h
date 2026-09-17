@@ -106,7 +106,7 @@ public:
 	//
 	void clearActivePositions();
 	void setActivePositions(basketPositionClass* from, basketPositionClass *to);
-	bool move(basketPositionClass *from,basketPositionClass *to);
+	bool move(basketPositionClass *from,basketPositionClass *to, QString* rejectionReason = NULL);
 	void loadFromDatabase();
 	bool getHasActiveMission();
 	void plcStatusChanged(int status);

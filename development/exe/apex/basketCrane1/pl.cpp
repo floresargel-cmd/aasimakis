@@ -73,7 +73,23 @@ void positionListClass::drawFreeToMoveBasket()//for Picking only
 
 void positionListClass::drawFreeToRecievePos(bool forPicking, basketPositionClass *incomingBasketPos)
 {
-	basketPositionClass *freeToRecievePos = getFreeToRecievePos(incomingBasketPos);
+	QString reason;
+	basketPositionClass *freeToRecievePos = getFreeToRecievePos(incomingBasketPos, &reason);
+	if (mainPosId == 290 && incomingBasketPos)
+	{
+		QString state = QString("basket=%1 source=%2 destination=290 available=%3 reason=%4 receiveLocked=%5")
+			.arg(incomingBasketPos->getBasketTableId()).arg(incomingBasketPos->getPlcId())
+			.arg(freeToRecievePos ? freeToRecievePos->getPlcId() : 0).arg(reason).arg(isLockedToRecieve);
+		for (int i = 0; i < basketPositions.count(); ++i)
+			state += QString(" | slot=%1 basket=%2 locked=%3 craneLocked=%4")
+				.arg(basketPositions[i]->getPlcId()).arg(basketPositions[i]->getBasketTableId())
+				.arg(basketPositions[i]->getLocked()).arg(basketPositions[i]->getIsLockedByCrane());
+		if (state != lastDestinationDiagnostic)
+		{
+			lastDestinationDiagnostic = state;
+			LOG("DESTINATION AVAILABILITY", state);
+		}
+	}
 	// @@@@ -- blowing up here, nullptr on the error return path?
 	if (freeToRecievePos == nullptr) {
 		LOG("positionListClass", "WARNING: NULLPTR - the called function may return a NULL now due to missing data...");
@@ -335,65 +351,63 @@ bool positionListClass::canTakeEmptyBasket()
 	return true;
 }
 
-basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass* incomingPos)
+basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass* incomingPos, QString* rejectionReason)
 {
-	if (!incomingPos) // @@@@@ -- This doesn't seem to be catching the null pointer, as the program is still crashing with an access violation when trying to read memory for incomingPos.  Need to investigate further, but for now, adding this check to prevent the crash and log the issue.
+	if (rejectionReason) rejectionReason->clear();
+	const auto reject = [rejectionReason](const QString& reason) -> basketPositionClass* {
+		if (rejectionReason) *rejectionReason = reason;
 		return NULL;
-
-	if( incomingPos == nullptr) {
-		LOG("pl.cpp", "WARNING: Vendor code failed above in it's !incomingPos logic (nullptr), positionListClass::getFreeToRecievePos() - incomingPos is NULL, returning NULL");
-		return NULL;
-	}
-
-
+	};
+	if (!incomingPos)
+		return reject(tr("No source basket selected"));
 	if (isLockedToRecieve)
-		return NULL;
+		return reject(tr("Position is locked to receive by the PLC"));
 
 	if (isBasketPositionYours(incomingPos))
-		return NULL;
+		return reject(tr("Source basket is already in this position"));
 
 	// T1, T4 and F material must bypass all aging-oven load positions.
 	// Apply this while selecting a destination so automatic routing continues
 	// looking for a valid buffer instead of repeatedly proposing a blocked move.
 	if (!incomingPos->canMoveToPosition(mainPosId))
-		return NULL;
+		return reject(tr("Selected basket contains T1, T4 or F material; oven loading is not allowed"));
 	
 	basketPositionClass* ans = NULL;
 	
 	//is same type?
 	if (incomingPos && (incomingPos->getTypeEnum() == BASKET_NORMAL) && (!(typeEnumeration&TYPE_NORMAL)))
-		return NULL;
+		return reject(tr("Normal baskets are not accepted"));
 
 	if (incomingPos && (incomingPos->getTypeEnum() == BASKET_SCRAP) && (!(typeEnumeration&TYPE_SCRAP)))
-		return NULL;
+		return reject(tr("Scrap baskets are not accepted"));
 	
 	//contents
 	if (incomingPos && (incomingPos->getTypeEnum() == BASKET_NORMAL))
 	{
 		if ((incomingPos->getContentsEnum() == BASKET_CONTENS_NONE) && (!(typeEnumeration&TYPE_EMPTY)))
-			return NULL;
+			return reject(tr("Empty baskets are not accepted"));
 
 		if ((incomingPos->getContentsEnum() == BASKET_CONTENS_LESS_THAN_20) && (!(typeEnumeration&TYPE_PROFILES20)))
-			return NULL;
+			return reject(tr("20-foot material is not accepted"));
 
 		if ((incomingPos->getContentsEnum() == BASKET_CONTENS_LESS_THAN_24) && (!(typeEnumeration&TYPE_PROFILES24)))
-			return NULL;
+			return reject(tr("24-foot material is not accepted"));
 
 		if ((incomingPos->getContentsEnum() == BASKET_CONTENS_LESS_THAN_30) && (!(typeEnumeration&TYPE_PROFILES30)))
-			return NULL;
+			return reject(tr("30-foot material is not accepted"));
 
 		if (incomingPos->getContentsEnum() == BASKET_CONTENS_MORE_THAN_30)
-			return NULL;
+			return reject(tr("Material exceeds 30 feet"));
 	}
 	
 	//is a basket in the column full/empty and the incoming is empty/full (this is for the empty buffer positions when puting 20 feet)
 	if ((mainPosId == 300) || (mainPosId == 310) || (mainPosId == 320) || (mainPosId == 330) || (mainPosId == 340) || (mainPosId == 350) || (mainPosId == 360) || (mainPosId == 370) || (mainPosId == 380) || (mainPosId == 390))  //only in empty buffer possitions
 	{
 		if ((incomingPos->hasContents()) && (!canTakeFullBasket()))
-			return NULL;
+			return reject(tr("Empty baskets obstruct a loaded basket"));
 
 		if ((!incomingPos->hasContents()) && (!canTakeEmptyBasket()))
-			return NULL;
+			return reject(tr("Loaded baskets obstruct an empty basket"));
 	}
 
 	// when puting 20 feet in empty buffer go up to the third floor
@@ -401,16 +415,16 @@ basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass*
 		(mainPosId == 800) || (mainPosId == 820) || (mainPosId == 840) || (mainPosId == 860) || (mainPosId == 880))  //only in empty buffer possitions
 	{
 		if ((incomingPos->hasContents()) && (getNumberOfBaskets() >= 3))
-			return NULL;
+			return reject(tr("Loaded baskets are limited to three levels in this buffer"));
 	}
 
 	//is Something Obstructing the way?
 	if (isSomethingObstructingThePositionsWay(incomingPos))
-		return NULL;
+		return reject(tr("Another position obstructs the crane path"));
 
 	//isAConcurrentPositionFull?
 	if (isAConcurrentPositionFull())
-		return NULL;
+		return reject(tr("A concurrent position is occupied"));
 
 	//is recieving mine?
 	if (incomingPos)
@@ -419,7 +433,7 @@ basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass*
 		{
 			if (basketPositions[i] == incomingPos)
 			{
-				return NULL;
+				return reject(tr("Source basket is already in this position"));
 			}
 		}
 	}
@@ -435,6 +449,15 @@ basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass*
 		}
 	}
 
+	if (!ans && rejectionReason) {
+		*rejectionReason = tr("No empty slot is available");
+		for (int i = 0; i < basketPositions.count(); ++i) {
+			if (!basketPositions[i]->hasBasket()) {
+				*rejectionReason = tr("First empty slot %1 is locked; higher slots cannot be used").arg(basketPositions[i]->getPlcId());
+				break;
+			}
+		}
+	}
 	return ans;
 }
 

@@ -230,13 +230,15 @@ QVector<QVector<QVariant> > execDBTableQuery(QString stmnt, QString connection)
     return executeWithRetry(stmnt, connection, true).rows;
 }
 
-bool execDBTransaction(const QStringList& statements, QString connection, int maxRetries)
+bool execDBTransaction(const QStringList& statements, QString connection, int maxRetries, QString* errorMessage)
 {
+    if (errorMessage) errorMessage->clear();
     if (statements.isEmpty())
         return true;
 
     if (g_databaseReadOnlyMode) {
         logObserverBlock(connection, "transaction");
+        if (errorMessage) *errorMessage = QStringLiteral("Moves are disabled in read-only observer mode.");
         return false;
     }
 
@@ -251,12 +253,14 @@ bool execDBTransaction(const QStringList& statements, QString connection, int ma
     for (int attempt = 0; attempt <= maxRetries; ++attempt) {
         QSqlDatabase database = QSqlDatabase::database(connection);
         if (!database.driver() || !database.driver()->hasFeature(QSqlDriver::Transactions)) {
+            if (errorMessage) *errorMessage = QStringLiteral("The database connection does not support transactions.");
             LOG("ERROR: DATABASE", QString("Connection '%1' does not support SQL transactions")
                 .arg(connection));
             return false;
         }
 
         if (!database.transaction()) {
+            if (errorMessage) *errorMessage = database.lastError().text();
             LOG("ERROR: DATABASE", QString("Could not begin transaction on connection '%1': %2")
                 .arg(connection).arg(sqlDiagnostic(database.lastError())));
             return false;
@@ -274,6 +278,7 @@ bool execDBTransaction(const QStringList& statements, QString connection, int ma
         }
 
         if (!failure.isValid() && database.commit()) {
+            if (errorMessage) errorMessage->clear();
             const qint64 elapsedMs = timer.elapsed();
             if (elapsedMs >= 1000) {
                 LOG("WARNING: DATABASE", QString("Slow transaction (%1 ms, %2 statements) on connection '%3'")
@@ -287,6 +292,7 @@ bool execDBTransaction(const QStringList& statements, QString connection, int ma
             failedStatement = "COMMIT";
         }
 
+        if (errorMessage) *errorMessage = failure.text();
         const bool rollbackSucceeded = database.rollback();
         const bool serverRolledBackDeadlock = isDeadlockSqlError(failure);
         if (!rollbackSucceeded && !serverRolledBackDeadlock) {

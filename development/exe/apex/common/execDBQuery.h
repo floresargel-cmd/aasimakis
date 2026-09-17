@@ -23,4 +23,4 @@ bool isDatabaseReadOnlyMode();
 // individual statement in the middle of the transaction).
 bool execDBTransaction(const QStringList& statements,
     QString connection = MAIN_DB_CONNECTION,
-    int maxRetries = 3);
+    int maxRetries = 3, QString* errorMessage = NULL);

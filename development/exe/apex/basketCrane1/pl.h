@@ -14,6 +14,7 @@ class positionListClass;
 class positionListClass:public QObject			
 {
 protected:
+	QString lastDestinationDiagnostic;
 	QString								description;
 	int									mainPosId;
 	//
@@ -81,7 +82,7 @@ public:
 	bool isTheBottomBasket(int b);
 	basketPositionClass* getFreeToMoveBasketPosition();
 	basketPositionClass* getHighlightedPos();
-	basketPositionClass* getFreeToRecievePos(basketPositionClass* incomingPos);
+	basketPositionClass* getFreeToRecievePos(basketPositionClass* incomingPos, QString* rejectionReason = NULL);
 	basketPositionClass *getPosition(int index);
 	QVector<basketPositionClass*> getBasketPositions();
 	QVector<basketPositionClass*> getAllBasketPositions();

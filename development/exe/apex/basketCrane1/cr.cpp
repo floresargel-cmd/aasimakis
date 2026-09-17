@@ -359,11 +359,8 @@ void craneClass::setActivePositions(basketPositionClass* from, basketPositionCla
 	}
 	else if (((!from) && (!to)) && (activeFromBasketPos && activeToBasketPos))
 	{
-		activeFromBasketPos = NULL;
 		lastToBasketPos = activeToBasketPos;
-		activeToBasketPos = NULL;
-		activeFromBasketPos->setLockedByCrane(false);
-		activeToBasketPos->setLockedByCrane(false);
+		clearActivePositions();
 	}
 }
 
@@ -382,9 +379,10 @@ void craneClass::clearActivePositions()
 	}
 }
 
-bool craneClass::move(basketPositionClass *from, basketPositionClass *to)
+bool craneClass::move(basketPositionClass *from, basketPositionClass *to, QString* rejectionReason)
 {
-	if ((!hasActiveMission) && (from&&to) && (plcStatus == 0))
+	if (rejectionReason) *rejectionReason = tr("The crane is not ready, or the source or destination is unavailable. Check the position and crane status before trying again.");
+	if ((!hasActiveMission) && (!activeFromBasketPos) && (!activeToBasketPos) && (from&&to) && (plcStatus == 0))
 	{
 		if (!from->isFreeToMove())
 			return false;
@@ -401,53 +399,78 @@ bool craneClass::move(basketPositionClass *from, basketPositionClass *to)
 		if (!to->canRecieve(from))
 			return false;
 
-		allPositions->getBeforeStackerPosition()->getPosition(0)->setErrorString("");
-		allPositions->getAfterStackerPosition()->getPosition(0)->setErrorString("");
+		// These database-backed lists can exist without a position row.
+		basketPositionClass* beforeStacker = allPositions->getBeforeStackerPosition()->getPosition(0);
+		basketPositionClass* afterStacker = allPositions->getAfterStackerPosition()->getPosition(0);
+		if (!beforeStacker || !afterStacker)
+		{
+			LOG("ERROR: CRANE MOVE", "Move rejected: missing position 400/1 or 410/1 in the positions table");
+			return false;
+		}
+		beforeStacker->setErrorString("");
+		afterStacker->setErrorString("");
 
 		if ((from->getNumber() == 400) && (allPositions->getPlcIsBeforeStackerPosEmpty()))
 		{
-			allPositions->getBeforeStackerPosition()->getPosition(0)->setErrorString("from -> this position is empty");
+			beforeStacker->setErrorString("from -> this position is empty");
 			return false;
 		}
 
 		if ((to->getNumber() == 400) && (!allPositions->getPlcIsBeforeStackerPosEmpty()))
 		{
-			allPositions->getBeforeStackerPosition()->getPosition(0)->setErrorString("to -> this position is full");
+			beforeStacker->setErrorString("to -> this position is full");
 			return false;
 		}
 
 		if ((from->getNumber() == 410) && (!allPositions->getPlcIsAfterStackerPosFull()))
 		{
-			allPositions->getAfterStackerPosition()->getPosition(0)->setErrorString("from -> this position is empty");
+			afterStacker->setErrorString("from -> this position is empty");
 			return false;
 		}
 
 		if ((to->getNumber() == 410) && (allPositions->getPlcIsAfterStackerPosFull()))
 		{
-			allPositions->getAfterStackerPosition()->getPosition(0)->setErrorString("to -> this position is full");
+			afterStacker->setErrorString("to -> this position is full");
 			return false;
 		}
 
-		setActivePositions(from, to);
-
-		hasActiveMission = true;
-
-		setDbTableActive("positions", false);
-		execDBQuery(QString("update positions set targetNumber=%1 , targetIndex=%2 where posNumber=%3 and posIndex=%4").arg(activeToBasketPos->getNumber()).arg(activeToBasketPos->getIndex()).arg(activeFromBasketPos->getNumber()).arg(activeFromBasketPos->getIndex()),MAIN_DB_CONNECTION);
-		setDbTableIdle("positions");
-
-		QString stmnt=QString("insert into basketHistory (type,position,destination,basketTableId,date,sec) VALUES('%1','%2','%3',%4,'%5','%6')")
-			.arg("new").arg((from->getDescription().trimmed() + " %1 %2").arg(from->getNumber()).arg(from->getIndex()))
-			.arg((to->getDescription().trimmed() + " %1 %2").arg(to->getNumber()).arg(to->getIndex())).arg(QString().number(from->getBasketTableId()))
+		// A database trigger can reject a destination (for example, a basket
+		// recorded as full at an empty-basket input). Do not publish a mission
+		// or send PLC commands until both its target and history are committed.
+		const QString targetStatement = QString("update positions set targetNumber=%1 , targetIndex=%2 where posNumber=%3 and posIndex=%4")
+			.arg(to->getNumber()).arg(to->getIndex()).arg(from->getNumber()).arg(from->getIndex());
+		const QString fromDescription = (from->getDescription().trimmed() + " %1 %2")
+			.arg(from->getNumber()).arg(from->getIndex()).replace("'", "''");
+		const QString toDescription = (to->getDescription().trimmed() + " %1 %2")
+			.arg(to->getNumber()).arg(to->getIndex()).replace("'", "''");
+		const QString historyStatement = QString("insert into basketHistory (type,position,destination,basketTableId,date,sec) VALUES('%1','%2','%3',%4,'%5','%6')")
+			.arg("new").arg(fromDescription).arg(toDescription).arg(from->getBasketTableId())
 			.arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t());
+		setDbTableActive("positions", false);
 		setDbTableActive("basketHistory", false);
-		execDBQuery(stmnt, MAIN_DB_CONNECTION);
+		QString databaseError;
+		const bool saved = execDBTransaction(QStringList() << targetStatement << historyStatement, MAIN_DB_CONNECTION, 3, &databaseError);
+		setDbTableIdle("positions");
 		setDbTableIdle("basketHistory");
+		if (!saved)
+		{
+			to->setErrorString(tr("Move rejected by database; see application log"));
+			if (rejectionReason) *rejectionReason = tr("The database rejected this move.") + "\n\n" + databaseError;
+			LOG("ERROR: CRANE MOVE", QString("Move not started: basket=%1 from=%2/%3 to=%4/%5; database transaction failed")
+				.arg(from->getBasketTableId()).arg(from->getNumber()).arg(from->getIndex())
+				.arg(to->getNumber()).arg(to->getIndex()));
+			return false;
+		}
 
+		if (rejectionReason) rejectionReason->clear();
+		to->setErrorString("");
+		setActivePositions(from, to);
+		hasActiveMission = true;
 		activeMissionTimerSlot();
 		activeMissionTimer.start(activeMissionTimerTime);
+		return true;
 	}
-	return true;
+	return false;
 }
 
 void craneClass::loadFromDatabase()
