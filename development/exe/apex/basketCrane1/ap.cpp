@@ -1650,6 +1650,10 @@ void allPositionsClass::timeLeftForOvenTofinishChanged(int minutesValue)
 void allPositionsClass::changeConveyorsBasketMemory(int plcPosId, int basket)
 {
 	setPlcNetworkActive(PLC_NETWORK_CONVEYORS, false);
+	// Hand the basket ID to DMS at the oven loading position.
+	if (plcPosId == 400 || plcPosId == 401)
+		conveyorsPlcTcpServer->sendString(QString("N12|5|%1").arg(basket));
+
 	if (plcPosId == 101)	conveyorsPlcTcpServer->sendString(QString("N11|%1|%2").arg(9).arg(basket));  // oven 1 sw
 	if (plcPosId == 111)	conveyorsPlcTcpServer->sendString(QString("N11|%1|%2").arg(11).arg(basket)); // oven 1 se
 	if (plcPosId == 121)	conveyorsPlcTcpServer->sendString(QString("N11|%1|%2").arg(1).arg(basket));  // oven 1 nw
@@ -1694,6 +1698,14 @@ void allPositionsClass::mainTimerSlot()
 {
 	LOG("mainTimerSlot called", "INFO: Step 1");
 	setMainTimerFiring();
+	// Pick up externally updated conveyor assignments even with auto mode off.
+	// This includes the third basket on return conveyor 160.
+	if (!autoModeEnum)
+	{
+		checkOvenUnloadPositions();
+		emit openGlChangedSignal();
+	}
+
 	LOG("mainTimerSlot called", "INFO: Step 2");
 	if (plcBeforeStackerPosMadeStep)
 	{

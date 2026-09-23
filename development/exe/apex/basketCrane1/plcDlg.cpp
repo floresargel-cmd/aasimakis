@@ -176,6 +176,8 @@ void plcDialogClass::addTables()
 	const int pollingMs = theOneBCToRuleThemAll
 		? plcSettings.EnabledPollingMilliseconds()
 		: plcSettings.StandbyPollingMilliseconds();
+	// DMS basket-ID register is needed for both active and standby connections.
+	tuxIpConveyors->addTable("N12", plcTableClass::TYPE_INT, 5, 5, pollingMs);
 	if (theOneBCToRuleThemAll) {
 		tuxIpCrane->addTable("N20", plcTableClass::TYPE_INT, 0, 24, pollingMs);
 		tuxIpCrane->addTable("F21", plcTableClass::TYPE_FLOAT, 0, 17, pollingMs);

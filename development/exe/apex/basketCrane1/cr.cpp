@@ -832,6 +832,7 @@ bool craneClass::closeMission()
 	if ((activeToBasketPos->getIndex() == 1) &&
 		((activeToBasketPos->getNumber() == 160) || (activeToBasketPos->getNumber() == 100) || (activeToBasketPos->getNumber() == 110) || (activeToBasketPos->getNumber() == 120) ||
 			(activeToBasketPos->getNumber() == 130) || (activeToBasketPos->getNumber() == 140) || (activeToBasketPos->getNumber() == 150) ||
+			(activeToBasketPos->getNumber() == 400) || // DMS basket-ID handoff; PLC owns clearing N12[5].
 			(activeToBasketPos->getNumber() == 450) || (activeToBasketPos->getNumber() == 220) || (activeToBasketPos->getNumber() == 280) || (activeToBasketPos->getNumber() == 290))
 		) //theseis sto fourno h katw thesh -- places in the oven lower position
 		allPositions->changeConveyorsBasketMemory(activeToBasketPos->getPlcId(), basketTableId);
