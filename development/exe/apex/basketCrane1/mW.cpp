@@ -450,8 +450,7 @@ mainWindowClass::mainWindowClass()
 	addColorLegendRow("#ff1493", tr("No-age temper (F/T1/T4)"), nonAgeableTemperToolTip);
 	addColorLegendRow("#007d96", tr("185 C"), QString());
 	addColorLegendRow("#ffaa27", tr("230 C"), QString());
-	addColorLegendRow("#ffff00", tr("Scrap"), QString());
-	addColorLegendRow("#ff0000", tr("Error"), QString());
+	addColorLegendRow("#ff0000", tr("Locked"), QString());
 
 	basketLegendLayout->addSpacing(5);
 	QLabel *dieLegendSection = new QLabel(tr("DIE / PROFILE"), basketColorLegend);
