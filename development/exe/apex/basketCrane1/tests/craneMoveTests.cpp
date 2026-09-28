@@ -1,4 +1,5 @@
 #include <QString>
+#include <QHash>
 #include <QStringList>
 #include <QDateTime>
 #include <QTime>
@@ -46,6 +47,11 @@ struct Positions {
 struct Timer { int starts = 0; void start(int) { ++starts; } };
 class craneClass {
 public:
+    QHash<QString, QString> automaticMoveErrors;
+    int alerts = 0;
+    QString alertReason;
+    void showAutomaticMoveError(basketPositionClass*, basketPositionClass*, const QString& reason)
+    { ++alerts; alertReason = reason; }
     bool hasActiveMission = false;
     int plcStatus = 0, plcCalls = 0;
     basketPositionClass *activeFromBasketPos = NULL, *activeToBasketPos = NULL, *lastToBasketPos = NULL;
@@ -100,13 +106,19 @@ int main()
             check(submittedStatements[0].contains(QString("targetNumber=%1").arg(destination)), "wrong destination");
             check(submittedStatements[1].contains("Operator''s position"), "description quote not escaped");
 
+            check(crane.alerts == 0, "manual rejection must not duplicate the caller popup");
+            check(!crane.move(&from, &to), "automatic rejection must return false");
+            check(crane.alerts == 1 && crane.alertReason.contains("55 PCS"), "automatic popup missing database reason");
+            check(!crane.move(&from, &to) && crane.alerts == 1, "identical automatic retry duplicated popup");
+            check(crane.plcCalls == 0 && !from.locked && !to.locked, "automatic failure started/locked crane");
             databaseAccepts = true;
             check(crane.move(&from, &to, &reason), "valid retry rejected");
+            check(crane.automaticMoveErrors.isEmpty(), "successful move must reset automatic popup suppression");
             check(reason.isEmpty(), "successful retry retained alert reason");
             check(crane.hasActiveMission && from.locked && to.locked, "accepted mission not activated");
             check(crane.plcCalls == 1 && crane.activeMissionTimer.starts == 1, "accepted mission not started once");
             check(to.error.isEmpty(), "successful retry retained rejection");
-            check(!crane.move(&from, &to) && transactionCalls == 2, "busy crane accepted another move");
+            check(!crane.move(&from, &to) && transactionCalls == 4, "busy crane accepted another move");
             crane.setActivePositions(NULL, NULL);
             check(!from.locked && !to.locked && crane.lastToBasketPos == &to, "cleanup failed");
         }

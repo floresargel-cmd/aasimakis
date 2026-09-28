@@ -1,4 +1,5 @@
 #include "cr.h"
+#include <QMessageBox>
 #include "configuration/ConfigurationManager.h"
 #include "dbTableStatus.h"
 #include "plcNetworkStatus.h"
@@ -379,6 +380,20 @@ void craneClass::clearActivePositions()
 	}
 }
 
+void craneClass::showAutomaticMoveError(basketPositionClass* from, basketPositionClass* to, const QString& reason)
+{
+	QMessageBox* alert = new QMessageBox(QMessageBox::Warning, tr("Automatic basket move rejected"),
+		QString(), QMessageBox::Ok, QApplication::activeWindow());
+	alert->setAttribute(Qt::WA_DeleteOnClose);
+	alert->setTextFormat(Qt::PlainText);
+	alert->setText(tr("Basket %1 could not be moved from position %2/%3 to %4/%5.")
+		.arg(from->getBasketTableId()).arg(from->getNumber()).arg(from->getIndex())
+		.arg(to->getNumber()).arg(to->getIndex()));
+	alert->setInformativeText(tr("The database rejected this move.") + "\n\n" + reason
+		+ tr("\n\nThe move was not started. Check the basket contents and destination. Identical automatic retries will not show another popup until a move to this destination succeeds."));
+	// Keep processing PLC/status updates while the operator reads the message.
+	alert->open();
+}
 bool craneClass::move(basketPositionClass *from, basketPositionClass *to, QString* rejectionReason)
 {
 	if (rejectionReason) *rejectionReason = tr("The crane is not ready, or the source or destination is unavailable. Check the position and crane status before trying again.");
@@ -452,8 +467,20 @@ bool craneClass::move(basketPositionClass *from, basketPositionClass *to, QStrin
 		const bool saved = execDBTransaction(QStringList() << targetStatement << historyStatement, MAIN_DB_CONNECTION, 3, &databaseError);
 		setDbTableIdle("positions");
 		setDbTableIdle("basketHistory");
+		const QString destinationKey = QString("%1/%2").arg(to->getNumber()).arg(to->getIndex());
 		if (!saved)
 		{
+			// Manual callers display their own popup using rejectionReason.
+			if (!rejectionReason)
+			{
+				const QString failureKey = QString("%1/%2/%3|").arg(from->getBasketTableId())
+					.arg(from->getNumber()).arg(from->getIndex()) + databaseError;
+				if (automaticMoveErrors.value(destinationKey) != failureKey)
+				{
+					automaticMoveErrors.insert(destinationKey, failureKey);
+					showAutomaticMoveError(from, to, databaseError);
+				}
+			}
 			to->setErrorString(tr("Move rejected by database; see application log"));
 			if (rejectionReason) *rejectionReason = tr("The database rejected this move.") + "\n\n" + databaseError;
 			LOG("ERROR: CRANE MOVE", QString("Move not started: basket=%1 from=%2/%3 to=%4/%5; database transaction failed")
@@ -462,6 +489,7 @@ bool craneClass::move(basketPositionClass *from, basketPositionClass *to, QStrin
 			return false;
 		}
 
+		automaticMoveErrors.remove(destinationKey);
 		if (rejectionReason) rejectionReason->clear();
 		to->setErrorString("");
 		setActivePositions(from, to);

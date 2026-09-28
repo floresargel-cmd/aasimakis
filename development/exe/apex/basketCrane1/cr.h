@@ -2,6 +2,7 @@
 #define CR_H
 
 #include <QtGui>
+#include <QHash>
 #include <QMainWindow>
 #include <QList.h>
 #include <QtOpenGL>
@@ -125,6 +126,8 @@ public slots:
 	void animateTimerSlot();						
 	
 private:
+	QHash<QString, QString> automaticMoveErrors;
+	void showAutomaticMoveError(basketPositionClass* from, basketPositionClass* to, const QString& reason);
 
 signals:
 	void scrapBasketPositionChangedSignal(int basketTableId);
