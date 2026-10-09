@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apexPackingFork.5.7.0", "apexPackingFork.5.7.0.vcxproj", "{459D9DF5-0C4C-434A-A286-18C15337D50A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|Win64 = Debug|Win64
+		Debug|x64 = Debug|x64
+		debugRemote|Mixed Platforms = debugRemote|Mixed Platforms
+		debugRemote|Win32 = debugRemote|Win32
+		debugRemote|Win64 = debugRemote|Win64
+		debugRemote|x64 = debugRemote|x64
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|Win64 = Release|Win64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|Mixed Platforms.ActiveCfg = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|Mixed Platforms.Build.0 = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|Win32.ActiveCfg = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|Win32.Build.0 = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|Win64.ActiveCfg = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Debug|x64.ActiveCfg = Debug|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Mixed Platforms.ActiveCfg = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Mixed Platforms.Build.0 = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Win32.ActiveCfg = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Win32.Build.0 = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Win64.ActiveCfg = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|Win64.Build.0 = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|x64.ActiveCfg = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.debugRemote|x64.Build.0 = debugRemote|Win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|Mixed Platforms.ActiveCfg = Release|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|Mixed Platforms.Build.0 = Release|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|Win32.ActiveCfg = Release|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|Win32.Build.0 = Release|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|Win64.ActiveCfg = Release|win32
+		{459D9DF5-0C4C-434A-A286-18C15337D50A}.Release|x64.ActiveCfg = Release|win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69CBAB99-EB8B-4E9A-B2CC-673747453B6B}
+	EndGlobalSection
+EndGlobal

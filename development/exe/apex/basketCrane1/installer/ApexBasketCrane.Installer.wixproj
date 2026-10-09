@@ -1,0 +1,36 @@
+<Project Sdk="WixToolset.Sdk/5.0.2" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectGuid>{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}</ProjectGuid>
+    <OutputType>Package</OutputType>
+    <OutputName>ApexBasketCrane-$(Configuration)-x86</OutputName>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <InstallerPlatform>x86</InstallerPlatform>
+    <BuildVersionFile>$(MSBuildThisFileDirectory)..\build-version.txt</BuildVersionFile>
+    <ProductVersion>5.5.1</ProductVersion>
+    <AppOutputDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\..\..\..\#builds\apexbasketcrane1'))</AppOutputDirectory>
+    <AppExecutableName Condition="'$(Configuration)' == 'Debug'">apexbasketcrane1D.exe</AppExecutableName>
+    <AppExecutableName Condition="'$(Configuration)' != 'Debug'">apexbasketcrane1.exe</AppExecutableName>
+    <DefineConstants>AppOutputDirectory=$(AppOutputDirectory);AppExecutableName=$(AppExecutableName);ProductVersion=$(ProductVersion)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\sln\apexBasketCrane.5.5.1.static.x32.vcxproj">
+      <Project>{01BE2376-B62A-4EF2-A1AA-D800909DE94C}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Target Name="LoadGeneratedProductVersion" BeforeTargets="CoreCompile">
+    <ReadLinesFromFile File="$(BuildVersionFile)">
+      <Output TaskParameter="Lines" ItemName="_BuildVersionLines" />
+    </ReadLinesFromFile>
+    <PropertyGroup>
+      <ProductVersion>@(_BuildVersionLines)</ProductVersion>
+      <DefineConstants>AppOutputDirectory=$(AppOutputDirectory);AppExecutableName=$(AppExecutableName);ProductVersion=$(ProductVersion)</DefineConstants>
+    </PropertyGroup>
+    <Message Importance="high" Text="Apex Basket Crane installer version: $(ProductVersion)" />
+  </Target>
+  <Target Name="ValidateInstallerInputs" BeforeTargets="Build">
+    <Error Condition="!Exists('$(AppOutputDirectory)\$(AppExecutableName)')" Text="Application executable not found: $(AppOutputDirectory)\$(AppExecutableName). Build the $(Configuration) application first." />
+    <Error Condition="!Exists('$(AppOutputDirectory)\basketCrane.ini')" Text="Runtime configuration not found: $(AppOutputDirectory)\basketCrane.ini." />
+  </Target>
+</Project>

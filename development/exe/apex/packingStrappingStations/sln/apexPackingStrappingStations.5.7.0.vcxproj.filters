@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="icon">
+      <UniqueIdentifier>{c58d90be-7057-40c9-8096-2148d20c683a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{631a2479-28fb-4e6d-8e1b-fb743d620df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fork">
+      <UniqueIdentifier>{46bffce2-8367-4e99-8b2c-a070aa9a5ea3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fork\moc">
+      <UniqueIdentifier>{1ba71a03-8175-4fca-b993-f81f71f08704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fork\dxf">
+      <UniqueIdentifier>{c6a4d325-6184-4891-b823-a0eae57ab298}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="fork\dxf\moc">
+      <UniqueIdentifier>{f562d16f-3161-4f5a-80bf-4530211366f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>icon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\pch.cpp" />
+    <ClCompile Include="..\Gstr.cpp" />
+    <ClCompile Include="..\..\Gs.cpp" />
+    <ClCompile Include="..\..\G.cpp" />
+    <ClCompile Include="..\stationWdgt.cpp" />
+    <ClCompile Include="..\..\packingFork\posDlgPackingFork.cpp">
+      <Filter>fork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\packingFork\posPackingFork.cpp">
+      <Filter>fork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\posDlgPackingFork.h.cpp">
+      <Filter>fork\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\posPackingFork.h.cpp">
+      <Filter>fork\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\packingFork\gData.cpp">
+      <Filter>fork\dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\packingFork\gDataC.cpp">
+      <Filter>fork\dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\packingFork\gItemP.cpp">
+      <Filter>fork\dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\gItemP.h.cpp">
+      <Filter>fork\dxf\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingStrappingStations\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingStrappingStations\mocFiles.5.1.1\stationWdgt.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\packingFork\serialPortDlg.cpp">
+      <Filter>fork</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\packingFork\mocFiles.5.1.1\serialPortDlg.h.cpp">
+      <Filter>fork\moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\G.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\pch.h" />
+    <ClInclude Include="..\Gstr.h" />
+    <ClInclude Include="..\..\Gs.h" />
+    <ClInclude Include="..\stationWdgt.h" />
+    <ClInclude Include="..\..\packingFork\posDlgPackingFork.h">
+      <Filter>fork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\packingFork\posPackingFork.h">
+      <Filter>fork</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\packingFork\gData.h">
+      <Filter>fork\dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\packingFork\gDataC.h">
+      <Filter>fork\dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\packingFork\gItemP.h">
+      <Filter>fork\dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\packingFork\serialPortDlg.h">
+      <Filter>fork</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

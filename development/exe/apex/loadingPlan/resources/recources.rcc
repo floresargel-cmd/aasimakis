@@ -1,0 +1,10 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./00.bat</file>
+<file>./arrow.png</file>
+<file>./dragArrow.png</file>
+<file>./logo_16x16.png</file>
+<file>./recources.cpp</file>
+<file>./recources.rcc</file>
+</qresource>
+</RCC>

@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5454B57E-5D26-4911-8CED-F4B81F0F7E01}</ProjectGuid>
+    <ProjectName>apexProductionPlan.5.7.0</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Link />
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link />
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\bs.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\bst.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\dxf.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\dxfGV.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\he.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ls.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\mW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\op.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovGL.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovL.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovS.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pass.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pl.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pp.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ppl.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\sp.h.cpp" />
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\bs.cpp" />
+    <ClCompile Include="..\bst.cpp" />
+    <ClCompile Include="..\dxf.cpp" />
+    <ClCompile Include="..\dxfData.cpp" />
+    <ClCompile Include="..\dxfDataClasses.cpp" />
+    <ClCompile Include="..\dxfGV.cpp" />
+    <ClCompile Include="..\he.cpp" />
+    <ClCompile Include="..\ls.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\op.cpp" />
+    <ClCompile Include="..\ovGL.cpp" />
+    <ClCompile Include="..\ovL.cpp" />
+    <ClCompile Include="..\ovS.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\pl.cpp" />
+    <ClCompile Include="..\pp.cpp" />
+    <ClCompile Include="..\ppl.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+    <ClCompile Include="..\sp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\bs.h" />
+    <ClInclude Include="..\bst.h" />
+    <ClInclude Include="..\dxf.h" />
+    <ClInclude Include="..\dxfData.h" />
+    <ClInclude Include="..\dxfDataClasses.h" />
+    <ClInclude Include="..\dxfGV.h" />
+    <ClInclude Include="..\he.h" />
+    <ClInclude Include="..\ls.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\op.h" />
+    <ClInclude Include="..\ovGL.h" />
+    <ClInclude Include="..\ovL.h" />
+    <ClInclude Include="..\ovS.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pl.h" />
+    <ClInclude Include="..\pp.h" />
+    <ClInclude Include="..\ppG.h" />
+    <ClInclude Include="..\ppl.h" />
+    <ClInclude Include="..\sp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

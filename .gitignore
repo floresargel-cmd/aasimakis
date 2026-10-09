@@ -107,7 +107,6 @@ Release/
 #builds/
 development/#builds/
 development/libs/
-development/exe/
 
 *.ilk
 *.sdf
@@ -121,3 +120,20 @@ development/exe/
 *.user
 *.suo
 
+
+# Application source is versioned; local runtime data and credentials are not.
+*.ini
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.ipch
+*.sdf
+*.nupkg
+*.cab
+*.wixpdb
+*.rcc.user
+
+# Visual Studio conversion reports
+**/UpgradeLog.*

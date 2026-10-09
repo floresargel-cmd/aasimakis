@@ -1,0 +1,28 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./00.bat</file>
+<file>./add.png</file>
+<file>./arrowDown.png</file>
+<file>./arrowUp.png</file>
+<file>./cassetteOk.png</file>
+<file>./Copy of russianFlag.png</file>
+<file>./delete.png</file>
+<file>./edit.png</file>
+<file>./hebrew.qm</file>
+<file>./info.png</file>
+<file>./israelFlag.png</file>
+<file>./lock.png</file>
+<file>./logo_16x16.png</file>
+<file>./print.png</file>
+<file>./recources.cpp</file>
+<file>./recources.rcc</file>
+<file>./remove.png</file>
+<file>./return.png</file>
+<file>./returnFlash.png</file>
+<file>./russian.qm</file>
+<file>./russianFlag.png</file>
+<file>./scrap.png</file>
+<file>./unLock.png</file>
+<file>./usFlag.png</file>
+</qresource>
+</RCC>

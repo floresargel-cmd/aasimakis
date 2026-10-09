@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\ap.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cellCont.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cm.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\convDlg.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\convP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\cr.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\craneM.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\exp.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\forkM.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\fP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\fr.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\man.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCasSel.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCellDlg.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manCellLabel.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\manGrOfCells.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mem.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mMissions.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mMissionsP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\mW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\nP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\oP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\oW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\p.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\pass.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\plc.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\packetCrane.old\mocFiles.5.1.1\ps.h.cpp" />
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\ap.cpp" />
+    <ClCompile Include="..\cellCont.cpp" />
+    <ClCompile Include="..\cm.cpp" />
+    <ClCompile Include="..\convDlg.cpp" />
+    <ClCompile Include="..\convP.cpp" />
+    <ClCompile Include="..\cP.cpp" />
+    <ClCompile Include="..\cr.cpp" />
+    <ClCompile Include="..\craneM.cpp" />
+    <ClCompile Include="..\craneP.cpp" />
+    <ClCompile Include="..\exp.cpp" />
+    <ClCompile Include="..\forkM.cpp" />
+    <ClCompile Include="..\fP.cpp" />
+    <ClCompile Include="..\fr.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\man.cpp" />
+    <ClCompile Include="..\manCasSel.cpp" />
+    <ClCompile Include="..\manCellDlg.cpp" />
+    <ClCompile Include="..\manCellLabel.cpp" />
+    <ClCompile Include="..\manGrOfCells.cpp" />
+    <ClCompile Include="..\mem.cpp" />
+    <ClCompile Include="..\mMissions.cpp" />
+    <ClCompile Include="..\mMissionsP.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\nP.cpp" />
+    <ClCompile Include="..\oP.cpp" />
+    <ClCompile Include="..\oW.cpp" />
+    <ClCompile Include="..\p.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\plc.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+    <ClCompile Include="..\uglyfont.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico" />
+    <None Include="..\resources\recources.rcc">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\ap.h" />
+    <ClInclude Include="..\cellCont.h" />
+    <ClInclude Include="..\cm.h" />
+    <ClInclude Include="..\convDlg.h" />
+    <ClInclude Include="..\convP.h" />
+    <ClInclude Include="..\cP.h" />
+    <ClInclude Include="..\cr.h" />
+    <ClInclude Include="..\craneM.h" />
+    <ClInclude Include="..\craneP.h" />
+    <ClInclude Include="..\exp.h" />
+    <ClInclude Include="..\forkM.h" />
+    <ClInclude Include="..\fP.h" />
+    <ClInclude Include="..\fr.h" />
+    <ClInclude Include="..\man.h" />
+    <ClInclude Include="..\manCasSel.h" />
+    <ClInclude Include="..\manCellDlg.h" />
+    <ClInclude Include="..\manCellLabel.h" />
+    <ClInclude Include="..\manGrOfCells.h" />
+    <ClInclude Include="..\mem.h" />
+    <ClInclude Include="..\mMissions.h" />
+    <ClInclude Include="..\mMissionsP.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\nP.h" />
+    <ClInclude Include="..\oP.h" />
+    <ClInclude Include="..\oW.h" />
+    <ClInclude Include="..\p.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pcG.h" />
+    <ClInclude Include="..\plc.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\uglyfont.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{80546A70-6E96-41DA-8586-CD1911CFBE57}</ProjectGuid>
+    <ProjectName>apexPacketWarehouse.old.5.7.0</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ConfigurationType>Application</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IntDir>C:\vcexpress\intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>../#exe/$(ProjectName)/$(Configuration)/</OutDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IntDir>C:\vcexpress\intermediate\$(ProjectName)\$(Configuration)\</IntDir>
+    <OutDir>../#exe/$(ProjectName)/$(Configuration)/</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Lib>
+      <OutputFile>../lib/2012x64/tuxeipD.lib</OutputFile>
+    </Lib>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <OutputFile>../#exe/$(ProjectName)/$(Configuration)/$(TargetName).exe</OutputFile>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>
+      </PreprocessorDefinitions>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

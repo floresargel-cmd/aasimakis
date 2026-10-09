@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="icon">
+      <UniqueIdentifier>{1a4933ec-c18a-4bdb-87f2-0b6bfb7da6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{43e7bbdb-b30f-45e6-856e-188fe3f96add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qtResourceFiles">
+      <UniqueIdentifier>{b183320c-8a94-474d-a141-b8e2ade75d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{89010415-41a7-4a33-bfdd-5268704a10d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\moc">
+      <UniqueIdentifier>{8b9f5c80-ef3f-494f-8485-c7ab2aa550b3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>qtResourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\btns.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\common\tcpTux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\dNp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\fork.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\move.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\ps.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\strapingHmi\mocFiles.5.1.1\straping.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dNp.cpp" />
+    <ClCompile Include="..\fork.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\move.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\straping.cpp" />
+    <ClCompile Include="..\SyncSerialComm.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>common\moc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+    <None Include="..\resources\recources.rcc">
+      <Filter>qtResourceFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\btns.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\common\tcpTux.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\dNp.h" />
+    <ClInclude Include="..\fork.h" />
+    <ClInclude Include="..\move.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\shG.h" />
+    <ClInclude Include="..\straping.h" />
+    <ClInclude Include="..\SyncSerialComm.h" />
+  </ItemGroup>
+</Project>

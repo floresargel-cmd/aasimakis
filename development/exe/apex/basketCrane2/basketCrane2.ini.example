@@ -1,0 +1,55 @@
+; Copy beside the executable. Edit a separate copy for each environment.
+; Use --config C:\path\observer.ini to run LiveObserver beside Live.
+; Changes take effect only after restart. Invalid configuration fails closed.
+[Environment]
+; Test = test DB + no Live PLC control
+; Live = live DB + Live PLC control
+; LiveObserver = live DB read-only + no PLC output (safe parallel comparison)
+mode=Test
+; Required only for Live; pipe-separated Windows hostnames.
+liveEnabledHosts=
+
+; DSNs must have these catalogs as their DEFAULT database. No catalog is created.
+; Supply user/passwordEnv, or leave both blank to use the DSN's Windows authentication.
+; passwordEnv is the NAME of a process environment variable, not a password.
+[MainDatabaseTest]
+dsn=apexBasketCrane2Test
+catalog=basketCraneDataTest
+user=
+passwordEnv=
+[EpicsDatabaseTest]
+dsn=apexEpicsCrane2Test
+catalog=EpicsTest
+user=
+passwordEnv=
+
+[MainDatabaseLive]
+dsn=apexBasketCraneMainOdbc
+catalog=basketCraneData
+user=
+passwordEnv=
+[EpicsDatabaseLive]
+dsn=apexEpicsOdbc3
+catalog=Epics
+user=
+passwordEnv=
+
+; Dedicated SELECT-only credentials are verified before observer queries begin.
+; These DSNs must point to the SAME servers/catalogs as their Live counterparts.
+[MainDatabaseObserver]
+dsn=apexBasketCrane2Observer
+catalog=basketCraneData
+user=
+passwordEnv=
+[EpicsDatabaseObserver]
+dsn=apexEpicsCrane2Observer
+catalog=Epics
+user=
+passwordEnv=
+
+; Only Live reads these addresses. Test uses emulated loopback connections.
+; LiveObserver creates no PLC connections at all.
+[PLC]
+craneIp=20.20.20.60
+oldOvenIp=20.20.20.40
+newOvenIp=192.168.105.135

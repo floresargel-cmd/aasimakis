@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79D000B6-9C2A-4DB2-A266-B6FBD8D4F584}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <PlatformToolset>v145</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>..\..\..\..\libs\#qt\qt.5.7.0.static.x32\__\oracleSdk12.1.0.2.0\sdk\lib\msvc;..\..\..\..\libs\#qt\qt.5.7.0.static.x32\__\mysql-5.7.14-win32\lib;$(ROOTDIR)\libs\_deploy\builds\rslinx;$(libBuildDir);$(ROOTDIR)\libs\_deploy\builds\vlc\vlc-2.2.1\sdk\lib;$(ROOTDIR)\libs\#qt\qt.5.7.0.static.x32\qtbase\lib;$(ROOTDIR)\libs\#qt\qt.5.7.0.static.x32\qtbase\plugins\platforms;$(ROOTDIR)\libs\v140\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\..\libs\#qt\qt.5.7.0.static.x32\__\oracleSdk12.1.0.2.0\sdk\lib\msvc;..\..\..\..\libs\#qt\qt.5.7.0.static.x32\__\mysql-5.7.14-win32\lib;$(ROOTDIR)\libs\rslinx;$(ROOTDIR)\#builds\gaul.5.7.0;$(ROOTDIR)\#builds\slcComms.5.7.0;$(ROOTDIR)\#builds\cxImage.5.7.0.static.x32;$(ROOTDIR)\#builds\jasper.5.7.0.static.x32;$(ROOTDIR)\#builds\png.5.7.0.static.x32;$(ROOTDIR)\#builds\zlib.5.7.0.static.x32;$(ROOTDIR)\#builds\jpeg.5.7.0.static.x32;$(ROOTDIR)\#builds\mng.5.7.0.static.x32;$(ROOTDIR)\#builds\libpsd.5.7.0.static.x32;$(ROOTDIR)\#builds\raw.5.7.0.static.x32;$(ROOTDIR)\#builds\tiff.5.7.0.static.x32;$(ROOTDIR)\#builds\vlcQt.5.7.0.static.x32;$(ROOTDIR)\#builds\hmiGuiWidgets.5.7.0.static.x32;$(ROOTDIR)\#builds\tuxIp.5.7.0.static.x32;C:\Program Files (x86)\Visual Leak Detector\lib\Win64;$(ROOTDIR)\libs\vlc\vlc-2.2.1\sdk\lib;$(ROOTDIR)\#builds\utilities.5.7.0.static.x32;$(ROOTDIR)\libs\smtpClient\#lib;$(ROOTDIR)\libs\plcDataLib\#lib;$(ROOTDIR)\libs\haruPdf\#lib;$(ROOTDIR)\#builds\dxfLib.5.7.0.static.x32;$(ROOTDIR)\#builds\hmiGuiWidgets.5.4.0.2013x64;$(ROOTDIR)\libs\plcLader\#lib;$(ROOTDIR)\libs\tuxeip\#lib;$(ROOTDIR)\libs\#qt\qt.5.7.0.static.x32\qtbase\lib;$(ROOTDIR)\libs\#qt\qt.5.7.0.static.x32\qtbase\plugins\platforms;$(ROOTDIR)\libs\v140\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>oci.lib;libmysql.lib;Qt5SqlDAll.lib;$(qtLibs);$(cxImageLibs);$(wLibs);%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>Qt5SqlD.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Link />
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link />
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>Qt5Sql.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>oci.lib;libmysql.lib;Qt5SqlAll.lib;$(myLibs);$(qtLibs);$(cxImageLibs);$(wLibs);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\ap.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\b.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\bP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\cr.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.conv.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.cr.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\emulate.mW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\mW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\oP.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\oW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\pass.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\pl.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcDlg.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcM.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\basketCrane\mocFiles.5.1.1\plcW.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp" />
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\ap.cpp" />
+    <ClCompile Include="..\b.cpp" />
+    <ClCompile Include="..\bP.cpp" />
+    <ClCompile Include="..\cr.cpp" />
+    <ClCompile Include="..\dc.cpp" />
+    <ClCompile Include="..\emulate.conv.cpp" />
+    <ClCompile Include="..\emulate.cr.cpp" />
+    <ClCompile Include="..\emulate.mW.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\oP.cpp" />
+    <ClCompile Include="..\oW.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\pl.cpp" />
+    <ClCompile Include="..\plcDlg.cpp" />
+    <ClCompile Include="..\plcM.cpp" />
+    <ClCompile Include="..\plcW.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+    <ClCompile Include="..\uglyfont.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\ap.h" />
+    <ClInclude Include="..\b.h" />
+    <ClInclude Include="..\bP.h" />
+    <ClInclude Include="..\cG.h" />
+    <ClInclude Include="..\cr.h" />
+    <ClInclude Include="..\dc.h" />
+    <ClInclude Include="..\emulate.conv.h" />
+    <ClInclude Include="..\emulate.cr.h" />
+    <ClInclude Include="..\emulate.G.h" />
+    <ClInclude Include="..\emulate.mW.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\oP.h" />
+    <ClInclude Include="..\oW.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pl.h" />
+    <ClInclude Include="..\plcDlg.h" />
+    <ClInclude Include="..\plcM.h" />
+    <ClInclude Include="..\plcW.h" />
+    <ClInclude Include="..\uglyfont.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

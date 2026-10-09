@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5454B57E-5D26-4911-8CED-F4B81F0F7E01}</ProjectGuid>
+    <ProjectName>apexStackingPlan.5.7.0</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ROOTDIR)\#builds\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(IncludePath)</IncludePath>
+    <OutDir>$(ROOTDIR)\#builds\$(ProjectName)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>if exist "$(ProjectDir)app.ini" copy /Y "$(ProjectDir)app.ini" "$(OutDir)app.ini"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Link />
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link />
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist "$(ProjectDir)app.ini" copy /Y "$(ProjectDir)app.ini" "$(OutDir)app.ini"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\Application\Services\BasketApplicationService.cpp" />
+    <ClCompile Include="..\Application\Services\MainWindowOrchestrator.cpp" />
+    <ClCompile Include="..\Application\Services\ProductionApplicationService.cpp" />
+    <ClCompile Include="..\Application\Services\ProductionMonitorService.cpp" />
+    <ClCompile Include="..\Application\Services\UserContextService.cpp" />
+    <ClCompile Include="..\App\ApplicationBootstrapper.cpp" />
+    <ClCompile Include="..\Generated\moc_bs.cpp" />
+    <ClCompile Include="..\Generated\moc_bst.cpp" />
+    <ClCompile Include="..\Generated\moc_dxf.cpp" />
+    <ClCompile Include="..\Generated\moc_dxfGV.cpp" />
+    <ClCompile Include="..\Generated\moc_he.cpp" />
+    <ClCompile Include="..\Generated\moc_ls.cpp" />
+    <ClCompile Include="..\Generated\moc_mw.cpp" />
+    <ClCompile Include="..\Generated\moc_op.cpp" />
+    <ClCompile Include="..\Generated\moc_ovGL.cpp" />
+    <ClCompile Include="..\Generated\moc_ovL.cpp" />
+    <ClCompile Include="..\Generated\moc_ovS.cpp" />
+    <ClCompile Include="..\Generated\moc_pass.cpp" />
+    <ClCompile Include="..\Generated\moc_pl.cpp" />
+    <ClCompile Include="..\Generated\moc_pp.cpp" />
+    <ClCompile Include="..\Generated\moc_ppl.cpp" />
+    <ClCompile Include="..\Generated\moc_sp.cpp" />
+    <ClCompile Include="..\Generated\moc_tcpTux.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\DatabaseInitializer.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\LegacyDatabaseBootstrapper.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\SqlCommandExecutor.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\SqlHelper.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\SqlRetryPolicy.cpp" />
+    <ClCompile Include="..\Infrastructure\Database\TransactionScope.cpp" />
+    <ClCompile Include="..\Infrastructure\Logging\FileLogger.cpp" />
+    <ClCompile Include="..\Infrastructure\Repositories\BasketRepository.cpp" />
+    <ClCompile Include="..\Infrastructure\Repositories\LegacyProductionRepository.cpp" />
+    <ClCompile Include="..\Infrastructure\Repositories\ProductionMonitorRepository.cpp" />
+    <ClCompile Include="..\Infrastructure\Repositories\ProductionRepository.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\BasketSqlScripts.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\DatabaseInitializerSqlScripts.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\LegacyDatabaseBootstrapSqlScripts.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\LegacyDatabaseTableDefinitions.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\ProductionMonitorSqlScripts.cpp" />
+    <ClCompile Include="..\Infrastructure\SqlScripts\ProductionSqlScripts.cpp" />
+    <ClCompile Include="..\legacy\bs.cpp" />
+    <ClCompile Include="..\legacy\bst.cpp" />
+    <ClCompile Include="..\legacy\dxf.cpp" />
+    <ClCompile Include="..\legacy\dxfData.cpp" />
+    <ClCompile Include="..\legacy\dxfDataClasses.cpp" />
+    <ClCompile Include="..\legacy\dxfGV.cpp" />
+    <ClCompile Include="..\legacy\he.cpp" />
+    <ClCompile Include="..\legacy\LegacyGlobalState.cpp" />
+    <ClCompile Include="..\legacy\LegacyLoggingBridge.cpp" />
+    <ClCompile Include="..\legacy\LegacySqlBridge.cpp" />
+    <ClCompile Include="..\legacy\ls.cpp" />
+    <ClCompile Include="..\legacy\m.cpp" />
+    <ClCompile Include="..\legacy\mW.cpp" />
+    <ClCompile Include="..\legacy\op.cpp" />
+    <ClCompile Include="..\legacy\ovGL.cpp" />
+    <ClCompile Include="..\legacy\ovL.cpp" />
+    <ClCompile Include="..\legacy\ovS.cpp" />
+    <ClCompile Include="..\legacy\pass.cpp" />
+    <ClCompile Include="..\legacy\pl.cpp" />
+    <ClCompile Include="..\legacy\pp.cpp" />
+    <ClCompile Include="..\legacy\ppl.cpp" />
+    <ClCompile Include="..\legacy\sp.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\Application\Interfaces\IBasketRepository.h" />
+    <ClInclude Include="..\Application\Interfaces\IProductionMonitorRepository.h" />
+    <ClInclude Include="..\Application\Interfaces\IProductionRepository.h" />
+    <ClInclude Include="..\Application\Services\AppSettings.h" />
+    <ClInclude Include="..\Application\Services\BasketApplicationService.h" />
+    <ClInclude Include="..\Application\Services\LegacyRuntimeContext.h" />
+    <ClInclude Include="..\Application\Services\MainWindowOrchestrator.h" />
+    <ClInclude Include="..\Application\Services\ProductionApplicationService.h" />
+    <ClInclude Include="..\Application\Services\ProductionMonitorService.h" />
+    <ClInclude Include="..\Application\Services\UserContextService.h" />
+    <ClInclude Include="..\App\ApplicationBootstrapper.h" />
+    <ClInclude Include="..\Domain\Entities\ProductionProfile.h" />
+    <ClInclude Include="..\Infrastructure\Database\DatabaseInitializer.h" />
+    <ClInclude Include="..\Infrastructure\Database\LegacyDatabaseBootstrapper.h" />
+    <ClInclude Include="..\Infrastructure\Database\SqlCommandExecutor.h" />
+    <ClInclude Include="..\Infrastructure\Database\SqlHelper.h" />
+    <ClInclude Include="..\Infrastructure\Database\SqlRetryPolicy.h" />
+    <ClInclude Include="..\Infrastructure\Database\TransactionScope.h" />
+    <ClInclude Include="..\Infrastructure\Logging\FileLogger.h" />
+    <ClInclude Include="..\Infrastructure\Repositories\BasketRepository.h" />
+    <ClInclude Include="..\Infrastructure\Repositories\LegacyProductionRepository.h" />
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionMonitorRepository.h" />
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionRepository.h" />
+    <ClInclude Include="..\Infrastructure\Repositories\ProductionRow.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\BasketSqlScripts.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\DatabaseInitializerSqlScripts.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\LegacyDatabaseBootstrapSqlScripts.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\LegacyDatabaseTableDefinitions.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\ProductionMonitorSqlScripts.h" />
+    <ClInclude Include="..\Infrastructure\SqlScripts\ProductionSqlScripts.h" />
+    <ClInclude Include="..\legacy\bs.h" />
+    <ClInclude Include="..\legacy\bst.h" />
+    <ClInclude Include="..\legacy\dxf.h" />
+    <ClInclude Include="..\legacy\dxfData.h" />
+    <ClInclude Include="..\legacy\dxfDataClasses.h" />
+    <ClInclude Include="..\legacy\dxfGV.h" />
+    <ClInclude Include="..\legacy\he.h" />
+    <ClInclude Include="..\legacy\LegacyGlobalState.h" />
+    <ClInclude Include="..\legacy\LegacyLoggingBridge.h" />
+    <ClInclude Include="..\legacy\LegacySqlBridge.h" />
+    <ClInclude Include="..\legacy\ls.h" />
+    <ClInclude Include="..\legacy\mW.h" />
+    <ClInclude Include="..\legacy\op.h" />
+    <ClInclude Include="..\legacy\ovGL.h" />
+    <ClInclude Include="..\legacy\ovL.h" />
+    <ClInclude Include="..\legacy\ovS.h" />
+    <ClInclude Include="..\legacy\pass.h" />
+    <ClInclude Include="..\legacy\pl.h" />
+    <ClInclude Include="..\legacy\pp.h" />
+    <ClInclude Include="..\legacy\ppG.h" />
+    <ClInclude Include="..\legacy\ppl.h" />
+    <ClInclude Include="..\legacy\sp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\app.ini">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+      <DeploymentContent>true</DeploymentContent>
+    </None>
+    <None Include="..\legacy\_m.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\resources\images\apexlogo.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

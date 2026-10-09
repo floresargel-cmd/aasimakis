@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package
+    Name="Apex Basket Crane"
+    Manufacturer="Lorval Capital Management"
+    Version="$(var.ProductVersion)"
+    UpgradeCode="{1A0F6B7A-8DC6-4A9A-9F07-354180B11116}"
+    Language="1033"
+    Scope="perMachine">
+
+    <MajorUpgrade
+      DowngradeErrorMessage="A newer version of Apex Basket Crane is already installed."
+      Schedule="afterInstallExecute" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Icon Id="ProductIcon.ico" SourceFile="..\icon\icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="ProductIcon.ico" />
+    <Property Id="ARPHELPLINK" Value="https://www.lorval.ca/" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="CompanyFolder" Name="Lorval Capital Management">
+        <Directory Id="INSTALLFOLDER" Name="Apex Basket Crane" />
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="Apex Basket Crane" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="DesktopFolder" />
+
+    <Component Id="MainExecutableComponent" Directory="INSTALLFOLDER" Guid="*">
+      <File
+        Id="MainExecutable"
+        Source="$(var.AppOutputDirectory)\$(var.AppExecutableName)"
+        KeyPath="yes">
+        <Shortcut
+          Id="StartMenuShortcut"
+          Directory="ApplicationProgramsFolder"
+          Name="Apex Basket Crane"
+          Description="Apex Basket Crane control application"
+          WorkingDirectory="INSTALLFOLDER"
+          Icon="ProductIcon.ico"
+          IconIndex="0"
+          Advertise="yes" />
+        <Shortcut
+          Id="DesktopShortcut"
+          Directory="DesktopFolder"
+          Name="Apex Basket Crane"
+          Description="Apex Basket Crane control application"
+          WorkingDirectory="INSTALLFOLDER"
+          Icon="ProductIcon.ico"
+          IconIndex="0"
+          Advertise="yes" />
+      </File>
+    </Component>
+
+    <Component
+      Id="RuntimeConfigurationComponent"
+      Directory="INSTALLFOLDER"
+      Guid="{E03BF614-4324-4928-B6CE-BDE44CA0E728}"
+        NeverOverwrite="yes">
+      <File
+        Id="RuntimeConfiguration"
+        Source="$(var.AppOutputDirectory)\basketCrane.ini"
+        Name="basketCrane.ini"
+        KeyPath="yes" />
+    </Component>
+
+    <Component Id="ProgramMenuFolderComponent" Directory="ApplicationProgramsFolder" Guid="*">
+      <RemoveFolder Id="RemoveApplicationProgramsFolder" On="uninstall" />
+      <RegistryValue
+        Root="HKCU"
+        Key="Software\Lorval Capital Management\Apex Basket Crane"
+        Name="StartMenuFolder"
+        Type="integer"
+        Value="1"
+        KeyPath="yes" />
+    </Component>
+
+    <Feature Id="MainFeature" Title="Apex Basket Crane" Level="1">
+      <ComponentRef Id="MainExecutableComponent" />
+      <ComponentRef Id="RuntimeConfigurationComponent" />
+      <ComponentRef Id="ProgramMenuFolderComponent" />
+    </Feature>
+  </Package>
+</Wix>

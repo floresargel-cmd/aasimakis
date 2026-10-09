@@ -1,0 +1,19 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+<file>./#.bat</file>
+<file>./arrowMoveDown.png</file>
+<file>./arrowMoveLeft.png</file>
+<file>./arrowMoveRight.png</file>
+<file>./arrowMoveUp.png</file>
+<file>./calculator.png</file>
+<file>./help/index.html</file>
+<file>./help/index_files/image001.png</file>
+<file>./help/index_files/image002.png</file>
+<file>./help/index_files/image003.png</file>
+<file>./logo_16x16.png</file>
+<file>./minus.png</file>
+<file>./overWeight.png</file>
+<file>./plus.png</file>
+<file>./recources.rcc</file>
+</qresource>
+</RCC>

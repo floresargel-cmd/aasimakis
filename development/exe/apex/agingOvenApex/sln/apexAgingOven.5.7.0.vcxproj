@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{01BE2376-B62A-4EF2-A1AA-D800909DE94C}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Import Project="..\..\..\5.7.0.static.x32.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|win32'">
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <LinkErrorReporting>QueueForNextLogin</LinkErrorReporting>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <CompileAsWinRT>false</CompileAsWinRT>
+      <WarningLevel>Level3</WarningLevel>
+      <OmitFramePointers>false</OmitFramePointers>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ErrorReporting>Queue</ErrorReporting>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|win32'">
+    <Link />
+    <ClCompile>
+      <PreprocessorDefinitions>TUX_PLC_COMMS;</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link />
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\a.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ac.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\cm.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\co.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\fl.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mem.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mo.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\mw.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ph.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\ps.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\agingOvenApex\mocFiles.5.1.1\tf.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp" />
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\a.cpp" />
+    <ClCompile Include="..\ac.cpp" />
+    <ClCompile Include="..\cm.cpp" />
+    <ClCompile Include="..\co.cpp" />
+    <ClCompile Include="..\fl.cpp" />
+    <ClCompile Include="..\main.cpp" />
+    <ClCompile Include="..\mem.cpp" />
+    <ClCompile Include="..\mo.cpp" />
+    <ClCompile Include="..\mw.cpp" />
+    <ClCompile Include="..\ph.cpp" />
+    <ClCompile Include="..\ps.cpp" />
+    <ClCompile Include="..\resources\recources.cpp" />
+    <ClCompile Include="..\tf.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\a.h" />
+    <ClInclude Include="..\ac.h" />
+    <ClInclude Include="..\aG.h" />
+    <ClInclude Include="..\cm.h" />
+    <ClInclude Include="..\co.h" />
+    <ClInclude Include="..\fl.h" />
+    <ClInclude Include="..\mem.h" />
+    <ClInclude Include="..\mo.h" />
+    <ClInclude Include="..\mw.h" />
+    <ClInclude Include="..\ph.h" />
+    <ClInclude Include="..\ps.h" />
+    <ClInclude Include="..\tf.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

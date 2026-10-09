@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="dxf">
+      <UniqueIdentifier>{058f36c0-866f-4d08-98fe-6fd953e1cee0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="icon">
+      <UniqueIdentifier>{1a4933ec-c18a-4bdb-87f2-0b6bfb7da6c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="moc">
+      <UniqueIdentifier>{43e7bbdb-b30f-45e6-856e-188fe3f96add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qtResourceFiles">
+      <UniqueIdentifier>{b183320c-8a94-474d-a141-b8e2ade75d63}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\gText.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gData.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gDataC.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gItem.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\gView.cpp">
+      <Filter>dxf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>qtResourceFiles</Filter>
+    </ClCompile>
+    <ClCompile Include="..\allPos.cpp" />
+    <ClCompile Include="..\autoWdg.cpp" />
+    <ClCompile Include="..\bCont.cpp" />
+    <ClCompile Include="..\bSelect.cpp" />
+    <ClCompile Include="..\craneWdg.cpp" />
+    <ClCompile Include="..\crConv.cpp" />
+    <ClCompile Include="..\crConvW.cpp" />
+    <ClCompile Include="..\exp.cpp" />
+    <ClCompile Include="..\expWdg.cpp" />
+    <ClCompile Include="..\hmiB.cpp" />
+    <ClCompile Include="..\hmiDlg.cpp" />
+    <ClCompile Include="..\hmiSett.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\plcBit.cpp" />
+    <ClCompile Include="..\pos.cpp" />
+    <ClCompile Include="..\posDlg.cpp" />
+    <ClCompile Include="..\proxItem.cpp" />
+    <ClCompile Include="..\search.cpp" />
+    <ClCompile Include="..\settingsDlg.cpp" />
+    <ClCompile Include="..\triplePos.cpp" />
+    <ClCompile Include="..\usageDlg.cpp" />
+    <ClCompile Include="..\wSt.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\gText.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\gView.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\hmiB.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\hmiDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\hmiSett.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\pos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\posDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\proxItem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\search.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\settingsDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\triplePos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\usageDlg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\wSt.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\allPos.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\autoWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\bCont.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\bSelect.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\crane.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\craneWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\crConv.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\crConvW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\exp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\expWdg.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\gItem.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\crane.cpp" />
+    <ClCompile Include="..\bSelectS.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\bSelectS.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\dieWarehouse\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pch.cpp" />
+    <ClCompile Include="..\Gd.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\gText.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gData.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gDataC.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gItem.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gView.h">
+      <Filter>dxf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\allPos.h" />
+    <ClInclude Include="..\autoWdg.h" />
+    <ClInclude Include="..\bCont.h" />
+    <ClInclude Include="..\bSelect.h" />
+    <ClInclude Include="..\crane.h" />
+    <ClInclude Include="..\craneWdg.h" />
+    <ClInclude Include="..\crConv.h" />
+    <ClInclude Include="..\crConvW.h" />
+    <ClInclude Include="..\exp.h" />
+    <ClInclude Include="..\expWdg.h" />
+    <ClInclude Include="..\..\G.h" />
+    <ClInclude Include="..\hmiB.h" />
+    <ClInclude Include="..\hmiDlg.h" />
+    <ClInclude Include="..\hmiSett.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\plcBit.h" />
+    <ClInclude Include="..\pos.h" />
+    <ClInclude Include="..\posDlg.h" />
+    <ClInclude Include="..\proxItem.h" />
+    <ClInclude Include="..\search.h" />
+    <ClInclude Include="..\settingsDlg.h" />
+    <ClInclude Include="..\triplePos.h" />
+    <ClInclude Include="..\usageDlg.h" />
+    <ClInclude Include="..\Gd.h" />
+    <ClInclude Include="..\wSt.h" />
+    <ClInclude Include="..\bSelectS.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>icon</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>icon</Filter>
+    </None>
+    <None Include="..\resources\recources.rcc">
+      <Filter>qtResourceFiles</Filter>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,32 @@
+48|0|
+48|1|Signal to position 1:Position 1 locked.
+48|2|Signal to position 1510:Position 1510 locked.
+48|3|Signal to position 1520:Position 1520 locked.
+48|4|Signal to position 1530:Position 1530 locked.
+48|5|Signal to Destacker:Destacker locked from position.
+48|6|Signal to Destacker:Destacker locked from targets.
+48|7|
+48|8|
+48|9|
+48|10|
+48|11|
+48|12|
+48|13|
+48|14|
+48|15|
+48|16|
+48|17|
+48|18|
+48|19|
+48|20|
+48|21|
+48|22|
+48|23|
+48|24|
+48|25|
+48|26|
+48|27|
+48|48|
+48|29|
+48|30|
+48|31|

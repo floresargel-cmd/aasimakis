@@ -1,0 +1,32 @@
+49|0|Signal (interlock) from conveyor position 1510.New basket in.
+49|1|Signal (interlock) from Destacker - position 1520 no cycle.
+49|2|Signal (interlock) position 1520 - Permission to move crane.
+49|3|Signal (interlock) from Destacker - position 1530 no cycle.
+49|4|Signal (interlock) position 1530 - Permission to move crane.
+49|5|Signal (interlock) from conveyor  - position 1510. Permission to move crane for delivery.
+49|6|
+49|7|
+49|8|
+49|9|
+49|10|
+49|11|
+49|12|
+49|13|
+49|14|
+49|15|
+49|16|
+49|17|
+49|18|
+49|19|
+49|20|
+49|21|
+49|22|
+49|23|
+49|24|
+49|25|
+49|26|
+49|49|
+49|28|
+49|29|
+49|30|
+49|31|

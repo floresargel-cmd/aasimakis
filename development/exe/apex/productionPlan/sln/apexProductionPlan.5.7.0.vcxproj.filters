@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\common\btns.cpp" />
+    <ClCompile Include="..\..\common\tcpTux.cpp" />
+    <ClCompile Include="..\bs.cpp" />
+    <ClCompile Include="..\bst.cpp" />
+    <ClCompile Include="..\dxf.cpp" />
+    <ClCompile Include="..\dxfData.cpp" />
+    <ClCompile Include="..\dxfDataClasses.cpp" />
+    <ClCompile Include="..\dxfGV.cpp" />
+    <ClCompile Include="..\he.cpp" />
+    <ClCompile Include="..\ls.cpp" />
+    <ClCompile Include="..\m.cpp" />
+    <ClCompile Include="..\mW.cpp" />
+    <ClCompile Include="..\op.cpp" />
+    <ClCompile Include="..\ovGL.cpp" />
+    <ClCompile Include="..\ovL.cpp" />
+    <ClCompile Include="..\ovS.cpp" />
+    <ClCompile Include="..\pass.cpp" />
+    <ClCompile Include="..\pl.cpp" />
+    <ClCompile Include="..\pp.cpp" />
+    <ClCompile Include="..\ppl.cpp" />
+    <ClCompile Include="..\sp.cpp" />
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\bs.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\bst.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\dxf.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\dxfGV.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\mW.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\op.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovGL.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovL.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ovS.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pass.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pl.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\pp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ppl.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\sp.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\he.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\productionPlan\mocFiles.5.1.1\ls.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\tcpTux.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\#moc\apex\common\mocFiles.5.1.1\btns.h.cpp">
+      <Filter>moc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\resources\recources.cpp">
+      <Filter>resources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\common\apexG.h" />
+    <ClInclude Include="..\..\common\btns.h" />
+    <ClInclude Include="..\..\common\tcpTux.h" />
+    <ClInclude Include="..\bs.h" />
+    <ClInclude Include="..\bst.h" />
+    <ClInclude Include="..\dxf.h" />
+    <ClInclude Include="..\dxfData.h" />
+    <ClInclude Include="..\dxfDataClasses.h" />
+    <ClInclude Include="..\dxfGV.h" />
+    <ClInclude Include="..\he.h" />
+    <ClInclude Include="..\ls.h" />
+    <ClInclude Include="..\mW.h" />
+    <ClInclude Include="..\op.h" />
+    <ClInclude Include="..\ovGL.h" />
+    <ClInclude Include="..\ovL.h" />
+    <ClInclude Include="..\ovS.h" />
+    <ClInclude Include="..\pass.h" />
+    <ClInclude Include="..\pl.h" />
+    <ClInclude Include="..\pp.h" />
+    <ClInclude Include="..\ppG.h" />
+    <ClInclude Include="..\ppl.h" />
+    <ClInclude Include="..\sp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="moc">
+      <UniqueIdentifier>{5e944d59-74af-4695-b8b2-1fa7deca3ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{5e4a520e-067f-479d-a109-c90caec7a868}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\icon\icon.ico">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\icon\script.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

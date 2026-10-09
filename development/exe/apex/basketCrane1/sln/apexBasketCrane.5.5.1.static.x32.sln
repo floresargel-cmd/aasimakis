@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36429.23 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apexBasketCrane.5.5.1.static.x32", "apexBasketCrane.5.5.1.static.x32.vcxproj", "{01BE2376-B62A-4EF2-A1AA-D800909DE94C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasketCrane.Configuration", "..\configuration\BasketCrane.Configuration.vcxproj", "{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "ApexBasketCrane.Installer", "..\installer\ApexBasketCrane.Installer.wixproj", "{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C} = {01BE2376-B62A-4EF2-A1AA-D800909DE94C}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|win32 = Debug|win32
+		Release|win32 = Release|win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Debug|win32.ActiveCfg = Debug|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Debug|win32.Build.0 = Debug|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Release|win32.ActiveCfg = Release|win32
+		{01BE2376-B62A-4EF2-A1AA-D800909DE94C}.Release|win32.Build.0 = Release|win32
+		{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}.Debug|win32.ActiveCfg = Debug|win32
+		{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}.Debug|win32.Build.0 = Debug|win32
+		{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}.Release|win32.ActiveCfg = Release|win32
+		{E0A4C17E-EF3C-40BE-AC42-AA10FEA54154}.Release|win32.Build.0 = Release|win32
+		{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}.Debug|win32.ActiveCfg = Debug|Any CPU
+		{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}.Debug|win32.Build.0 = Debug|Any CPU
+		{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}.Release|win32.ActiveCfg = Release|Any CPU
+		{952D3CA0-FF3F-4C77-B4DA-A614665A97B9}.Release|win32.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9ACE1B3C-0613-4468-9103-B0F78A0C09A4}
+	EndGlobalSection
+EndGlobal

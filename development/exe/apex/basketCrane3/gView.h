@@ -1,0 +1,29 @@
+#ifndef GVIEW_H
+#define GVIEW_H
+#include "gItem.h"
+//
+class myQGraphicsViewClass : public QGraphicsView
+{
+	bool							readyToPan=false;
+	bool							isPanning=false;
+	QPoint						panningStart;
+	bool							isZoomable=false;
+	QGraphicsLineItem	*distLine=nullptr;
+	QPointF						*distFirstPoint=nullptr;
+	QGraphicsTextItem	*distText=nullptr;
+	Q_OBJECT;
+public:
+	myQGraphicsViewClass(bool isZoomable_=true,QWidget* parent=NULL);
+	void setScene(QGraphicsScene *s);
+  void resetView();
+protected:
+	void scaleView(double scaleFactor);
+	void keyPressEvent(QKeyEvent *ev);
+  virtual void mousePressEvent(QMouseEvent* ev);
+	virtual void mouseReleaseEvent(QMouseEvent* ev);
+  virtual void mouseMoveEvent(QMouseEvent* ev);
+  virtual void wheelEvent(QWheelEvent* ev);
+signals:
+	void keyPressedSignal(QKeyEvent *keyEv);
+};
+#endif

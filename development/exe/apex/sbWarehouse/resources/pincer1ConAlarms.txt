@@ -1,0 +1,41 @@
+﻿7|0|Alarm  1.0:
+7|1|Alarm  1.1:
+7|2|Alarm  1.2:
+7|3|Alarm  1.3:
+7|4|Alarm  1.4:
+7|5|Alarm  1.5:
+7|6|Alarm  1.6:Alarm sb height tripped sensor.Check profiles height inside sb.
+7|7|Alarm  1.7:
+7|8|Alarm  1.8:
+8|0|Alarm  0.0:CB1.24 Volt DC alarm.
+8|1|Alarm  0.1:CB1.Stop cycle button pressed on OP1.
+8|2|Alarm  0.2:CB1.Thermal overload Q13.Alarm from inverter U13.//Inverter fault or ethernet communication problem.
+8|3|Alarm  0.3:CB1.Thermal overload Q11.Alarm from inverter U11.//Inverter fault or ethernet communication problem.
+8|4|Alarm  0.4:CB1.Thermal overload Q13,Q130,Q131.
+8|5|Alarm  0.5:CB1.Thermal overload Q9,Q10,Q11,Q110,Q12,Q14,Q15,Q16,Q17.
+8|6|Alarm  0.6:CB1.Overtime for active command.Possible problem.
+8|7|Alarm  0.7:
+8|8|Alarm  0.8:
+8|9|Alarm  0.9:CB1.Conveyor RC1 can not move up.Check air,valve,magnetic switch.
+8|10|Alarm 0.10:CB1.Conveyor RC1 can not move down.Check air,valve,magnetic switch.
+8|11|Alarm 0.11:CB1.Conveyor RC2 can not move up.Check air,valve,magnetic switch.
+8|12|Alarm 0.12:CB1.Conveyor RC2 can not move down.Check air,valve,magnetic switch.
+8|13|Alarm 0.13:CB1.Conveyor RC5 can not move up.Check air,valve,magnetic switch.
+8|14|Alarm 0.14:CB1.Conveyor RC5 can not move down.Check air,valve,magnetic switch.
+8|15|Alarm 0.15:CB1.Conveyor RC6 can not move up.Check air,valve,magnetic switch.
+8|16|Alarm 0.16:CB1.Conveyor RC6 can not move down.Check air,valve,magnetic switch.
+8|17|Alarm 0.17:
+8|18|Alarm 0.18:
+8|19|Alarm 0.19:
+8|20|Alarm 0.20:
+8|21|Alarm 0.21:
+8|22|Alarm 0.22:
+8|23|Alarm 0.23:
+8|24|Alarm 0.24:
+8|25|Alarm 0.25:
+8|26|Alarm 0.26:
+8|27|Alarm 0.27:
+8|28|Alarm 0.28:
+8|29|Alarm 0.29:
+8|30|Alarm 0.30:
+8|31|Alarm 0.31:

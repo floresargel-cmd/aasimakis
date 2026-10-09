@@ -1,0 +1,137 @@
+; apexBasketCrane runtime configuration.
+; Keep this file beside the executable. Restart the application after editing it.
+; Restrict file permissions because database passwords are stored here.
+
+[Application]
+singleInstance=true
+style=Fusion
+windowWidth=800
+windowHeight=800
+startMaximized=true
+; Show the restriction Settings button. Restart after changing this value.
+showSettingsButton=false
+
+[Environment]
+; Test = test DB + no Live PLC control
+; Live = live DB + Live PLC control
+; LiveObserver = live DB read-only + no PLC output (safe parallel comparison)
+mode=Test
+; Pipe-separated hostnames permitted to activate Live mode.
+; Example: liveEnabledHosts=PRODUCTION-PC-01|PRODUCTION-PC-02
+liveEnabledHosts=DAE01BCRANE1
+;liveEnabledHosts=LVG02ITDEV01
+
+[Paths]
+; Separate multiple paths with |. Tokens: ${APP_DIR}, ${CURRENT_DIR}, ${CONFIG_DIR}, ${ENV:NAME}
+libraryPaths=${APP_DIR}|${APP_DIR}/plugins|${APP_DIR}/plugins/sqldrivers|${APP_DIR}/plugins/sqldrivers/dll|${CURRENT_DIR}
+
+[Database]
+driver=QODBC
+mainLiveProfile=MainDatabaseLive
+mainTestProfile=MainDatabaseTest
+apexLiveProfile=ApexDatabaseLive
+apexTestProfile=ApexDatabaseTest
+mainCatalog=basketCraneData
+apexCatalog=PEManager_tmp
+createCatalogs=true
+
+[MainDatabaseLive]
+dsn=apexBasketCraneMainOdbc
+user=sa
+password=
+connectOptions=
+
+[MainDatabaseTest]
+dsn=apexBasketCraneTest
+user=peadm2
+password=
+connectOptions=
+
+[ApexDatabaseLive]
+dsn=apexEpicsOdbc
+user=peadm2
+password=
+connectOptions=
+
+[ApexDatabaseTest]
+dsn=apexEpicsOdbcTest
+user=peadm2
+password=
+connectOptions=
+
+[PLC]
+craneIp=20.20.20.10
+conveyorsIp=20.20.20.40
+newOvenIp=192.168.105.135
+craneDescription=basket crane
+conveyorsDescription=oven1
+newOvenDescription=oven2
+craneReadPort=3001
+craneWritePort=3002
+conveyorsReadPort=1001
+conveyorsWritePort=1002
+enabledPollingMs=750
+standbyPollingMs=2000
+craneHmiExecutable=${CURRENT_DIR}/hmiBasketCrane/hmiBasketCrane.exe
+conveyorsHmiExecutable=${CURRENT_DIR}/hmiAgingOven/hmiAgingOven.exe
+
+[Timers]
+mainWindowMs=3000
+positionsMs=1500
+autoModeMs=1500
+craneAnimationMs=20
+statusFadeMs=250
+emulationMainMs=1000
+emulationCraneMainMs=1000
+emulationMovingZStepMs=1000
+emulationStepMs=100
+emulationAnimationMs=50
+emulationConveyorMainMs=1000
+emulationConveyorPropagationMs=1000
+
+[Operations]
+emptyBufferMinimum=3
+emptyBufferMaximum=7
+emptyBufferDefault=4
+oven1Enabled=true
+oven2Enabled=true
+oven1Maximum24Feet=true
+oven2OnlyOver24Feet=true
+exportsBeforeImports=false
+
+[Visualization]
+; Labels are drawn as high-contrast, screen-facing text over each basket.
+; Restart the application after changing these values.
+showBasketNumbers=false
+showLocationLabels=false
+basketLabelFontPointSize=12
+locationLabelFontPointSize=10
+
+[Emulation]
+forceDemoFillTables=false
+ovenStayMinimumSeconds=1
+ovenStayMaximumSeconds=1000
+ovenStayDefaultSeconds=20
+
+[Security]
+initialAdminUser=admin
+initialAdminPassword=
+
+; Error notifications use the configured SMTP relay. Restart after editing.
+[EmailAlerts]
+EnableErrorEmailNotification=false
+ErrorEmailIntervalMinutes=60
+SmtpHost=vitrum-ca.mail.protection.outlook.com
+SmtpPort=25
+SmtpEnableSsl=false
+SmtpFrom=BasketCrane1Application@lorvalcapital.ca
+SmtpTo="lcmit@lorvalcapital.atlassian.net"
+SmtpSubjectPrefix="[Basket Crane 1 Error] : "
+; Optional authenticated SMTP (requires SmtpEnableSsl=true).
+SmtpUsername=
+SmtpPassword=
+SmtpTimeoutSeconds=20
+
+[BasketRestrictions]
+; Pipe-separated locations blocked for bright pink (T1/T4/F) baskets.
+locations=100|110|120|130|140|150|220|280|290

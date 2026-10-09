@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31206.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apexExportStationHmiOld.5.7.0", "apexExportStationHmiOld.5.7.0.vcxproj", "{D6ADDD47-D816-444A-8BAD-816C993D3DAB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|win32 = Debug|win32
+		Release|win32 = Release|win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6ADDD47-D816-444A-8BAD-816C993D3DAB}.Debug|win32.ActiveCfg = Debug|win32
+		{D6ADDD47-D816-444A-8BAD-816C993D3DAB}.Debug|win32.Build.0 = Debug|win32
+		{D6ADDD47-D816-444A-8BAD-816C993D3DAB}.Release|win32.ActiveCfg = Release|win32
+		{D6ADDD47-D816-444A-8BAD-816C993D3DAB}.Release|win32.Build.0 = Release|win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
