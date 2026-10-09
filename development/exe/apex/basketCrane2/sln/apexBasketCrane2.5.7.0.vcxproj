@@ -14,6 +14,13 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\environment.cpp" />
+    <ClCompile Include="..\observerWindow.cpp" />
+    <ClInclude Include="..\environment.h" />
+    <ClInclude Include="..\observerWindow.h" />
+    <None Include="..\basketCrane2.ini" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{432686F9-29AA-426A-A266-B70CE8378D8B}</ProjectGuid>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>

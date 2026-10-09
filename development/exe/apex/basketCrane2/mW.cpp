@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "mW.h"
+#include "environment.h"
 //#define inMyLaptop
 #ifdef emulateCrane2
 #define inMyLaptop
@@ -25,41 +26,18 @@ void insertPos(int posNumber,int posIndex,int basketNumber,QString description,i
 }
 mainWindowClass::mainWindowClass():QMainWindow()
 {
+	const Crane2::Environment& environment = Crane2::Environment::instance();
+	if (!environment.loaded() || environment.isObserver())
+		uExit("Environment", "The control window requires a configured Test or Live environment.");
 	isConnectedToEpicsDbG=false;
 #ifdef emulateCrane2
 	QMessageBox::critical(this,"Emulate","emulateCrane2");
 #endif
 	resize(1920,1080);
-#ifdef inMyLaptop
-	QString basketOdbcName="local";
-	QString basketOdbcUser="sa";
-	QString basketOdbcPassword="123";
-
-#ifdef useCrane2OldFanctionality
-	QString apexOdbcName="local";
-	QString apexOdbcUser="sa";
-	QString apexOdbcPassword="123";
-#endif
-	QString epicsName="local";
-	QString epicsUser="sa";
-	QString epicsPassword="123";
-#else
-	QString basketOdbcName="apexBasketCraneMainOdbc";
-	QString basketOdbcUser="sa";
-	QString basketOdbcPassword="123";
-#ifdef useCrane2OldFanctionality
-	QString apexOdbcName="apexEpicsOdbc";
-	QString apexOdbcUser="peadm2";
-	QString apexOdbcPassword="peadm2";
-#endif
-	QString epicsName="apexEpicsOdbc3";
-	QString epicsUser="BasketCrane2";
-	QString epicsPassword="Apex2@13";
-#endif
-bool emulatePlc=false;
-#ifdef inMyLaptop
-	emulatePlc=true;
-#endif
+const bool emulatePlc = !environment.livePlcEnabled();
+	crane2Ip = environment.plcAddress(0);
+	oldOvenIp = environment.plcAddress(1);
+	newOvenIp = environment.plcAddress(2);
 
 	splash->showMessage(tr("Starting...."),Qt::AlignRight|Qt::AlignBottom,QColor(150,150,200));
 	setWindowIcon(QIcon(":/assimakis.png"));
@@ -82,88 +60,8 @@ bool emulatePlc=false;
 	tuxipClass *newOvenConnection=tuxipServer->addConnection(newOvenIp,"New oven",emulatePlc);
 	newOvenConnection->addTable("N11",plcTableClass::TYPE_INT,0,10,100);
 	//
-	splash->showMessage(tr("Connecting to database..."),Qt::AlignRight|Qt::AlignBottom,QColor(150,150,200));
-	//basket crane database
-	QSqlDatabase mainDb;
-	mainDb=QSqlDatabase::addDatabase("QODBC",bDb);
-	mainDb.setDatabaseName(basketOdbcName);//odbc name
-	mainDb.setUserName(basketOdbcUser); 
-	mainDb.setPassword(basketOdbcPassword);
-	if (!mainDb.open()) 
-		uExit(errorStr,QString("Cannot open %1 database. Error:%2").arg(mainDb.databaseName()).arg(mainDb.lastError().text()));
-	execQuery("use basketCraneData",bDb);
-#ifdef useCrane2OldFanctionality
-	//apex database
-	QSqlDatabase apexDb;
-	apexDb=QSqlDatabase::addDatabase("QODBC",aDb);
-	apexDb.setDatabaseName(apexOdbcName);//odbc name
-	apexDb.setUserName(apexOdbcUser); 
-	apexDb.setPassword(apexOdbcPassword);
-	if (!apexDb.open()) 
-		uExit(errorStr,QString("Cannot open %1 database. Error:%2").arg(apexDb.databaseName()).arg(apexDb.lastError().text()));
-	execQuery("use PEManager_tmp",aDb);
-#endif
-	//epics
-	QSqlDatabase epicsDb;
-	epicsDb=QSqlDatabase::addDatabase("QODBC",eDb);
-	epicsDb.setDatabaseName(epicsName);//odbc name
-	epicsDb.setUserName(epicsUser); 
-	epicsDb.setPassword(epicsPassword);
-	isConnectedToEpicsDbG=epicsDb.open();
-#if !defined(emulateCrane2) && !defined(inMyLaptop)
-	if (!isConnectedToEpicsDbG)
-		uExit(errorStr,QString("Cannot open %1 database. Error:%2").arg(epicsDb.databaseName()).arg(epicsDb.lastError().text()));
-#endif
-#ifdef emulateCrane2
-	execQuery("if not exists(select * from sys.databases where name='epics') create database epics",eDb);
-	execQuery("use epics",eDb);
-	createTable("RackDetail",QStringList()<<"tId int primary key identity"<<QString("RackId int")<<QString("Pc int")<<QString("SONum int")<<QString("SOItemNum int")<<QString("RowID int"),eDb);
-	createTable("SOItem",QStringList()<<"tId int primary key identity"<<QString("DieNum int")<<QString("SONum int")<<QString("SOItemNum int")<<QString("OrdLen real")<<"Temper char(10)",eDb);
-	createTable("ufn_ApexGetHC_Number",QStringList()<<"tId int primary key identity"<<QString("SONum int")<<QString("SOItemNum int")<<QString("honeyCombDebugDestination int"),eDb);
-	if (true)
-	{
-		execQuery(QString("delete from RackDetail"),eDb);
-		execQuery(QString("delete from SOItem"),eDb);
-		execQuery(QString("delete from ufn_ApexGetHC_Number"),eDb);
-		qsrand(static_cast<uint>(time(nullptr)));
-		QVector<int> profilesV;
-		QVector<int> soV;
-		QVector<int> soLineV;
-		for (int i=0;i<100;i++)
-		{
-			profilesV<<1000+i;
-			soV<<3000+i;
-			soLineV<<1+i;
-			execQuery(QString("insert into SOItem (DieNum,SONum,SOItemNum) values (%1,%2,%3)").arg(profilesV.last()).arg(soV.last()).arg(soLineV.last()),eDb);
-			execQuery(QString("insert into ufn_ApexGetHC_Number (SONum,SOItemNum,honeyCombDebugDestination) values (%1,%2,%3)").arg(soV.last()).arg(soLineV.last()).arg(qrand()%3),eDb);
-		}
-		QVector<int> posNumberV;posNumberV<<690<<680<<670<<660<<1060<<1050<<1040;
-		int basket=0;
-		for (int i=0;i<posNumberV.count();i++)
-		{
-			int posNumber=posNumberV[i];
-			for (int posIndex=1;posIndex<=4;posIndex++)
-			{
-				basket++;
-				execQuery(QString("update positions set basketTableId=%1 where posNumber=%2 and posIndex=%3").arg(basket).arg(posNumber).arg(posIndex),bDb);
-			}
-		}
-		int maxBasketNumber=basket;
-		int rowID=5000;
-		for (int basket=1;basket<=maxBasketNumber;basket++)
-		{
-			execQuery(QString("insert into RackDetail (RackId,SONum,SOItemNum,RowID,Pc) values (%1,%2,%3,%4,10)").arg(basket).arg(soV.first()).arg(soLineV.first()).arg(rowID--),eDb);
-			if (qrand()%3!=0)
-			{
-				profilesV.removeFirst();
-				soV.removeFirst();
-				soLineV.removeFirst();
-				execQuery(QString("insert into RackDetail (RackId,SONum,SOItemNum,RowID,Pc) values (%1,%2,%3,%4,10)").arg(basket).arg(soV.first()).arg(soLineV.first()).arg(rowID--),eDb);
-			}
-		}
-	}
-#endif
-
+	// Databases were opened and their catalogs verified before constructing this window.
+	isConnectedToEpicsDbG = true;
 	//c2logGui
 	createTable("c2logGui",QStringList()<<"tId int primary key identity"<<QString("mess char(%1)").arg(maxMessageLength)<<QString("details char(%1)").arg(maxDescriptionLength)<<"messenger char(10)"<<"type char(10)"<<"time char(50)",bDb);
 	execQuery(QString("delete from c2logGui where tId not in(select top 10000 tId from c2logGui order by tId desc)"),bDb);
@@ -385,6 +283,12 @@ bool emulatePlc=false;
 	connect(toolBox,SIGNAL(currentChanged(int)),this,SLOT(toolBoxCurrentChangedSlot(int)));
 	
 	tuxipServer->setIsAutoUpdatingFromPlc(true);
+	QLabel* environmentBanner = new QLabel(environment.description(), this);
+	environmentBanner->setStyleSheet(environment.livePlcEnabled()
+		? "font-weight:bold;padding:6px;background:#ffe2d9;color:#8a1600;"
+		: "font-weight:bold;padding:6px;background:#fff3c4;color:#4b3b00;");
+	statusBar()->addPermanentWidget(environmentBanner, 1);
+	mainTimerSlot();
 //	resetGraphicsViewZoom();
 }
 mainWindowClass::~mainWindowClass()
@@ -496,5 +400,5 @@ void mainWindowClass::writeBasketToReturningConveyorActionSlot()
 }
 void mainWindowClass::mainTimerSlot()
 {
-	setWindowTitle(tr("apex basket crane 2.... %1","main window title..").arg(timeVerbose));
+	setWindowTitle(tr("Apex Basket Crane 2 [%1] - %2").arg(Crane2::Environment::instance().name()).arg(timeVerbose));
 }

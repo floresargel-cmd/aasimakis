@@ -494,7 +494,7 @@ bool carriageClass::missionSendToPlc(bool force)
 		log(QString("sendMissionToPlc ((!fromPos)||(!toPos))"),errorStr);
 		return false;
 	}
-	carriageWidget->addMessageToGui(QString("Send to plc %1 to %2").arg(nextFromPos->getPosIndexDisplayString()).arg(nextToPos->getPosIndexDisplayString()),QString("Sending data to plc"),infoStr);
+	carriageWidget->addMessageToGui(QString("Send basket #%1 to plc: %2 to %3").arg(nextFromPos->getBasketNumber()).arg(nextFromPos->getPosIndexDisplayString()).arg(nextToPos->getPosIndexDisplayString()),QString("Sending data to plc"),infoStr);
 	tuxip->writeInteger(plcMissionTable,plcNextMissionFromIndex,nextFromPos->getIdForPlc());
 	tuxip->writeInteger(plcMissionTable,plcNextMissionToIndex,nextToPos->getIdForPlc());
 	tuxip->writeInteger(plcMissionTable,plcNextMissionStatusIndex,plcStatusStart);
