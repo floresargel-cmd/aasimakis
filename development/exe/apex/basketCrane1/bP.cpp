@@ -69,16 +69,29 @@ QString basketPositionClass::getDescription()
 
 void basketPositionClass::setBasketTableId(int b, bool contents)
 {
+	applyBasketTableId(b, contents, false);
+}
+
+void basketPositionClass::setBasketTableIdAfterTransfer(int b, bool contents)
+{
+	applyBasketTableId(b, contents, true);
+}
+
+void basketPositionClass::applyBasketTableId(int b, bool contents, bool assignmentCommitted)
+{
 	bool basketHasContents = contents;
 
 	if (basket.getTableId() != b)
 	{
-		QString stmnt = QString("insert into basketHistory (type, position, destination, basketTableId, date, sec) VALUES('%1', '%2', '%3',%4, '%5', '%6')")
-			.arg("set").arg((description.trimmed() + " %1 %2").arg(number).arg(index)).arg("-").arg(QString().number(b)).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t());
+		if (!assignmentCommitted)
+		{
+			QString stmnt = QString("insert into basketHistory (type, position, destination, basketTableId, date, sec) VALUES('%1', '%2', '%3',%4, '%5', '%6')")
+				.arg("set").arg((description.trimmed() + " %1 %2").arg(number).arg(index)).arg("-").arg(QString().number(b)).arg(QDateTime::currentDateTime().toString("yyyy-MM-dd") + QTime::currentTime().toString(" hh:mm:ss")).arg(QDateTime::currentDateTime().toTime_t());
 
-		setDbTableActive("basketHistory", false);
-		execDBQuery(stmnt, MAIN_DB_CONNECTION);
-		setDbTableIdle("basketHistory");
+			setDbTableActive("basketHistory", false);
+			execDBQuery(stmnt, MAIN_DB_CONNECTION);
+			setDbTableIdle("basketHistory");
+		}
 
 		//update epics
 		if (b != 0)
@@ -119,7 +132,8 @@ void basketPositionClass::setBasketTableId(int b, bool contents)
 
 	basket.setTableId(b);
 	loadContentFromDatabase();
-	saveToDatabase();
+	if (!assignmentCommitted)
+		saveToDatabase();
 
 /////
 //update [PEManager_tmp].[dbo].[basket_location] set audittime=CONVERT(datetime, '12-9-14 13:42:20:123') where basketnum=1 and basketlocation=1

@@ -42,6 +42,7 @@ class basketPositionClass:public QObject
 //	bool							isLocked;
 
 	QString							errorString;
+	void applyBasketTableId(int b, bool contents, bool assignmentCommitted);
 	bool							isLockedByCrane;//on movment only
 	QColor							basketDisplayColor();
 
@@ -89,6 +90,8 @@ public:
 	float getOpenGlZ();
 	//
 	void setBasketTableId(int b, bool contents = false);
+	// Update memory/EPICS only; positions and history were committed atomically.
+	void setBasketTableIdAfterTransfer(int b, bool contents);
 	void setBasketTableIdInMemory(int b);
 	void calculateBasketContentsTypeFromEpicsDatabase();
 	void loadContentFromDatabase();
