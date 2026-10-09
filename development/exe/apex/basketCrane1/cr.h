@@ -110,6 +110,7 @@ public:
 	bool move(basketPositionClass *from,basketPositionClass *to, QString* rejectionReason = NULL);
 	void loadFromDatabase();
 	bool getHasActiveMission();
+	bool isAssignmentReservedForMission(basketPositionClass* position, int basketId);
 	void plcStatusChanged(int status);
 	void plcMemoryChanged(int index,int value);
 	void plcStatusN20_15Changed(int status);

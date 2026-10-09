@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32"><Configuration>Debug</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals"><ProjectGuid>{26EFDFDD-A297-481C-89B1-BEBBD66A4D60}</ProjectGuid><WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration"><ConfigurationType>Application</ConfigurationType><PlatformToolset>v145</PlatformToolset><UseDebugLibraries>true</UseDebugLibraries></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <QtRoot>$(MSBuildThisFileDirectory)..\..\..\..\libs\#qt\qt.5.7.0.static.x32\qtbase</QtRoot>
+    <OutDir>$(MSBuildThisFileDirectory)..\..\..\..\#builds\AssignmentRefresh.Tests\</OutDir>
+    <IntDir>$(OutDir)obj\</IntDir>
+    <TargetName>AssignmentRefresh.Tests</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile><RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary><ExceptionHandling>Sync</ExceptionHandling><AdditionalIncludeDirectories>$(IntDir);$(QtRoot)\include;$(QtRoot)\include\QtCore;$(QtRoot)\include\QtNetwork;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories><PreprocessorDefinitions>QT_STATIC;QT_CORE_LIB;QT_NETWORK_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions></ClCompile>
+    <Link><SubSystem>Console</SubSystem><AdditionalLibraryDirectories>$(QtRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories><AdditionalDependencies>Qt5Cored.lib;Qt5Networkd.lib;qtpcred.lib;ws2_32.lib;iphlpapi.lib;winmm.lib;imm32.lib;version.lib;netapi32.lib;userenv.lib;secur32.lib;%(AdditionalDependencies)</AdditionalDependencies></Link>
+  </ItemDefinitionGroup>
+  <ItemGroup><ClCompile Include="assignmentRefreshTests.cpp" /></ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="ExtractCraneMoveMethods" BeforeTargets="ClCompile">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildThisFileDirectory)extractAssignmentRefresh.ps1&quot; -OutputFile &quot;$(IntDir)assignmentRefreshMethods.inc&quot;" />
+  </Target>
+</Project>
+

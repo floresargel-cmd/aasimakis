@@ -256,6 +256,25 @@ bool craneClass::getHasActiveMission()
 	return hasActiveMission;
 }
 
+bool craneClass::isAssignmentReservedForMission(basketPositionClass* position, int basketId)
+{
+	// Protect the whole source/destination stack, as well as the carried basket.
+	// Endpoints can remain set while a mission is being opened or closed.
+	if (position == myBasketPos)
+		return true;
+	basketPositionClass* reserved[] = { activeFromBasketPos, activeToBasketPos, myBasketPos };
+	for (int i = 0; i < 3; ++i)
+	{
+		if (!reserved[i])
+			continue;
+		if (position && position->getNumber() == reserved[i]->getNumber())
+			return true;
+		if (basketId > 0 && basketId == reserved[i]->getBasketTableId())
+			return true;
+	}
+	return false;
+}
+
 void craneClass::plcMemoryChanged(int index, int value)
 {
 	if (index == 0)
