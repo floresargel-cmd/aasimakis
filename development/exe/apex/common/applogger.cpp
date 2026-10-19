@@ -35,7 +35,6 @@ struct AppLoggerState {
     QDate openDate;
     int retentionDays;
     qint64 maxFileBytes;
-    int maxBackupFiles;
     AppLogSeverity minimumSeverity;
     AppLogStatusCallback cb;
     AppLogStatusCallback errorCb;
@@ -48,7 +47,6 @@ struct AppLoggerState {
         , applicationName("basket-crane")
         , retentionDays(30)
         , maxFileBytes(25LL * 1024LL * 1024LL)
-        , maxBackupFiles(5)
         , minimumSeverity(APPLOG_SEV_INFO)
         , cb(0)
         , errorCb(0)
@@ -172,18 +170,17 @@ bool rotateOversizedLog_locked(AppLoggerState& s, QString* openFailReason)
     s.isOpen = false;
 
     const QString basePath = s.fullPath;
-    for (int index = s.maxBackupFiles; index >= 1; --index) {
-        const QString destination = basePath + "." + QString::number(index);
-        if (index == s.maxBackupFiles)
-            QFile::remove(destination);
-        const QString source = index == 1
-            ? basePath
-            : basePath + "." + QString::number(index - 1);
-        if (QFile::exists(source) && !QFile::rename(source, destination)) {
-            if (openFailReason)
-                *openFailReason = QString("Cannot rotate '%1' to '%2'").arg(source).arg(destination);
-            return ensureLogFileOpen_locked(s, 0);
-        }
+    // Keep every chunk until age-based retention removes it. Never shift or
+    // overwrite existing archives, including backups made by older versions.
+    quint64 index = 1;
+    QString destination;
+    do {
+        destination = basePath + "." + QString::number(index++);
+    } while (QFile::exists(destination));
+    if (!QFile::rename(basePath, destination)) {
+        if (openFailReason)
+            *openFailReason = QString("Cannot rotate '%1' to '%2'").arg(basePath).arg(destination);
+        return ensureLogFileOpen_locked(s, 0);
     }
 
     return ensureLogFileOpen_locked(s, openFailReason);

@@ -76,7 +76,11 @@ The log includes the timestamp, severity, process ID, thread ID, component, and 
 
 After each database connection opens, a `DATABASE CONNECTION` entry records the connection name, selected profile, driver, DSN, SQL Server name, active database, user, and the principal tables read through that connection. Passwords are never logged. In particular, the entry for `mainConnection` identifies where the `positions` and `baskets` tables are read and written.
 
-Logs automatically roll over at midnight and when the current file reaches 25 MB. Up to five size-based backups are retained for the day, individual messages are truncated at 16,384 characters, and files older than 30 days are removed when the logger starts or rolls over.
+Logs automatically roll over at midnight and when the current file reaches 25 MB. Every size-based backup is retained, with numbered suffixes (`.log.1`, `.log.2`, and so on) chosen without replacing existing files. Backup numbers identify files, not their relative age; use the timestamps inside each file to order older backups. Individual messages are truncated at 16,384 characters.
+
+The logger removes files whose last-modified date is more than 30 calendar days old when it starts or changes to a new daily log. There is no backup-count limit that can discard earlier entries within those 30 days. Allow sufficient disk space for 30 days of the full logging volume. This change takes effect after rebuilding and deploying the application; previously deleted entries cannot be recovered by it.
+
+Build `tests/AppLogger.Tests.vcxproj` with Debug/Win32 and run `development/#builds/AppLogger.Tests/AppLogger.Tests.exe` to verify rotation beyond five backups, preservation of existing backups across restart, and the 30-day cleanup boundary. These tests use temporary files and do not connect to PLCs or databases.
 
 The default level is `INFO`. To include high-volume timer and Qt debug messages, set this environment variable before starting the application:
 
