@@ -131,6 +131,7 @@
     <ClInclude Include="..\..\common\btns.h" />
     <ClInclude Include="..\..\common\tcpTux.h" />
     <ClInclude Include="..\ap.h" />
+    <ClInclude Include="..\stacker2Handoff.h" />
     <ClInclude Include="..\b.h" />
     <ClInclude Include="..\bP.h" />
     <ClInclude Include="..\cG.h" />

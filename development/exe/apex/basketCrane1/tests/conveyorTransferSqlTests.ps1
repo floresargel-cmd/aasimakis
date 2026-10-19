@@ -1,7 +1,8 @@
 param(
     [Parameter(Mandatory=$true)][string]$StatementsFile,
     [string]$ConfigurationFile = (Join-Path $PSScriptRoot '../basketCrane.ini'),
-    [string]$Profile = 'MainDatabaseLive'
+    [string]$Profile = 'MainDatabaseLive',
+    [switch]$Stacker2
 )
 $ErrorActionPreference = 'Stop'
 # Only session-local temporary tables in tempdb are mutated. No production
@@ -55,13 +56,29 @@ $cases=@(
     @{Name='outgoing crane mission'; Setup='update #positions set targetNumber=400 where posNumber=700 and posIndex=1'; Reject=$true},
     @{Name='late history failure rolls back earlier writes'; Setup=''; Reject=$true; HistoryFailure=$true}
 )
+if ($Stacker2) {
+    # Exercise the exact production handoff SQL against isolated temporary rows.
+    $cases=@(
+        @{Name='stacker intake preserves identity and handoff history'; Setup=''; Reject=$false},
+        @{Name='occupied stacker after refresh'; Setup='update #positions set basketTableId=80 where posNumber=910'; Reject=$true},
+        @{Name='input identity corrected after refresh'; Setup='update #positions set basketTableId=36 where posNumber=450'; Reject=$true},
+        @{Name='duplicate stacker row'; Setup='insert into #positions values(910,1,0,2,0)'; Reject=$true},
+        @{Name='missing stacker row'; Setup='delete from #positions where posNumber=910'; Reject=$true},
+        @{Name='NULL stacker assignment'; Setup='update #positions set basketTableId=NULL where posNumber=910'; Reject=$true},
+        @{Name='basket assigned twice'; Setup='insert into #positions values(800,1,54,2,0)'; Reject=$true},
+        @{Name='input reserved by outgoing crane mission'; Setup='update #positions set targetNumber=400 where posNumber=450'; Reject=$true},
+        @{Name='handoff history failure rolls back all assignment writes'; Setup=''; Reject=$true; HistoryFailure=$true}
+    )
+}
 try {
     $connection.Open()
     foreach ($case in $cases) {
         Execute 'create table #positions(posNumber int,posIndex int,basketTableId int NULL,locked int,targetNumber int)'
-        $constraint = if ($case.HistoryFailure) { 'check(basketTableId<>95)' } else { '' }
-        Execute ("create table #basketHistory(type varchar(10),position varchar(100),destination varchar(100),basketTableId int $constraint,date varchar(30),sec int)")
-        Execute 'insert into #positions values(700,1,110,2,0),(700,2,38,2,0),(700,3,95,2,0),(700,4,0,2,0),(710,1,0,2,0),(710,2,0,2,0),(710,3,0,2,0),(710,4,0,2,0)'
+        $constraint = if ($case.HistoryFailure -and !$Stacker2) { 'check(basketTableId<>95)' } else { '' }
+        $tableConstraint = if ($case.HistoryFailure -and $Stacker2) { ",check(type<>'handoff')" } else { '' }
+        Execute ("create table #basketHistory(type varchar(10),position varchar(100),destination varchar(100),basketTableId int $constraint,date varchar(30),sec int $tableConstraint)")
+        if ($Stacker2) { Execute 'insert into #positions values(450,1,54,2,0),(910,1,0,2,0)' }
+        else { Execute 'insert into #positions values(700,1,110,2,0),(700,2,38,2,0),(700,3,95,2,0),(700,4,0,2,0),(710,1,0,2,0),(710,2,0,2,0),(710,3,0,2,0),(710,4,0,2,0)' }
         if ($case.Setup) { Execute $case.Setup }
         $before=Snapshot
         $transaction=$connection.BeginTransaction(); $rejected=$false
@@ -74,6 +91,12 @@ try {
         if ($rejected -ne $case.Reject) { throw "Unexpected transaction result: $($case.Name)" }
         if ($rejected) {
             if ((Snapshot) -ne $before -or (Scalar 'select count(*) from #basketHistory') -ne 0) { throw "Partial transfer persisted: $($case.Name)" }
+        } elseif ($Stacker2) {
+            if ((Scalar 'select basketTableId from #positions where posNumber=450') -ne 0 -or
+                (Scalar 'select basketTableId from #positions where posNumber=910') -ne 54) { throw 'Stacker identity was lost.' }
+            if ((Scalar "select count(*) from #basketHistory where type='handoff' and basketTableId=54") -ne 1 -or
+                (Scalar 'select count(*) from #basketHistory') -ne 3) { throw 'Missing stacker handoff audit history.' }
+            if ((Scalar 'select count(*) from #positions where locked<>2') -ne 0) { throw 'Stacker handoff changed operator locks.' }
         } else {
             if ((Scalar 'select count(*) from #positions where posNumber=700 and basketTableId<>0') -ne 0) { throw 'Source not cleared.' }
             if ((Scalar 'select basketTableId from #positions where posNumber=710 and posIndex=1') -ne 110) { throw 'Destination identity changed.' }

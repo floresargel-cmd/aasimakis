@@ -158,7 +158,10 @@ allPositionsClass::allPositionsClass(tcpServerClass *conveyorsPlcTcpServer_, tcp
 	selectedToBasketPos = NULL;
 	crane = NULL;
 	plcBeforeStackerPosMadeStep = plcStackerPosMadeStep = false;
-	plcBeforeStacker2PosMadeStep = plcStacker2PosMadeStep = false;
+	pendingStacker2OutputBasket = 0;
+	stacker2InputStatusKnown = false;
+	plcIsBeforeStacker2PosEmpty = false;
+	plcStacker2PosMadeStep = false;
 	//hasBasketInOven=false;
 	incomingBasketOn500 = false;
 	scrapBasketIsReady = false;
@@ -1268,6 +1271,10 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	// Stacker 2 needs empty basket.
 	//if (plcIsBeforeStacker2PosEmpty)
 	plcIsBeforeStacker2PosEmpty = statusBits[17] ? true : false;
+	stacker2InputStatusKnown = true;
+	basketPositionClass* stacker2Input = beforeStacker2Position->getPosition(0);
+	stacker2Handoff.observe(plcIsBeforeStacker2PosEmpty, stacker2Input->getBasketTableId(),
+		stacker2Input->getIsLockedByCrane());
 
 	LOG("STACKER PLC", QString("N20[13].17=%1 | beforeStacker2Position.hasBasket=%2")
 		.arg(plcIsBeforeStacker2PosEmpty).arg(beforeStacker2Position->getPosition(0)->hasBasket()));
@@ -1275,8 +1282,6 @@ void allPositionsClass::plcStatusN20_13Changed(int status)
 	if (plcIsBeforeStacker2PosEmpty)
 	{
 		beforeStacker2Position->setLockRecieve(false);
-		if (beforeStacker2Position->getPosition(0)->hasBasket())
-			plcBeforeStacker2PosMadeStep = true;
 	}
 	else
 		beforeStacker2Position->setLockRecieve(true);
@@ -1600,6 +1605,7 @@ positionListClass* allPositionsClass::getBasketPositionListFromFullBufferWithBas
 void allPositionsClass::conveyorsBasketMemoryChanged(int index, int bottomBasket)
 {
 	if (bottomBasket == 0) {
+		if (index == 39) pendingStacker2OutputBasket = 0;
 		if (index == 15)	loadPositionFromDatabase(afterOvenPositionList01);
 		if (index == 16)	loadPositionFromDatabase(afterOvenPositionList02);
 		if (index ==  7)	loadPositionFromDatabase(afterOvenPositionList03);
@@ -1653,8 +1659,12 @@ void allPositionsClass::conveyorsBasketMemoryChanged(int index, int bottomBasket
 	if (index == 45)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), beforeOvenPositionList08);
 	if (index == 46)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), beforeOvenPositionList09);
 
-	// Stacker 2 full basket
-	if (index == 39)	afterStacker2Position->getPosition(0)->setBasketTableId(bottomBasket);
+	// The conveyor reports the actual outgoing identity; do not infer it from
+	// the last basket delivered to the input. Retry database conflicts on timer.
+	if (index == 39) {
+		pendingStacker2OutputBasket = bottomBasket;
+		processStacker2Handoffs();
+	}
 
 	// Packaging in / out
 	if (index == 27) {
@@ -1784,6 +1794,107 @@ void allPositionsClass::changeConveyorsBasketMemory(int plcPosId, int basket)
 	setPlcNetworkIdle(PLC_NETWORK_CONVEYORS);
 }
 
+bool allPositionsClass::transferStacker2Basket(basketPositionClass* source, basketPositionClass* destination, int basketId)
+{
+	if (isDatabaseReadOnlyMode() || basketId <= 0 || !destination || source == destination ||
+		destination->getIsLockedByCrane() || (source && source->getIsLockedByCrane()))
+		return false;
+	if (source && source->getBasketTableId() != basketId) return false;
+	if (!source && destination->getBasketTableId() == basketId) return true;
+	if (destination->hasBasket()) {
+		LOG("WARNING: STACKER HANDOFF", QString("Transfer blocked: basket=%1 destination=%2/%3 occupied by %4; identities preserved")
+			.arg(basketId).arg(destination->getNumber()).arg(destination->getIndex()).arg(destination->getBasketTableId()));
+		return false;
+	}
+
+	QStringList statements;
+	const QString sourceDescription = source ? (source->getDescription().trimmed() + " %1 %2")
+		.arg(source->getNumber()).arg(source->getIndex()) : QString("PLC N12[39]");
+	const QString destinationDescription = (destination->getDescription().trimmed() + " %1 %2")
+		.arg(destination->getNumber()).arg(destination->getIndex());
+	const QDateTime eventTime = QDateTime::currentDateTime();
+	basketPositionClass* handoffPositions[] = { source, destination };
+	for (int i = 0; i < 2; ++i) {
+		if (!handoffPositions[i]) continue;
+		const int expected = i == 0 ? basketId : 0;
+		const QString predicate = QString("posNumber=%1 and posIndex=%2").arg(handoffPositions[i]->getNumber()).arg(handoffPositions[i]->getIndex());
+		statements << QString("if (select count(*) from positions with (UPDLOCK,HOLDLOCK) where %1) <> 1 "
+			"or not exists (select 1 from positions with (UPDLOCK,HOLDLOCK) where %1 and basketTableId=%2 and targetNumber=0) "
+			"raiserror('Stacker handoff assignment conflict',16,1)").arg(predicate).arg(expected);
+	}
+	statements << QString("if (select count(*) from positions with (UPDLOCK,HOLDLOCK) where basketTableId=%1) <> %2 "
+		"raiserror('Stacker handoff duplicate or unexpected basket assignment',16,1)").arg(basketId).arg(source ? 1 : 0);
+	for (int i = 0; i < 2; ++i) {
+		if (!handoffPositions[i]) continue;
+		const int replacement = i == 0 ? 0 : basketId;
+		statements << QString("update positions set basketTableId=%1 where posNumber=%2 and posIndex=%3 and basketTableId=%4; "
+			"if @@ROWCOUNT <> 1 raiserror('Stacker handoff assignment changed',16,1)")
+			.arg(replacement).arg(handoffPositions[i]->getNumber()).arg(handoffPositions[i]->getIndex()).arg(i == 0 ? basketId : 0);
+		const QString description = i == 0 ? sourceDescription : destinationDescription;
+		statements << QString("insert into basketHistory (type,position,destination,basketTableId,date,sec) "
+			"values('set','%1','-',%2,'%3',%4)").arg(QString(description).replace("'", "''"))
+			.arg(replacement).arg(eventTime.toString("yyyy-MM-dd hh:mm:ss")).arg(eventTime.toTime_t());
+	}
+	statements << QString("insert into basketHistory (type,position,destination,basketTableId,date,sec) "
+		"values('handoff','%1','%2',%3,'%4',%5)").arg(QString(sourceDescription).replace("'", "''"))
+		.arg(QString(destinationDescription).replace("'", "''")).arg(basketId)
+		.arg(eventTime.toString("yyyy-MM-dd hh:mm:ss")).arg(eventTime.toTime_t());
+	setDbTableActive("positions", false);
+	setDbTableActive("basketHistory", false);
+	QString error;
+	const bool committed = execDBTransaction(statements, MAIN_DB_CONNECTION, 3, &error);
+	setDbTableIdle("basketHistory");
+	setDbTableIdle("positions");
+	if (!committed) {
+		LOG("ERROR: STACKER HANDOFF", QString("Transfer rolled back: basket=%1 from=%2 to=%3; %4")
+			.arg(basketId).arg(sourceDescription).arg(destinationDescription).arg(error));
+		return false;
+	}
+	destination->setBasketTableIdAfterTransfer(basketId, source ? source->hasContents() : true);
+	if (source) source->setBasketTableIdAfterTransfer(0, false);
+	LOG("STACKER HANDOFF", QString("Committed: basket=%1 from=%2 to=%3")
+		.arg(basketId).arg(sourceDescription).arg(destinationDescription));
+	return true;
+}
+
+void allPositionsClass::processStacker2Handoffs()
+{
+	if (isDatabaseReadOnlyMode()) return;
+	basketPositionClass* inside = stacker2Position->getPosition(0);
+	basketPositionClass* output = afterStacker2Position->getPosition(0);
+	basketPositionClass* input = beforeStacker2Position->getPosition(0);
+	if (!inside || !output || !input) {
+		LOG("ERROR: STACKER HANDOFF", "Missing position 450/1, 910/1 or 460/1; assignments preserved");
+		return;
+	}
+	// Do not replay an old output report after the crane has picked it up.
+	if (output->getIsLockedByCrane()) pendingStacker2OutputBasket = 0;
+	if (pendingStacker2OutputBasket > 0) {
+		basketPositionClass* source = inside->getBasketTableId() == pendingStacker2OutputBasket ? inside : NULL;
+		if (transferStacker2Basket(source, output, pendingStacker2OutputBasket)) {
+			pendingStacker2OutputBasket = 0;
+			emit openGlChangedSignal();
+		}
+	}
+
+	if (!stacker2InputStatusKnown) return;
+	const int basketId = input->getBasketTableId();
+	// N20[13] is sent on change: the occupied value may have arrived just
+	// before the crane finished placing this basket, with no second callback.
+	stacker2Handoff.observe(plcIsBeforeStacker2PosEmpty, basketId, input->getIsLockedByCrane());
+	if (!stacker2Handoff.ready(plcIsBeforeStacker2PosEmpty, basketId, input->getIsLockedByCrane())) return;
+	// An occupied internal slot is a reconciliation problem. Retain the input
+	// identity instead of overwriting another basket or silently discarding it.
+	if (!transferStacker2Basket(input, inside, basketId)) return;
+	stacker2Handoff.reset();
+	setDbTableActive("basket_location", false);
+	execDBQuery(QString("update basket_location set audittime = NULL where basketnum = %1 and (basketlocation = %2 or basketlocation = %3)")
+		.arg(basketId).arg(basketPositionClass::EPICS_POS_BASKET_IN_OVEN).arg(basketPositionClass::EPICS_POS_BASKET_AFTER_OVEN), APEX_DB_CONNECTION);
+	setDbTableIdle("basket_location");
+	basketNeededBeforeStackerTime.restart();
+	emit openGlChangedSignal();
+}
+
 void allPositionsClass::mainTimerSlot()
 {
 	LOG("mainTimerSlot called", "INFO: Step 1");
@@ -1895,36 +2006,7 @@ void allPositionsClass::mainTimerSlot()
 	}
 
 	LOG("mainTimerSlot called", "INFO: Step 4");
-	if (plcBeforeStacker2PosMadeStep)
-	{
-		LOG("mainTimerSlot called", "INFO: Step 4.1");
-		basketPositionClass* beforeStacker2BasketPos = beforeStacker2Position->getFreeToMoveBasketPosition();
-
-		if (beforeStacker2BasketPos && (!beforeStacker2BasketPos->getIsLockedByCrane()))
-		{
-			LOG("mainTimerSlot called", "INFO: Step 4.1.1");
-			int basketTableId = beforeStacker2BasketPos->getBasketTableId();
-			if (basketTableId > 0)
-			{
-				LOG("mainTimerSlot called", "INFO: Step 4.1.1.1");
-				beforeStacker2BasketPos->setBasketTableId(0);
-				plcBeforeStacker2PosMadeStep = false;
-
-				// Reset oven in / out times for basket
-				setDbTableActive("basket_location", false);
-				execDBQuery(QString("update basket_location set audittime = NULL where basketnum = %1 and (basketlocation = %2 or basketlocation = %3)")
-					.arg(basketTableId).arg(basketPositionClass::EPICS_POS_BASKET_IN_OVEN).arg(basketPositionClass::EPICS_POS_BASKET_AFTER_OVEN), APEX_DB_CONNECTION);
-				setDbTableIdle("basket_location");
-
-				emit openGlChangedSignal();
-
-				basketNeededBeforeStackerTime.restart();
-			}
-			LOG("mainTimerSlot called", "INFO: Step 4.1.2");
-		}
-		LOG("mainTimerSlot called", "INFO: Step 4.2");
-
-	}
+	processStacker2Handoffs();
 
 	LOG("mainTimerSlot called", "INFO: Step 5");
 	//if (plcStacker2PosMadeStep)

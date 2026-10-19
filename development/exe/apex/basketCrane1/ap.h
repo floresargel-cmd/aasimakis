@@ -11,6 +11,7 @@ class allPositionsClass;
 #include "cG.h"
 #include "pl.h"
 #include "cr.h"
+#include "stacker2Handoff.h"
 
 class allPositionsClass:public QObject			
 {
@@ -33,7 +34,9 @@ class allPositionsClass:public QObject
 	bool														plcStackerPosMadeStep;
 
 	bool														plcIsBeforeStacker2PosEmpty;
-	bool														plcBeforeStacker2PosMadeStep;
+	Stacker2Handoff stacker2Handoff;
+	bool stacker2InputStatusKnown;
+	int pendingStacker2OutputBasket;
 	bool														plcIsAfterStacker2PosFull;
 	bool														plcStacker2PosMadeStep;
 
@@ -283,6 +286,8 @@ public:
 	void unlockBasketReturningFromOven();
 
 private:
+	bool transferStacker2Basket(basketPositionClass* source, basketPositionClass* destination, int basketId);
+	void processStacker2Handoffs();
 	void beforeStacker();
 	void afterStacker();
 	void beforeStacker2();

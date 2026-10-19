@@ -2,6 +2,8 @@ param([Parameter(Mandatory=$true)][string]$OutputFile)
 $ErrorActionPreference = 'Stop'
 $methods = @()
 foreach ($entry in @(@('ap.cpp','void allPositionsClass::moveBaskets'),
+    @('ap.cpp','bool allPositionsClass::transferStacker2Basket'),
+    @('ap.cpp','void allPositionsClass::processStacker2Handoffs'),
     @('bP.cpp','void basketPositionClass::setBasketTableId'),
     @('bP.cpp','void basketPositionClass::setBasketTableIdAfterTransfer'),
     @('bP.cpp','void basketPositionClass::applyBasketTableId'))) {
