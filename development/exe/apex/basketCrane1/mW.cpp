@@ -895,7 +895,7 @@ void mainWindowClass::showBasketTrackerSlot()
 	QDialog dialog(this);
 	dialog.setWindowTitle(tr("Basket Tracker"));
 	dialog.setWindowIcon(QIcon(":/logo_16x16.png"));
-	dialog.resize(900, 650);
+	dialog.resize(900, 720);
 
 	QVBoxLayout *layout = new QVBoxLayout(&dialog);
 	QHBoxLayout *searchLayout = new QHBoxLayout();
@@ -932,6 +932,11 @@ void mainWindowClass::showBasketTrackerSlot()
 	positionsTable->horizontalHeader()->setStretchLastSection(true);
 	positionsTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
 	layout->addWidget(positionsTable, 2);
+	QLabel *lockDetailsLabel = new QLabel(&dialog);
+	lockDetailsLabel->setTextFormat(Qt::PlainText);
+	lockDetailsLabel->setWordWrap(true);
+	lockDetailsLabel->setVisible(false);
+	layout->addWidget(lockDetailsLabel);
 
 	QLabel *historyLabel = new QLabel(tr("Recent movement history"), &dialog);
 	historyLabel->setStyleSheet("QLabel{font-weight:bold;}");
@@ -974,6 +979,8 @@ void mainWindowClass::showBasketTrackerSlot()
 
 		positionsTable->setRowCount(0);
 		historyTable->setRowCount(0);
+		lockDetailsLabel->clear();
+		lockDetailsLabel->setVisible(false);
 
 		QString positionOrder = " order by posNumber, posIndex";
 		QString positionWhere = QString(" from positions where basketTableId = %1").arg(basketId);
@@ -990,6 +997,7 @@ void mainWindowClass::showBasketTrackerSlot()
 
 		int positionCount = positionNumbers.count();
 		positionsTable->setRowCount(positionCount);
+		QStringList lockDetails;
 		for (int row = 0; row < positionCount; ++row)
 		{
 			setTableText(positionsTable, row, 0, row < positionDescriptions.count() ? positionDescriptions[row].toString() : QString());
@@ -998,6 +1006,20 @@ void mainWindowClass::showBasketTrackerSlot()
 			setTableText(positionsTable, row, 3, row < positionLocks.count() && positionLocks[row].toInt() == basketPositionClass::LOCKED ? tr("Yes") : tr("No"));
 			setTableText(positionsTable, row, 4, row < targetNumbers.count() && targetNumbers[row].toInt() != 0 ? targetNumbers[row].toString() : QString());
 			setTableText(positionsTable, row, 5, row < targetIndexes.count() && targetIndexes[row].toInt() != 0 ? targetIndexes[row].toString() : QString());
+			const int positionNumber = positionNumbers[row].toInt();
+			const int positionIndex = positionIndexes.value(row).toInt();
+			const bool locked = positionLocks.value(row).toInt() == basketPositionClass::LOCKED;
+			const bool craneReserved = openGLWidget && openGLWidget->isPositionReservedByCrane(positionNumber, positionIndex);
+			const QString details = basketPositionClass::describeLockState(positionNumber, positionIndex, locked, craneReserved);
+			if (!details.isEmpty()) {
+				lockDetails << tr("Position %1/%2:\n%3").arg(positionNumber).arg(positionIndex).arg(details);
+				positionsTable->item(row, 3)->setToolTip(details);
+			}
+		}
+		if (!lockDetails.isEmpty()) {
+			lockDetailsLabel->setText(lockDetails.join("\n\n")
+				+ tr("\n\nDetails reflect this search. Search again to refresh the crane reservation state."));
+			lockDetailsLabel->setVisible(true);
 		}
 
 		setDbTableActive("baskets", true);

@@ -55,6 +55,7 @@ public:
 	//
 	void setAutoMode(bool check);
 	int getBasketTableIdOfScrapBasketPos();
+	bool isPositionReservedByCrane(int positionNumber, int positionIndex);
 
 #ifdef EMULATE
 	bool isOvenEntranceFull();

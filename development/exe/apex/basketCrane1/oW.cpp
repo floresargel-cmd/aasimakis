@@ -1,5 +1,13 @@
 #include "oW.h"
 
+bool openGLWidgetClass::isPositionReservedByCrane(int positionNumber, int positionIndex)
+{
+	if (!allPositions || positionIndex < 1) return false;
+	// Database indices are one-based; getPosition takes a zero-based index.
+	basketPositionClass* position = allPositions->getPosition(positionNumber, positionIndex - 1);
+	return position && position->getIsLockedByCrane();
+}
+
 int redForPicking=0;
 int greenForPicking=0;
 int blueForPicking=0;

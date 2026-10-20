@@ -119,6 +119,7 @@ public:
 	bool isFreeToMove();
 	bool getIsHighlighted();
 	QString getToolTipText();
+	static QString describeLockState(int positionNumber, int positionIndex, bool locked, bool craneReserved);
 	bool canRecieve(basketPositionClass* bp);
 	bool isBasketNormal();
 	bool isBasketForScrap();

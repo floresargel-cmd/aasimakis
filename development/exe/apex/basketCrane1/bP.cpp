@@ -289,11 +289,29 @@ bool basketPositionClass::getIsHighlighted()
 	return isHighlighted;
 }
 
+QString basketPositionClass::describeLockState(int positionNumber, int positionIndex, bool locked, bool craneReserved)
+{
+	QStringList details;
+	if (locked) {
+		if (positionNumber == 910 && positionIndex > 1)
+			details << tr("LOCKED - Internal tracking: ordinary crane selection is disabled. PLC-confirmed output handoffs can still clear this position.");
+		else
+			details << tr("LOCKED: ordinary crane selection is disabled.");
+	}
+	if (craneReserved)
+		details << tr("Reserved by crane: temporary hold during a crane pickup or delivery. Tracking transfers involving this position may wait until it is released.");
+	return details.join("\n");
+}
+
 QString basketPositionClass::getToolTipText()
 {
 	QString ans;
 	ans += tr("Position: %1, %2 (%3)\n\n").arg(number + index).arg(lockedEnum == LOCKED ? "locked" : "unlocked").arg(description);
-	if (errorString.length() > 0)
+	const QString lockDetails = describeLockState(number, index, getLocked(), getIsLockedByCrane());
+	if (!lockDetails.isEmpty())
+		ans += lockDetails + "\n\n";
+	// The normal lock is explained above; retain unrelated errors.
+	if (errorString.length() > 0 && !(getLocked() && errorString == "LOCKED"))
 		ans+=tr("Error : %1\n\n").arg(errorString);
 	
 	if (hasBasket())
