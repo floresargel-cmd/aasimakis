@@ -54,6 +54,7 @@ openGLWidgetClass::openGLWidgetClass(tcpServerClass *cranePlcTcpServer_,tcpServe
 	crane->setConveyorsPlcTcpServer(conveyorsPlcTcpServer);
 
 	connect(allPositions, SIGNAL(openGlChangedSignal()), this, SLOT(openGlPartChangedPosSlot()));
+	connect(allPositions, SIGNAL(return160TrackingStatusChanged(QString)), this, SIGNAL(return160TrackingStatusChanged(QString)));
 	connect(crane, SIGNAL(scrapBasketPositionChangedSignal(int)), this, SLOT(scrapBasketPositionChangedSlot(int)));
 	connect(crane, SIGNAL(missionFromAfterStackerPositionFinishedSignal()), this, SLOT(missionFromAfterStackerPositionFinishedSlot()));
 	connect(crane, SIGNAL(missionFromAfterStacker2PositionFinishedSignal()), this, SLOT(missionFromAfterStacker2PositionFinishedSlot()));

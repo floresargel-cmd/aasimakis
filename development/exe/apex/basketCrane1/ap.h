@@ -37,6 +37,8 @@ class allPositionsClass:public QObject
 	Stacker2Handoff stacker2Handoff;
 	bool stacker2InputStatusKnown;
 	int pendingStacker2OutputBasket;
+	int pendingReturn160BottomBasket;
+	QString return160TrackingStatus;
 	bool														plcIsAfterStacker2PosFull;
 	bool														plcStacker2PosMadeStep;
 
@@ -247,6 +249,9 @@ public:
 	positionListClass* getBasketPositionListFromFullBufferWithBasketId(int id);
 	void newBasketInReturningFromDestackerPos(int returningBasketTableId);
 	void conveyorsBasketMemoryChanged(int index,int bottomBasket);
+	void observeReturn160Report(int bottomBasket);
+	void processReturn160Report();
+	void setReturn160TrackingStatus(const QString& message);
 	void newOvenConveyorsBasketMemoryChanged(int index,int bottomBasket);
 	void loadPositionFromDatabase(positionListClass * reloadThisList);
 	void timeLeftForOvenTofinishChanged(int minutes);
@@ -328,6 +333,7 @@ public slots:
 
 signals:
 	void openGlChangedSignal();
+	void return160TrackingStatusChanged(QString message);
 };						
 
 #endif

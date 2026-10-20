@@ -295,6 +295,13 @@ mainWindowClass::mainWindowClass()
 		dialog.exec();
 	});
 	rootLayout->addWidget(appHeader);
+	return160TrackingLabel = new QLabel(this);
+	return160TrackingLabel->setObjectName("return160TrackingWarning");
+	return160TrackingLabel->setWordWrap(true);
+	return160TrackingLabel->setStyleSheet("QLabel{background:#78350f;color:#fef3c7;"
+		"border:1px solid #f59e0b;padding:8px 12px;font-size:14px;font-weight:600;}");
+	return160TrackingLabel->hide();
+	rootLayout->addWidget(return160TrackingLabel);
 	rootLayout->addLayout(mainLayout, 1);
 	// Status bar: database table activity indicators (green=read, blue=write, grey=idle)
 	QWidget *statusBarWidget = new QWidget(this);
@@ -368,6 +375,11 @@ mainWindowClass::mainWindowClass()
 	plcWidget = new plcWidgetClass(plcStatusWidget);
 	openGLWidget = new openGLWidgetClass(plcWidget->getCranePlcTcpServer(), plcWidget->getConveyorsPlcTcpServer(), 0, 0);
 	mainLayout->addWidget(openGLWidget);
+	connect(openGLWidget, &openGLWidgetClass::return160TrackingStatusChanged, this,
+		[this](const QString& message) {
+			return160TrackingLabel->setText(message);
+			return160TrackingLabel->setVisible(!message.isEmpty());
+		});
 	plcStatusWidget->setParent(openGLWidget);
 
 	// basket_details is also updated by other production applications. Keep the

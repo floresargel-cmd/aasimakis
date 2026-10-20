@@ -6,6 +6,7 @@ positionListClass::positionListClass(int mainPosId_, int typeEnum_, int position
 	mainPosId = mainPosId_;
 	typeEnumeration = typeEnum_;
 	isLockedToRecieve = false;
+	trackingReconciliationRequired = false;
 	int noOfPos = GETONE(QString("select count(posIndex) from positions where posNumber=%1").arg(mainPosId), MAIN_DB_CONNECTION).toInt();
 	description = GETONE(QString("select description from positions where posNumber=%1 and posIndex=1").arg(mainPosId), MAIN_DB_CONNECTION).toString();
 
@@ -187,6 +188,19 @@ basketPositionClass* positionListClass::getPosition(int index)
 	return NULL;
 }
 
+basketPositionClass* positionListClass::appendStacker2TrackingPosition()
+{
+	if (mainPosId != 910 || basketPositions.isEmpty()) return NULL;
+	basketPositionClass* first = basketPositions.first();
+	basketPositionClass* position = new basketPositionClass(this, description, 910,
+		basketPositions.count() + 1, basketPositionClass::EPICS_POS_BASKET_NOWHERE,
+		first->getOpenGlX(), first->getOpenGlY(), 0.750f * basketPositions.count());
+	position->lockedEnum = basketPositionClass::LOCKED;
+	basketPositions.append(position);
+	connect(position, SIGNAL(positionSelectedSignal(basketPositionClass *)), this, SLOT(positionSelectedSlot(basketPositionClass *)));
+	return position;
+}
+
 QVector<basketPositionClass*> positionListClass::getBasketPositions()
 {
 	QVector<basketPositionClass*> ans;
@@ -263,6 +277,7 @@ basketPositionClass* positionListClass::getHighlightedPos()
 
 basketPositionClass* positionListClass::getFreeToMoveBasketPosition()
 {
+	if (trackingReconciliationRequired) return NULL;
 	if (isSomethingObstructingThePositionsWay())
 		return NULL;
 
@@ -360,6 +375,8 @@ basketPositionClass* positionListClass::getFreeToRecievePos(basketPositionClass*
 	};
 	if (!incomingPos)
 		return reject(tr("No source basket selected"));
+	if (trackingReconciliationRequired)
+		return reject(tr("Basket detected by PLC; position tracking needs reconciliation"));
 	if (isLockedToRecieve)
 		return reject(tr("Position is locked to receive by the PLC"));
 

@@ -1,10 +1,13 @@
 param(
     [Parameter(Mandatory=$true)][string]$StatementsFile,
-    [string]$ConfigurationFile = (Join-Path $PSScriptRoot '../basketCrane.ini'),
+    [string]$ConfigurationFile,
     [string]$Profile = 'MainDatabaseLive',
-    [switch]$Stacker2
+    [switch]$Stacker2,
+    [switch]$Stacker2Overflow
 )
 $ErrorActionPreference = 'Stop'
+if (!$ConfigurationFile) { $ConfigurationFile = Join-Path $PSScriptRoot '../basketCrane.ini' }
+if ($Stacker2Overflow) { $Stacker2 = $true }
 # Only session-local temporary tables in tempdb are mutated. No production
 # positions, basketHistory, EPICS data, or PLC commands are touched.
 $statements = @(Get-Content -LiteralPath $StatementsFile -Raw | ConvertFrom-Json)
@@ -27,7 +30,12 @@ $connection = New-Object System.Data.Odbc.OdbcConnection($builder.ConnectionStri
 $connection.ConnectionTimeout=8
 function Execute([string]$Sql, $Transaction=$null) {
     $command=$connection.CreateCommand()
-    try { $command.CommandText=$Sql; $command.CommandTimeout=20; $command.Transaction=$Transaction; $null=$command.ExecuteNonQuery() }
+    try {
+        $command.CommandText=$Sql; $command.CommandTimeout=20; $command.Transaction=$Transaction
+        $reader=$command.ExecuteReader()
+        try { do { while ($reader.Read()) {} } while ($reader.NextResult()) }
+        finally { $reader.Dispose() }
+    }
     finally { $command.Dispose() }
 }
 function Snapshot {
@@ -70,14 +78,29 @@ if ($Stacker2) {
         @{Name='handoff history failure rolls back all assignment writes'; Setup=''; Reject=$true; HistoryFailure=$true}
     )
 }
+if ($Stacker2Overflow) {
+    $cases=@(
+        @{Name='basket 21 clears input while basket 89 stays inside'; Setup=''; Reject=$false},
+        @{Name='reuse persisted empty internal record'; Setup='insert into #positions values(910,2,0,2,0,''in stacker 2'',0)'; Reject=$false},
+        @{Name='occupied overflow after refresh'; Setup='insert into #positions values(910,2,80,2,0,''in stacker 2'',0)'; Reject=$true},
+        @{Name='duplicate overflow row'; Setup='insert into #positions values(910,2,0,2,0,''in stacker 2'',0),(910,2,0,2,0,''in stacker 2'',0)'; Reject=$true},
+        @{Name='missing preceding tracking record'; Setup='delete from #positions where posNumber=910'; Reject=$true},
+        @{Name='overflow intake identity changed'; Setup='update #positions set basketTableId=36 where posNumber=450'; Reject=$true},
+        @{Name='overflow basket already assigned elsewhere'; Setup='insert into #positions values(800,1,21,2,0,''elsewhere'',0)'; Reject=$true},
+        @{Name='overflow input reserved by crane'; Setup='update #positions set targetNumber=400 where posNumber=450'; Reject=$true},
+        @{Name='overflow rollback removes new record and restores input'; Setup=''; Reject=$true; HistoryFailure=$true}
+    )
+}
 try {
     $connection.Open()
     foreach ($case in $cases) {
-        Execute 'create table #positions(posNumber int,posIndex int,basketTableId int NULL,locked int,targetNumber int)'
+        $extraColumns = if ($Stacker2Overflow) { ',description varchar(40),targetIndex int' } else { '' }
+        Execute ("create table #positions(posNumber int,posIndex int,basketTableId int NULL,locked int,targetNumber int$extraColumns)")
         $constraint = if ($case.HistoryFailure -and !$Stacker2) { 'check(basketTableId<>95)' } else { '' }
         $tableConstraint = if ($case.HistoryFailure -and $Stacker2) { ",check(type<>'handoff')" } else { '' }
         Execute ("create table #basketHistory(type varchar(10),position varchar(100),destination varchar(100),basketTableId int $constraint,date varchar(30),sec int $tableConstraint)")
-        if ($Stacker2) { Execute 'insert into #positions values(450,1,54,2,0),(910,1,0,2,0)' }
+        if ($Stacker2Overflow) { Execute 'insert into #positions values(450,1,21,2,0,''before stacker 2'',0),(910,1,89,2,0,''in stacker 2'',0)' }
+        elseif ($Stacker2) { Execute 'insert into #positions values(450,1,54,2,0),(910,1,0,2,0)' }
         else { Execute 'insert into #positions values(700,1,110,2,0),(700,2,38,2,0),(700,3,95,2,0),(700,4,0,2,0),(710,1,0,2,0),(710,2,0,2,0),(710,3,0,2,0),(710,4,0,2,0)' }
         if ($case.Setup) { Execute $case.Setup }
         $before=Snapshot
@@ -91,6 +114,13 @@ try {
         if ($rejected -ne $case.Reject) { throw "Unexpected transaction result: $($case.Name)" }
         if ($rejected) {
             if ((Snapshot) -ne $before -or (Scalar 'select count(*) from #basketHistory') -ne 0) { throw "Partial transfer persisted: $($case.Name)" }
+        } elseif ($Stacker2Overflow) {
+            if ((Scalar 'select basketTableId from #positions where posNumber=450') -ne 0 -or
+                (Scalar 'select basketTableId from #positions where posNumber=910 and posIndex=1') -ne 89 -or
+                (Scalar 'select basketTableId from #positions where posNumber=910 and posIndex=2') -ne 21) { throw 'Overflow intake lost a basket identity.' }
+            if ((Scalar "select count(*) from #basketHistory where type='handoff' and basketTableId=21") -ne 1 -or
+                (Scalar 'select count(*) from #basketHistory') -ne 3) { throw 'Missing overflow handoff audit history.' }
+            if ((Scalar 'select count(*) from #positions where locked<>2') -ne 0) { throw 'Overflow intake changed operator locks.' }
         } elseif ($Stacker2) {
             if ((Scalar 'select basketTableId from #positions where posNumber=450') -ne 0 -or
                 (Scalar 'select basketTableId from #positions where posNumber=910') -ne 54) { throw 'Stacker identity was lost.' }

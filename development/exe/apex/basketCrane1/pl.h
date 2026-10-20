@@ -23,6 +23,7 @@ protected:
 	QVector<positionListClass*>			concurrentPositionListsArray;
 	QVector<positionListClass*>			behindPositionListsArray;
 	bool								isLockedToRecieve;
+	bool trackingReconciliationRequired;
 
 	Q_OBJECT
 
@@ -84,6 +85,8 @@ public:
 	basketPositionClass* getHighlightedPos();
 	basketPositionClass* getFreeToRecievePos(basketPositionClass* incomingPos, QString* rejectionReason = NULL);
 	basketPositionClass *getPosition(int index);
+	// Additional 910 indices are durable tracking records, not crane destinations.
+	basketPositionClass* appendStacker2TrackingPosition();
 	QVector<basketPositionClass*> getBasketPositions();
 	QVector<basketPositionClass*> getAllBasketPositions();
 	basketPositionClass* getBaskePositiontWithBasketId(int id);
@@ -91,6 +94,7 @@ public:
 	basketPositionClass* getTopBasketPosition();
 	bool hasBaskePositiontWithBasketId(int id);
 	void setLockRecieve(bool l);
+	void setTrackingReconciliationRequired(bool required) { trackingReconciliationRequired = required; }
 	void drawLockedToRecieve();
 
 public slots:								

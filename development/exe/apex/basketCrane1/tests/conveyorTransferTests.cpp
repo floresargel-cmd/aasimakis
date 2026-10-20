@@ -15,6 +15,7 @@
 #define APEX_DB_CONNECTION QString("epics-test")
 #define LOG(tag, message) do { logs.append(QString(message)); } while (0)
 #define emit
+#define connect(...) do {} while (0)
 QStringList logs, capturedStatements;
 bool observer = false, transactionSucceeds = true;
 int transactionCalls = 0, assignmentWrites = 0, historyWrites = 0, epicsWrites = 0;
@@ -37,13 +38,19 @@ struct Basket {
     int getTableId() { return id; }
     void setTableId(int b) { id = b; }
 };
+struct positionListClass;
 struct basketPositionClass {
     Basket basket;
     QString description;
-    int number, index, positionEnumForEpics = 3;
+    int number, index, positionEnumForEpics = 3, lockedEnum = 2;
+    float x = 1, y = 2, z = 0;
     bool contents = true, reserved = false, sourceMarker = false, targetMarker = false;
-    enum { EPICS_POS_BASKET_NOWHERE = 0, EPICS_POS_BASKET_IN_OVEN = 2, EPICS_POS_BASKET_AFTER_OVEN = 3, EPICS_POS_BASKET_NEW = 4 };
+    enum { EPICS_POS_BASKET_NOWHERE = 0, EPICS_POS_BASKET_IN_OVEN = 2, EPICS_POS_BASKET_AFTER_OVEN = 3, EPICS_POS_BASKET_NEW = 4, LOCKED = 2 };
     basketPositionClass(int n, int i, int b) : number(n), index(i) { basket.id=b; description="operator's conveyor"; }
+    basketPositionClass(positionListClass*, QString d, int n, int i, int epics, float px, float py, float pz)
+        : description(d), number(n), index(i), positionEnumForEpics(epics), x(px), y(py), z(pz) { basket.id=0; }
+    float getOpenGlX() { return x; }
+    float getOpenGlY() { return y; }
     int getNumber() { return number; }
     int getIndex() { return index; }
     int getBasketTableId() { return basket.id; }
@@ -61,6 +68,21 @@ struct basketPositionClass {
 };
 struct positionListClass {
     QVector<basketPositionClass*> positions;
+    QVector<basketPositionClass*>& basketPositions = positions;
+    int mainPosId = 910;
+    QString description = "in stacker 2";
+    bool trackingReconciliationRequired = false;
+    void setTrackingReconciliationRequired(bool b) { trackingReconciliationRequired=b; }
+    bool isTheBottomBasket(int b) { return !positions.isEmpty() && positions.first()->getBasketTableId()==b; }
+    bool hasLockedPositionByCrane() {
+        for (auto p : positions) if (p->getIsLockedByCrane()) return true;
+        return false;
+    }
+    basketPositionClass* appendStacker2TrackingPosition();
+    basketPositionClass* getBaskePositiontWithBasketId(int id) {
+        for (int i=0;i<positions.count();++i) if (id>0 && positions[i]->getBasketTableId()==id) return positions[i];
+        return NULL;
+    }
     int getNumberOfPositions() { return positions.count(); }
     int getNumberOfBaskets() { int n=0; for (int i=0;i<positions.count();++i) if (positions[i] && positions[i]->hasBasket()) ++n; return n; }
     basketPositionClass* getPosition(int i) { return positions[i]; }
@@ -68,6 +90,19 @@ struct positionListClass {
 struct allPositionsClass {
     QVector<basketPositionClass*> conveyorSourceMarkers, conveyorTargetMarkers;
     positionListClass *beforeStacker2Position, *stacker2Position, *afterStacker2Position;
+    positionListClass* returningConvPositionList04 = NULL;
+    QVector<positionListClass*> recoverySources;
+    int pendingReturn160BottomBasket = 0, recoveryNotifications = 0;
+    QString return160TrackingStatus;
+    QString tr(const char* s) { return QString(s); }
+    void return160TrackingStatusChanged(QString) { ++recoveryNotifications; }
+    void setReturn160TrackingStatus(const QString&);
+    void observeReturn160Report(int);
+    void processReturn160Report();
+    positionListClass* getPositionListWithBasketOnFirstPos(int id) {
+        for (auto list : recoverySources) if (list->isTheBottomBasket(id)) return list;
+        return NULL;
+    }
     Stacker2Handoff stacker2Handoff;
     bool stacker2InputStatusKnown = true;
     int pendingStacker2OutputBasket = 0;
@@ -156,20 +191,116 @@ int main(int argc, char** argv) {
     check(input.basket.id==36 && inside.basket.id==0,"crane activity invalidates the previous input acknowledgement");
     all.plcIsBeforeStacker2PosEmpty=false; all.processStacker2Handoffs();
     all.plcIsBeforeStacker2PosEmpty=true;
-    inside.basket.id=80; all.processStacker2Handoffs();
-    check(input.basket.id==36 && inside.basket.id==80,"occupied internal slot cannot discard either basket");
-    inside.basket.id=0; all.processStacker2Handoffs();
-    check(input.basket.id==0 && inside.basket.id==36,"blocked intake retries when internal slot becomes available");
+    inside.basket.id=80; transactionSucceeds=false; all.processStacker2Handoffs();
+    check(input.basket.id==36 && inside.basket.id==80 && insideList.positions.count()==2 && insideList.positions[1]->basket.id==0,
+        "failed overflow intake retains both identities and an empty retry record");
+    transactionSucceeds=true; all.processStacker2Handoffs();
+    basketPositionClass* overflow=insideList.positions[1];
+    check(input.basket.id==0 && inside.basket.id==80 && overflow->basket.id==36 && insideList.positions.count()==2,
+        "occupied internal record must allow confirmed intake without overwriting either identity");
+    check(overflow->getNumber()==910 && overflow->getIndex()==2 && overflow->lockedEnum==basketPositionClass::LOCKED,
+        "additional internal records are locked tracking positions");
     all.pendingStacker2OutputBasket=36; all.processStacker2Handoffs();
-    check(inside.basket.id==36 && output.basket.id==54,"occupied output cannot be overwritten");
+    check(inside.basket.id==80 && overflow->basket.id==36 && output.basket.id==54,"occupied output cannot be overwritten");
     output.reserved=true; all.processStacker2Handoffs(); output.basket.id=0; output.reserved=false;
     calls=transactionCalls; all.processStacker2Handoffs();
     check(transactionCalls==calls && output.basket.id==0,"pending output report cannot resurrect a basket after crane pickup");
     all.pendingStacker2OutputBasket=80; observer=true; all.processStacker2Handoffs(); observer=false;
-    check(output.basket.id==0 && inside.basket.id==36,"observer must not write stacker handoffs");
+    check(output.basket.id==0 && inside.basket.id==80 && overflow->basket.id==36,"observer must not write stacker handoffs");
     transactionSucceeds=false; all.processStacker2Handoffs();
     check(output.basket.id==0 && all.pendingStacker2OutputBasket==80,"failed external output assignment remains pending");
     transactionSucceeds=true; all.processStacker2Handoffs();
-    check(output.basket.id==80 && inside.basket.id==36,"PLC output ID must not consume an unrelated internal basket");
-    std::puts("PASS: conveyor transfers and stacker 2 identity continuity, stale signals, retries, audit history, duplicate reports, occupied slots, crane reservations and observer mode.");
+    check(output.basket.id==80 && inside.basket.id==0 && overflow->basket.id==36,"PLC output ID must release only its own internal record");
+    output.basket.id=0; all.pendingStacker2OutputBasket=36; all.processStacker2Handoffs();
+    check(output.basket.id==36 && overflow->basket.id==0,"PLC output identity must find an overflow basket despite an empty first record");
+
+    // Exact incident: 89 remains inside while the PLC consumes basket 21.
+    inside.basket.id=89; output.basket.id=0; input.basket.id=21;
+    all.plcIsBeforeStacker2PosEmpty=false; all.processStacker2Handoffs();
+    all.plcIsBeforeStacker2PosEmpty=true; all.processStacker2Handoffs();
+    check(input.basket.id==0 && inside.basket.id==89 && overflow->basket.id==21,
+        "basket 21 must leave position 450 while basket 89 stays tracked inside");
+    check(insideList.positions.count()==2,"empty tracking records must be reused");
+    if (argc > 3) {
+        QJsonArray statements; for (int i=0;i<capturedStatements.count();++i) statements.append(capturedStatements[i]);
+        QFile fixture(QString::fromLocal8Bit(argv[3])); check(fixture.open(QIODevice::WriteOnly),"open overflow SQL fixture");
+        fixture.write(QJsonDocument(statements).toJson());
+    }
+    calls=transactionCalls; all.processStacker2Handoffs();
+    check(transactionCalls==calls,"confirmed overflow intake must not repeat");
+    all.pendingStacker2OutputBasket=21; all.processStacker2Handoffs();
+    check(output.basket.id==21 && overflow->basket.id==0 && inside.basket.id==89,"output can release basket 21 without losing basket 89");
+
+    // A restart cannot treat a retained empty bit as a new intake. An exact
+    // PLC output identity can safely reconcile the old input assignment.
+    input.basket.id=63; output.basket.id=0; all.stacker2Handoff.reset();
+    all.processStacker2Handoffs();
+    check(input.basket.id==63,"restart with empty signal must preserve unacknowledged input");
+    input.reserved=true; all.pendingStacker2OutputBasket=63; all.processStacker2Handoffs();
+    check(input.basket.id==63 && output.basket.id==0,"output recovery must respect crane reservations");
+    input.reserved=false; all.processStacker2Handoffs();
+    check(input.basket.id==0 && output.basket.id==63 && inside.basket.id==89,
+        "exact output identity recovers missed intake without touching earlier internal baskets");
+    positionListClass ordinary; ordinary.mainPosId=450; ordinary.positions << &input;
+    check(!ordinary.appendStacker2TrackingPosition(),"tracking allocation must be restricted to internal position 910");
+    delete overflow;
+
+    basketPositionClass r1(160,1,0), r2(160,2,0), r3(160,3,0), r4(160,4,0),
+        s1(720,1,82), s2(720,2,116), s3(720,3,43), s4(720,4,0);
+    r1.positionEnumForEpics=r2.positionEnumForEpics=r3.positionEnumForEpics=r4.positionEnumForEpics=0;
+    positionListClass return160, verifiedStack;
+    return160.positions << &r1 << &r2 << &r3 << &r4;
+    verifiedStack.positions << &s1 << &s2 << &s3 << &s4;
+    allPositionsClass recovery; recovery.returningConvPositionList04=&return160;
+    calls=transactionCalls;
+    recovery.observeReturn160Report(82);
+    check(recovery.pendingReturn160BottomBasket==82 && return160.getNumberOfBaskets()==0 && transactionCalls==calls,
+        "startup must retain bottom ID 82 without inventing the unreported 116/43 identities");
+    check(return160.trackingReconciliationRequired && recovery.return160TrackingStatus.contains("82") && recovery.recoveryNotifications==1,
+        "missing stack must show reconciliation warning and block position availability");
+    recovery.processReturn160Report(); recovery.processReturn160Report();
+    check(recovery.recoveryNotifications==1,"unresolved retries must not flood logs or operator notifications");
+
+    recovery.recoverySources << &verifiedStack;
+    transactionSucceeds=false; recovery.processReturn160Report();
+    check(recovery.pendingReturn160BottomBasket==82 && r1.basket.id==0 && s1.basket.id==82,
+        "failed recovery transaction must retain report and verified source for retry");
+    transactionSucceeds=true; s1.reserved=true; recovery.processReturn160Report();
+    check(recovery.pendingReturn160BottomBasket==82 && r1.basket.id==0,"recovery must respect crane reservations");
+    s1.reserved=false; recovery.processReturn160Report();
+    check(r1.basket.id==82 && r2.basket.id==116 && r3.basket.id==43 && s1.basket.id==0 && s2.basket.id==0 && s3.basket.id==0,
+        "timer retry after source refresh restores verified 82/116/43 stack without another PLC change");
+    check(recovery.pendingReturn160BottomBasket==0 && recovery.return160TrackingStatus.isEmpty() && !return160.trackingReconciliationRequired,
+        "successful recovery clears pending state, warning and availability block");
+    calls=transactionCalls; recovery.observeReturn160Report(82);
+    check(transactionCalls==calls && recovery.pendingReturn160BottomBasket==0,
+        "duplicate PLC snapshot of a tracked stack must not repeat the transfer");
+    r1.basket.id=r2.basket.id=r3.basket.id=0; calls=transactionCalls; recovery.processReturn160Report();
+    check(transactionCalls==calls,"completed recovery must not resurrect the stack after pickup");
+
+    recovery.recoverySources.clear(); recovery.observeReturn160Report(82);
+    r3.basket.id=43; recovery.processReturn160Report();
+    check(r3.basket.id==43 && r1.basket.id==0 && recovery.pendingReturn160BottomBasket==82,
+        "partial operator correction must be preserved while reconciliation remains pending");
+    r1.basket.id=82; r2.basket.id=116; calls=transactionCalls; recovery.processReturn160Report();
+    check(transactionCalls==calls && r1.basket.id==82 && r2.basket.id==116 && r3.basket.id==43 && recovery.pendingReturn160BottomBasket==0,
+        "complete manual correction must clear warning without rewriting assignments or history");
+
+    r1.basket.id=r2.basket.id=r3.basket.id=0; recovery.observeReturn160Report(82);
+    recovery.observeReturn160Report(0); s1.basket.id=82; s2.basket.id=116; s3.basket.id=43;
+    recovery.recoverySources << &verifiedStack; calls=transactionCalls; recovery.processReturn160Report();
+    check(transactionCalls==calls && r1.basket.id==0 && recovery.pendingReturn160BottomBasket==0 && recovery.return160TrackingStatus.isEmpty(),
+        "PLC zero must cancel a pending arrival before a delayed source appears");
+    recovery.recoverySources.clear(); recovery.observeReturn160Report(82); recovery.observeReturn160Report(99);
+    recovery.recoverySources << &verifiedStack; calls=transactionCalls; recovery.processReturn160Report();
+    check(transactionCalls==calls && r1.basket.id==0 && recovery.pendingReturn160BottomBasket==99,
+        "new PLC identity must supersede the older arrival");
+    observer=true; recovery.observeReturn160Report(82);
+    check(transactionCalls==calls && r1.basket.id==0 && recovery.pendingReturn160BottomBasket==82,
+        "observer must show the mismatch without recovering assignments");
+    observer=false;
+    r1.basket.id=95; calls=transactionCalls; recovery.processReturn160Report();
+    check(transactionCalls==calls && r1.basket.id==95 && s1.basket.id==82 && recovery.pendingReturn160BottomBasket==82,
+        "pending recovery must never overwrite an occupied corrected destination");
+    std::puts("PASS: position 160 startup recovery of 82/116/43; delayed source; manual corrections; cancelled/superseded reports; retries; crane reservations; observer mode; conveyor transfers; stacker 2 identity tracking.");
 }

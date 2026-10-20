@@ -159,6 +159,7 @@ allPositionsClass::allPositionsClass(tcpServerClass *conveyorsPlcTcpServer_, tcp
 	crane = NULL;
 	plcBeforeStackerPosMadeStep = plcStackerPosMadeStep = false;
 	pendingStacker2OutputBasket = 0;
+	pendingReturn160BottomBasket = 0;
 	stacker2InputStatusKnown = false;
 	plcIsBeforeStacker2PosEmpty = false;
 	plcStacker2PosMadeStep = false;
@@ -775,6 +776,7 @@ void allPositionsClass::reloadBasketAssignmentsFromDatabase()
 	setDbTableIdle("positions");
 	QHash<QString, int> assignments;
 	QSet<QString> ambiguousAssignments;
+	int stacker2TrackingCount = stacker2Position->getNumberOfPositions();
 	for (int i = 0; i < rows.count(); ++i)
 	{
 		if (rows[i].count() < 3 || rows[i][0].isNull() || rows[i][1].isNull() || rows[i][2].isNull())
@@ -783,7 +785,13 @@ void allPositionsClass::reloadBasketAssignmentsFromDatabase()
 		if (assignments.contains(key))
 			ambiguousAssignments.insert(key);
 		assignments.insert(key, rows[i][2].toInt());
+		if (rows[i][0].toInt() == 910)
+			stacker2TrackingCount = qMax(stacker2TrackingCount, rows[i][1].toInt());
 	}
+	// Discover tracking records created by the live controller, including in
+	// observer mode. Normal startup loads all persisted 910 indices as well.
+	while (stacker2Position->getNumberOfPositions() < stacker2TrackingCount)
+		if (!stacker2Position->appendStacker2TrackingPosition()) break;
 
 	int changed = 0;
 	int protectedChanges = 0;
@@ -817,6 +825,7 @@ void allPositionsClass::reloadBasketAssignmentsFromDatabase()
 	}
 	LOG("BASKET CACHE", QString("Position assignments refreshed: databaseRows=%1, changed=%2, missionProtected=%3, ambiguousPositions=%4")
 		.arg(rows.count()).arg(changed).arg(protectedChanges).arg(ambiguousAssignments.count()));
+	processReturn160Report();
 }
 
 //void allPositionsClass::updateAfterStacker2PositionContentsFromDatabase()
@@ -1602,8 +1611,68 @@ positionListClass* allPositionsClass::getBasketPositionListFromFullBufferWithBas
 	return NULL;
 }
 
+void allPositionsClass::setReturn160TrackingStatus(const QString& message)
+{
+	if (returningConvPositionList04)
+		returningConvPositionList04->setTrackingReconciliationRequired(!message.isEmpty());
+	if (return160TrackingStatus == message) return;
+	return160TrackingStatus = message;
+	if (message.isEmpty())
+		LOG("CONVEYOR RECOVERY", "Position 160 tracking reconciled or PLC report withdrawn");
+	else
+		LOG("WARNING: CONVEYOR RECOVERY", message);
+	emit return160TrackingStatusChanged(message);
+}
+
+void allPositionsClass::observeReturn160Report(int bottomBasket)
+{
+	// Retain the current PLC state, including the startup snapshot. A new
+	// identity or zero supersedes the old report; never replay an old arrival.
+	pendingReturn160BottomBasket = bottomBasket > 0 ? bottomBasket : 0;
+	if (!pendingReturn160BottomBasket) {
+		setReturn160TrackingStatus(QString());
+		return;
+	}
+	processReturn160Report();
+}
+
+void allPositionsClass::processReturn160Report()
+{
+	if (pendingReturn160BottomBasket <= 0) return;
+	const int basketId = pendingReturn160BottomBasket;
+	positionListClass* destination = returningConvPositionList04;
+	if (destination && destination->getNumberOfPositions() > 0 && destination->isTheBottomBasket(basketId)) {
+		// Includes an operator correction. Do not rewrite the corrected stack
+		// or keep a report that could resurrect it after the crane picks it up.
+		pendingReturn160BottomBasket = 0;
+		setReturn160TrackingStatus(QString());
+		return;
+	}
+	if (destination && destination->getNumberOfPositions() > 0 && !isDatabaseReadOnlyMode()) {
+		positionListClass* source = getPositionListWithBasketOnFirstPos(basketId);
+		if (source && source != destination && destination->getNumberOfBaskets() == 0 &&
+			!source->hasLockedPositionByCrane() && !destination->hasLockedPositionByCrane())
+			moveBaskets(source, destination);
+		if (destination->isTheBottomBasket(basketId)) {
+			pendingReturn160BottomBasket = 0;
+			setReturn160TrackingStatus(QString());
+			emit openGlChangedSignal();
+			return;
+		}
+	}
+	// A bottom ID alone cannot identify the other baskets. Keep the report
+	// pending until a verified source stack or a manual correction is loaded.
+	// Log/notify on status changes only, not on every timer retry.
+	setReturn160TrackingStatus(tr("Position 160: basket detected (bottom basket %1). "
+		"Tracking needs reconciliation. Verify and update the stack assignments.").arg(basketId));
+}
+
 void allPositionsClass::conveyorsBasketMemoryChanged(int index, int bottomBasket)
 {
+	if (index == 22) {
+		observeReturn160Report(bottomBasket);
+		return;
+	}
 	if (bottomBasket == 0) {
 		if (index == 39) pendingStacker2OutputBasket = 0;
 		if (index == 15)	loadPositionFromDatabase(afterOvenPositionList01);
@@ -1647,7 +1716,6 @@ void allPositionsClass::conveyorsBasketMemoryChanged(int index, int bottomBasket
 	}
 	if (index == 19)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), returningConvPositionList02);
 	if (index == 20)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), returningConvPositionList03);
-	if (index == 22)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), returningConvPositionList04);
 
 	if (index == 18)	moveBaskets(getPositionListWithBasketOnFirstPos(bottomBasket), returningConvPositionList05);  // 30 ft mid return
 	// ? 21 --> 30ft return 2, does not appear to be used...
@@ -1814,6 +1882,20 @@ bool allPositionsClass::transferStacker2Basket(basketPositionClass* source, bask
 		.arg(destination->getNumber()).arg(destination->getIndex());
 	const QDateTime eventTime = QDateTime::currentDateTime();
 	basketPositionClass* handoffPositions[] = { source, destination };
+	if (destination->getNumber() == 910 && destination->getIndex() > 1) {
+		// Allocate overflow tracking in the SAME transaction as the intake.
+		// No previous basket is overwritten, and failed transfers leave no row.
+		// Keep the guard separate so ODBC cannot hide its error behind a
+		// subsequent successful INSERT result in the same SQL batch.
+		statements << QString("if not exists (select 1 from positions with (UPDLOCK,HOLDLOCK) where posNumber=910 and posIndex=%1) "
+			"and (select count(distinct posIndex) from positions with (UPDLOCK,HOLDLOCK) where posNumber=910 and posIndex between 1 and %1) <> %2 "
+			"raiserror('Stacker tracking positions are not contiguous',16,1)")
+			.arg(destination->getIndex()).arg(destination->getIndex() - 1);
+		statements << QString("if not exists (select 1 from positions with (UPDLOCK,HOLDLOCK) where posNumber=910 and posIndex=%1) "
+			"insert into positions (description,posNumber,posIndex,basketTableId,locked,targetNumber,targetIndex) "
+			"values('in stacker 2',910,%1,0,%2,0,0)")
+			.arg(destination->getIndex()).arg(basketPositionClass::LOCKED);
+	}
 	for (int i = 0; i < 2; ++i) {
 		if (!handoffPositions[i]) continue;
 		const int expected = i == 0 ? basketId : 0;
@@ -1870,7 +1952,13 @@ void allPositionsClass::processStacker2Handoffs()
 	// Do not replay an old output report after the crane has picked it up.
 	if (output->getIsLockedByCrane()) pendingStacker2OutputBasket = 0;
 	if (pendingStacker2OutputBasket > 0) {
-		basketPositionClass* source = inside->getBasketTableId() == pendingStacker2OutputBasket ? inside : NULL;
+		// Output identity is authoritative; baskets need not leave in slot order.
+		basketPositionClass* source = stacker2Position->getBaskePositiontWithBasketId(pendingStacker2OutputBasket);
+		// Recover a missed intake acknowledgement (e.g. restart with input
+		// already empty) only when the PLC reports that exact basket at output.
+		if (!source && stacker2InputStatusKnown && plcIsBeforeStacker2PosEmpty &&
+			input->getBasketTableId() == pendingStacker2OutputBasket)
+			source = input;
 		if (transferStacker2Basket(source, output, pendingStacker2OutputBasket)) {
 			pendingStacker2OutputBasket = 0;
 			emit openGlChangedSignal();
@@ -1883,8 +1971,17 @@ void allPositionsClass::processStacker2Handoffs()
 	// before the crane finished placing this basket, with no second callback.
 	stacker2Handoff.observe(plcIsBeforeStacker2PosEmpty, basketId, input->getIsLockedByCrane());
 	if (!stacker2Handoff.ready(plcIsBeforeStacker2PosEmpty, basketId, input->getIsLockedByCrane())) return;
-	// An occupied internal slot is a reconciliation problem. Retain the input
-	// identity instead of overwriting another basket or silently discarding it.
+	// PLC-confirmed intake must clear 450 even while an earlier basket is
+	// still inside. Reuse a free tracking record, or persist an additional one.
+	inside = NULL;
+	for (int i = 0; i < stacker2Position->getNumberOfPositions(); ++i) {
+		basketPositionClass* candidate = stacker2Position->getPosition(i);
+		if (candidate && !candidate->hasBasket() && !candidate->getIsLockedByCrane()) {
+			inside = candidate;
+			break;
+		}
+	}
+	if (!inside) inside = stacker2Position->appendStacker2TrackingPosition();
 	if (!transferStacker2Basket(input, inside, basketId)) return;
 	stacker2Handoff.reset();
 	setDbTableActive("basket_location", false);
@@ -1906,6 +2003,7 @@ void allPositionsClass::mainTimerSlot()
 		checkOvenUnloadPositions();
 		emit openGlChangedSignal();
 	}
+	processReturn160Report();
 
 	LOG("mainTimerSlot called", "INFO: Step 2");
 	if (plcBeforeStackerPosMadeStep)

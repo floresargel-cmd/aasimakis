@@ -92,6 +92,7 @@ protected:
 	void initializeGL();
 
 signals:
+	void return160TrackingStatusChanged(QString message);
 	void scrapBasketPositionChangedSignal(int basketTableId);
 	void missionFromAfterStackerPositionFinishedSignal();
 	void missionFromAfterStacker2PositionFinishedSignal();

@@ -11,6 +11,7 @@ struct basketPositionClass {
     explicit basketPositionClass(int n) : id(n) {}
     bool hasBasket() { return occupied; }
     bool getLocked() { return locked; }
+    bool getIsLockedByCrane() { return false; }
     bool canMoveToPosition(int) { return ageable; }
     bool hasContents() { return contents != BASKET_CONTENS_NONE; }
     int getTypeEnum() { return type; }
@@ -20,16 +21,17 @@ struct basketPositionClass {
 struct positionListClass {
     enum { TYPE_NORMAL=1, TYPE_SCRAP=2, TYPE_EMPTY=4, TYPE_PROFILES20=8, TYPE_PROFILES24=16, TYPE_PROFILES30=32 };
     int mainPosId = 290, typeEnumeration = TYPE_NORMAL|TYPE_EMPTY|TYPE_PROFILES20|TYPE_PROFILES24|TYPE_PROFILES30;
-    bool isLockedToRecieve = false, obstructed = false, concurrent = false;
+    bool isLockedToRecieve = false, obstructed = false, concurrent = false, trackingReconciliationRequired = false;
     QVector<basketPositionClass*> basketPositions;
     QString tr(const char* s) { return QString(s); }
     bool isBasketPositionYours(basketPositionClass* b) { return basketPositions.contains(b); }
     bool canTakeFullBasket() { return true; }
     bool canTakeEmptyBasket() { return true; }
-    bool isSomethingObstructingThePositionsWay(basketPositionClass*) { return obstructed; }
+    bool isSomethingObstructingThePositionsWay(basketPositionClass* = NULL) { return obstructed; }
     bool isAConcurrentPositionFull() { return concurrent; }
     int getNumberOfBaskets() { int n=0; for (auto b : basketPositions) if (b->occupied) ++n; return n; }
     basketPositionClass* getFreeToRecievePos(basketPositionClass*, QString* = NULL);
+    basketPositionClass* getFreeToMoveBasketPosition();
 };
 #include "positionAvailabilityMethod.inc"
 static void check(bool ok, const char* message)
@@ -57,5 +59,12 @@ int main()
     position.obstructed = false;
     check(position.getFreeToRecievePos(&source, &reason) == &c && reason.isEmpty(), "293 must reopen after restrictions clear");
     check(!position.getFreeToRecievePos(NULL, &reason) && reason.contains("No source"), "null source must be explained");
+    position.trackingReconciliationRequired=true;
+    check(!position.getFreeToRecievePos(&source,&reason) && reason.contains("reconciliation"),
+        "PLC-detected untracked baskets must block new crane deliveries");
+    check(!position.getFreeToMoveBasketPosition(),"partially reconciled stacks must not be offered for pickup");
+    position.trackingReconciliationRequired=false;
+    check(position.getFreeToRecievePos(&source,&reason)==&c,"reconciliation must reopen destinations without changing PLC locks");
+    check(position.getFreeToMoveBasketPosition()==&b,"reconciliation must restore pickup availability");
     std::puts("PASS: 293/294 availability, slot lock, PLC lock, temper, length, obstruction and reopening.");
 }

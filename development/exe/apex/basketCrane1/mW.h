@@ -38,6 +38,7 @@ class mainWindowClass : public QWidget
 	QLabel* dbAreaLabel;
 	QLabel* plcAreaLabel;
 	QLabel* sysAreaLabel;
+	QLabel* return160TrackingLabel;
 
 	// 250ms delayed fade-to-grey: when Idle is requested we start a timer; when it fires we set grey. When Active is requested we stop the timer and set active color.
 	QTimer						*mainTimerIdleTimer;
