@@ -66,5 +66,20 @@ int main()
     position.trackingReconciliationRequired=false;
     check(position.getFreeToRecievePos(&source,&reason)==&c,"reconciliation must reopen destinations without changing PLC locks");
     check(position.getFreeToMoveBasketPosition()==&b,"reconciliation must restore pickup availability");
-    std::puts("PASS: 293/294 availability, slot lock, PLC lock, temper, length, obstruction and reopening.");
+    basketPositionClass r1(161), r2(162), r3(163), r4(164);
+    r1.occupied = r2.occupied = r3.occupied = true;
+    r1.contents = r2.contents = r3.contents = BASKET_CONTENS_NONE;
+    positionListClass returning;
+    returning.mainPosId = 160;
+    returning.basketPositions << &r1 << &r2 << &r3 << &r4;
+    source.contents = BASKET_CONTENS_LESS_THAN_30;
+    check(returning.getFreeToRecievePos(&source, &reason) == &r4 && reason.isEmpty(),
+        "160 must offer unlocked 164 above three empty baskets when temper permits the destination");
+    r4.locked = true;
+    check(!returning.getFreeToRecievePos(&source, &reason) && reason.contains("164"),
+        "160 must identify a locked fourth slot");
+    r1.occupied = r2.occupied = r3.occupied = false;
+    check(returning.getFreeToRecievePos(&source, &reason) == &r1,
+        "empty 160 must offer unlocked 161 even if a higher slot is locked");
+    std::puts("PASS: destination availability, slot locks, PLC lock, temper, length, obstruction, reconciliation and position 160 incident scenarios.");
 }

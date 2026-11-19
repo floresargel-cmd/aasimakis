@@ -76,11 +76,16 @@ void positionListClass::drawFreeToRecievePos(bool forPicking, basketPositionClas
 {
 	QString reason;
 	basketPositionClass *freeToRecievePos = getFreeToRecievePos(incomingBasketPos, &reason);
-	if (mainPosId == 290 && incomingBasketPos)
+	if ((mainPosId == 160 || mainPosId == 290) && incomingBasketPos)
 	{
-		QString state = QString("basket=%1 source=%2 destination=290 available=%3 reason=%4 receiveLocked=%5")
+		QString state = QString("basket=%1 source=%2 destination=%3 available=%4 reason=%5 receiveLocked=%6")
 			.arg(incomingBasketPos->getBasketTableId()).arg(incomingBasketPos->getPlcId())
+			.arg(mainPosId)
 			.arg(freeToRecievePos ? freeToRecievePos->getPlcId() : 0).arg(reason).arg(isLockedToRecieve);
+		state += QString(" trackingReconciliationRequired=%1 destinationTypes=%2 sourceType=%3 sourceContents=%4 temperAllowed=%5")
+			.arg(trackingReconciliationRequired).arg(typeEnumeration)
+			.arg(incomingBasketPos->getTypeEnum()).arg(incomingBasketPos->getContentsEnum())
+			.arg(incomingBasketPos->canMoveToPosition(mainPosId));
 		for (int i = 0; i < basketPositions.count(); ++i)
 			state += QString(" | slot=%1 basket=%2 locked=%3 craneLocked=%4")
 				.arg(basketPositions[i]->getPlcId()).arg(basketPositions[i]->getBasketTableId())
